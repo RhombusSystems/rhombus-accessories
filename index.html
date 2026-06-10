@@ -360,7 +360,7 @@ function showResult() {
     const noteIsNA = note.toLowerCase().includes('no accessor') || note.toLowerCase().includes('not applicable');
 
     const hasConduitAdapter = acc.match(/ACC-[A-Z0-9]*CND[A-Z0-9]*/);
-    const hasConduitNote = (acc + note).toLowerCase().includes('conduit');
+    const hasConduitNote = (acc + note).toLowerCase().includes('conduit') || acc.includes('ACC-ARM-JB');
     const conduitBadge = hasConduitAdapter
       ? `<span class="conduit-badge adapter">🔧 Conduit Adapter</span>`
       : hasConduitNote
