@@ -169,10 +169,51 @@
   }
   .placeholder .icon { font-size: 2.4rem; display: block; margin-bottom: 10px; }
 
+  /* SEARCH */
+  .search-wrap { position: relative; margin-bottom: 16px; }
+  .search-input {
+    width: 100%; padding: 10px 14px 10px 38px; border-radius: var(--r);
+    border: 2px solid var(--border); font-size: .93rem; font-family: 'DM Sans', sans-serif;
+    background: #fff; transition: border .14s;
+  }
+  .search-input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(75,235,255,.2); }
+  .search-icon {
+    position: absolute; left: 12px; top: 50%; transform: translateY(-50%);
+    font-size: 1rem; pointer-events: none; color: var(--muted);
+  }
+  .search-results {
+    position: absolute; top: calc(100% + 4px); left: 0; right: 0;
+    background: #fff; border: 2px solid var(--accent); border-radius: var(--r);
+    box-shadow: 0 8px 24px rgba(23,50,59,.18); z-index: 100; overflow: hidden;
+    display: none;
+  }
+  .search-results.open { display: block; }
+  .search-result-item {
+    padding: 9px 14px; cursor: pointer; font-size: .88rem;
+    display: flex; align-items: center; gap: 8px;
+    border-bottom: 1px solid var(--border);
+    transition: background .1s;
+  }
+  .search-result-item:last-child { border-bottom: none; }
+  .search-result-item:hover, .search-result-item.focused { background: var(--xlblue); }
+  .search-result-item .sr-model { font-weight: 700; color: var(--navy); }
+  .search-result-item .sr-cat { font-size: .72rem; color: var(--muted); background: var(--lblue); border-radius: 4px; padding: 1px 6px; }
+  .search-no-results { padding: 10px 14px; color: var(--muted); font-size: .85rem; }
+
   /* ADD TO JOB BUTTON */
+  .add-job-row { display: flex; align-items: center; gap: 8px; margin-top: 10px; flex-wrap: wrap; }
+  .add-qty-input {
+    width: 52px; padding: 6px 8px; border-radius: 7px;
+    border: 2px solid var(--border); font-size: .9rem; font-weight: 700;
+    font-family: 'DM Sans', sans-serif; color: var(--navy); text-align: center;
+    -moz-appearance: textfield;
+  }
+  .add-qty-input::-webkit-inner-spin-button,
+  .add-qty-input::-webkit-outer-spin-button { -webkit-appearance: none; }
+  .add-qty-input:focus { outline: none; border-color: var(--accent); }
   .add-job-btn {
     display: inline-flex; align-items: center; gap: 6px;
-    margin-top: 10px; padding: 7px 14px;
+    padding: 7px 14px;
     background: var(--navy); color: #fff;
     border: none; border-radius: 7px; cursor: pointer;
     font-size: .78rem; font-weight: 700; font-family: 'DM Sans', sans-serif;
@@ -302,6 +343,12 @@
 </header>
 
 <main>
+  <div class="search-wrap">
+    <span class="search-icon">🔍</span>
+    <input class="search-input" id="search-input" type="text" placeholder="Search model (e.g. R600, DR40, A100)…" oninput="onSearch(event)" onkeydown="onSearchKey(event)" autocomplete="off">
+    <div class="search-results" id="search-results"></div>
+  </div>
+
   <div class="tabs" id="tabs">
     <div class="tab active" data-cat="cameras" onclick="selectCat('cameras')"><span class="icon">📷</span>Cameras</div>
     <div class="tab" data-cat="access"         onclick="selectCat('access')"><span class="icon">🔑</span>Access Control</div>
@@ -505,7 +552,12 @@ function showResult() {
       <div class="opt-body">
         ${isNA ? '<div class="na-text">✅ No accessory required for this configuration</div>' : renderParts(acc)}
         ${note && !noteIsNA ? `<div class="note-box">${note}</div>` : ''}
-        <button class="add-job-btn" id="add-btn-${i}" onclick="addToJob(${i})">+ Add to Job List</button>
+        <div class="add-job-row">
+          <button class="qty-btn" onclick="adjustAddQty(${i},-1)">−</button>
+          <input class="add-qty-input" id="add-qty-${i}" type="number" value="1" min="1" max="99">
+          <button class="qty-btn" onclick="adjustAddQty(${i},1)">+</button>
+          <button class="add-job-btn" id="add-btn-${i}" onclick="addToJob(${i})">+ Add to Job List</button>
+        </div>
       </div>
     </div>`;
   });
@@ -515,6 +567,12 @@ function showResult() {
 
 // --- Job List ---
 let jobList = [];
+
+function adjustAddQty(optIdx, delta) {
+  const input = document.getElementById(`add-qty-${optIdx}`);
+  if (!input) return;
+  input.value = Math.max(1, Math.min(99, (parseInt(input.value) || 1) + delta));
+}
 
 function addToJob(optIdx) {
   const model = document.getElementById('sel-model').value;
@@ -527,21 +585,89 @@ function addToJob(optIdx) {
   const isNA = !acc || acc.toLowerCase().includes('not applicable') || acc.toLowerCase().includes('no accessor');
   const skus = isNA ? [] : extractParts(acc).filter(p => p.sku);
 
-  // bump qty if same config+option already in list
+  const qtyInput = document.getElementById(`add-qty-${optIdx}`);
+  const qty = Math.max(1, parseInt(qtyInput?.value) || 1);
+
   const existing = jobList.find(j => j.cat === cat && j.model === model && j.mount === mount && j.optIdx === optIdx);
-  if (existing) { existing.qty++; }
-  else { jobList.push({ cat, model, mount, optIdx, qty: 1, label: `${model} — ${mount}`, optLabel: `Option ${optIdx+1}${optIdx===0?' (Most Common)':''}`, skus }); }
+  if (existing) { existing.qty += qty; }
+  else { jobList.push({ cat, model, mount, optIdx, qty, label: `${model} — ${mount}`, optLabel: `Option ${optIdx+1}${optIdx===0?' (Most Common)':''}`, skus }); }
 
   renderJobPanel();
 
-  // flash button
   const btn = document.getElementById(`add-btn-${optIdx}`);
   if (btn) {
-    btn.textContent = '✓ Added';
+    btn.textContent = `✓ Added ×${qty}`;
     btn.classList.add('added');
-    setTimeout(() => { btn.textContent = '+ Add to Job List'; btn.classList.remove('added'); }, 1200);
+    setTimeout(() => { btn.textContent = '+ Add to Job List'; btn.classList.remove('added'); }, 1400);
   }
 }
+
+// --- Search ---
+const CAT_LABELS = { cameras: 'Camera', access: 'Access Control', sensors: 'Sensor', relay: 'Relay' };
+let searchFocusIdx = -1;
+
+function onSearch(e) {
+  const q = e.target.value.trim().toLowerCase();
+  const box = document.getElementById('search-results');
+  searchFocusIdx = -1;
+  if (!q) { box.classList.remove('open'); return; }
+
+  const results = [];
+  for (const [c, rows] of Object.entries(DATA)) {
+    for (const model of [...new Set(rows.map(r => r.model))]) {
+      if (model.toLowerCase().includes(q)) results.push({ c, model });
+    }
+  }
+
+  if (!results.length) {
+    box.innerHTML = `<div class="search-no-results">No models match "${e.target.value}"</div>`;
+  } else {
+    box.innerHTML = results.map((r, i) =>
+      `<div class="search-result-item" data-idx="${i}" data-cat="${r.c}" data-model="${r.model}"
+            onmousedown="selectSearchResult('${r.c}','${r.model}')">
+        <span class="sr-model">${r.model}</span>
+        <span class="sr-cat">${CAT_LABELS[r.c]}</span>
+      </div>`
+    ).join('');
+  }
+  box.classList.add('open');
+}
+
+function onSearchKey(e) {
+  const box = document.getElementById('search-results');
+  const items = box.querySelectorAll('.search-result-item');
+  if (e.key === 'ArrowDown') {
+    searchFocusIdx = Math.min(searchFocusIdx + 1, items.length - 1);
+    items.forEach((el, i) => el.classList.toggle('focused', i === searchFocusIdx));
+    e.preventDefault();
+  } else if (e.key === 'ArrowUp') {
+    searchFocusIdx = Math.max(searchFocusIdx - 1, 0);
+    items.forEach((el, i) => el.classList.toggle('focused', i === searchFocusIdx));
+    e.preventDefault();
+  } else if (e.key === 'Enter' && searchFocusIdx >= 0) {
+    const el = items[searchFocusIdx];
+    if (el) selectSearchResult(el.dataset.cat, el.dataset.model);
+  } else if (e.key === 'Escape') {
+    box.classList.remove('open');
+    document.getElementById('search-input').value = '';
+  }
+}
+
+function selectSearchResult(c, model) {
+  document.getElementById('search-results').classList.remove('open');
+  document.getElementById('search-input').value = '';
+  selectCat(c, false);
+  const ms = document.getElementById('sel-model');
+  ms.value = model;
+  onModelChange(false);
+  ms.scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+document.addEventListener('click', e => {
+  if (!e.target.closest('.search-wrap')) {
+    document.getElementById('search-results').classList.remove('open');
+  }
+});
 
 function changeQty(idx, delta) {
   jobList[idx].qty = Math.max(1, jobList[idx].qty + delta);
