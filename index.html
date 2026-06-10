@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rhombus Accessories Guide</title>
+<style>
+  :root {
+    --navy:   #1F3864;
+    --blue:   #2E74B5;
+    --lblue:  #DEEAF1;
+    --xlblue: #EBF3FB;
+    --accent: #4472C4;
+    --white:  #fff;
+    --gray:   #f5f7fa;
+    --text:   #1a1a2e;
+    --muted:  #666;
+    --border: #d0d8e4;
+    --r: 10px;
+    --sh: 0 2px 12px rgba(31,56,100,.12);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', Arial, sans-serif; background: var(--gray); color: var(--text); min-height: 100vh; }
+
+  header {
+    background: var(--navy);
+    padding: 16px 24px;
+    display: flex; align-items: center; gap: 14px;
+    box-shadow: 0 2px 10px rgba(0,0,0,.3);
+  }
+  header h1 { color: #fff; font-size: 1.2rem; font-weight: 700; }
+  header p  { color: rgba(255,255,255,.6); font-size: .78rem; margin-top: 2px; }
+
+  main { max-width: 960px; margin: 0 auto; padding: 22px 16px 60px; }
+
+  .tabs { display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; }
+  .tab {
+    flex: 1; min-width: 120px;
+    background: #fff; border: 2px solid var(--border);
+    border-radius: var(--r); padding: 11px 8px; cursor: pointer;
+    text-align: center; font-size: .84rem; font-weight: 600; color: var(--muted);
+    transition: all .16s; box-shadow: var(--sh);
+  }
+  .tab .icon { font-size: 1.3rem; display: block; margin-bottom: 3px; }
+  .tab:hover  { border-color: var(--blue); color: var(--blue); }
+  .tab.active { background: var(--navy); border-color: var(--navy); color: #fff; box-shadow: 0 4px 18px rgba(31,56,100,.28); }
+
+  .selector-card {
+    background: #fff; border-radius: var(--r);
+    padding: 18px 20px 20px; margin-bottom: 18px;
+    box-shadow: var(--sh); border: 1px solid var(--border);
+  }
+  .selector-card h2 { font-size: .88rem; font-weight: 700; color: var(--navy); margin-bottom: 12px; text-transform: uppercase; letter-spacing: .5px; }
+  .selectors { display: flex; gap: 12px; flex-wrap: wrap; }
+  .sel-group { flex: 1; min-width: 170px; }
+  .sel-group label { display: block; font-size: .73rem; font-weight: 700; color: var(--muted); margin-bottom: 4px; text-transform: uppercase; letter-spacing: .4px; }
+  select {
+    width: 100%; padding: 9px 32px 9px 11px; border-radius: 7px;
+    border: 2px solid var(--border); font-size: .93rem;
+    background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%234472C4' stroke-width='2' fill='none' stroke-linecap='round'/%3E%3C/svg%3E") no-repeat right 11px center;
+    appearance: none; cursor: pointer; transition: border .14s;
+  }
+  select:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(68,114,196,.14); }
+
+  /* OPTION CARD */
+  .opt-card {
+    background: #fff; border-radius: var(--r);
+    border: 1px solid var(--border); margin-bottom: 14px;
+    box-shadow: var(--sh); overflow: hidden;
+    transition: transform .14s, box-shadow .14s;
+  }
+  .opt-card:hover { transform: translateY(-2px); box-shadow: 0 6px 22px rgba(31,56,100,.16); }
+  .opt-hdr {
+    color: #fff; padding: 10px 16px;
+    font-size: .8rem; font-weight: 700; text-transform: uppercase; letter-spacing: .5px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .opt-num {
+    background: rgba(255,255,255,.22); border-radius: 50%;
+    width: 22px; height: 22px; display: inline-flex;
+    align-items: center; justify-content: center; font-size: .78rem; font-weight: 800; flex-shrink: 0;
+  }
+  .opt-body { padding: 14px 16px; }
+
+  /* PARTS GRID */
+  .parts-grid { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 10px; }
+  .part-tile {
+    background: var(--xlblue); border: 1px solid var(--lblue);
+    border-radius: 8px; padding: 10px; display: flex;
+    flex-direction: column; align-items: center; gap: 6px;
+    width: 130px; text-align: center;
+    transition: box-shadow .14s, transform .14s;
+    cursor: default;
+  }
+  .part-tile:hover { box-shadow: 0 3px 12px rgba(31,56,100,.18); transform: translateY(-1px); }
+  .part-tile img {
+    width: 80px; height: 80px; object-fit: contain;
+    border-radius: 6px; background: #fff;
+    padding: 4px; border: 1px solid var(--border);
+  }
+  .part-tile .part-name { font-size: .72rem; color: var(--muted); line-height: 1.3; }
+  .part-tile .part-sku  {
+    font-size: .7rem; font-weight: 700; color: var(--navy);
+    font-family: 'Courier New', monospace;
+    background: rgba(31,56,100,.08); border-radius: 4px; padding: 2px 6px;
+  }
+  .part-tile.no-img .part-sku {
+    font-size: .8rem; background: var(--lblue); padding: 4px 8px;
+  }
+
+  .note-box {
+    background: #f9fafc; border-left: 3px solid var(--accent);
+    border-radius: 0 6px 6px 0; padding: 8px 12px;
+    font-size: .84rem; color: var(--muted); line-height: 1.5; margin-top: 4px;
+  }
+  .note-box::before { content: '💡 '; }
+
+  .acc-label { font-size: .7rem; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: .4px; margin-bottom: 8px; }
+  .na-text { font-size: .92rem; color: #27ae60; font-style: italic; padding: 4px 0; }
+
+  .results-hdr { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
+  .results-hdr h3 { font-size: 1rem; color: var(--navy); font-weight: 700; }
+  .badge { background: var(--lblue); color: var(--navy); border-radius: 20px; padding: 3px 10px; font-size: .73rem; font-weight: 700; }
+
+  .placeholder {
+    background: #fff; border-radius: var(--r); padding: 36px;
+    text-align: center; color: var(--muted); border: 2px dashed var(--border);
+    font-size: .9rem;
+  }
+  .placeholder .icon { font-size: 2.4rem; display: block; margin-bottom: 10px; }
+
+  @media(max-width:560px) {
+    .tab { min-width: calc(50% - 4px); flex: none; }
+    .part-tile { width: 110px; }
+    .part-tile img { width: 68px; height: 68px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div>
+    <h1>Rhombus Accessories Guide</h1>
+    <p>Select a device and mount type to see required accessories</p>
+  </div>
+</header>
+
+<main>
+  <div class="tabs" id="tabs">
+    <div class="tab active" data-cat="cameras" onclick="selectCat('cameras')"><span class="icon">📷</span>Cameras</div>
+    <div class="tab" data-cat="access"         onclick="selectCat('access')"><span class="icon">🔑</span>Access Control</div>
+    <div class="tab" data-cat="sensors"        onclick="selectCat('sensors')"><span class="icon">📡</span>Sensors</div>
+    <div class="tab" data-cat="relay"          onclick="selectCat('relay')"><span class="icon">📦</span>Relay</div>
+  </div>
+
+  <div class="selector-card">
+    <h2 id="sel-title">Select Camera</h2>
+    <div class="selectors">
+      <div class="sel-group">
+        <label for="sel-model">Model</label>
+        <select id="sel-model" onchange="onModelChange()">
+          <option value="">— Choose model —</option>
+        </select>
+      </div>
+      <div class="sel-group">
+        <label for="sel-mount">Mount Type</label>
+        <select id="sel-mount" onchange="showResult()">
+          <option value="">— Choose mount type —</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <div id="results-area">
+    <div class="placeholder"><span class="icon">👆</span>Choose a model and mount type above to see required accessories</div>
+  </div>
+</main>
+
+<script>
+const DATA   = {"cameras": [{"model": "R120", "mount": "Indoor Wall", "options": [{"accessory": "Junction Box: ACC-R100-JB2", "note": "The junction box is only needed indoors if mounting the camera to a wall is not available."}, {"accessory": "", "note": "Most Indoor installs will not need a accessory"}]}, {"model": "R120", "mount": "Outdoor Wall", "options": [{"accessory": "Junction Box: ACC-R100-JB2", "note": "The junction box is needed outdoors for proper water seal and also conduit connection (if applicable)"}, {"accessory": "Wall Arm Junction Box: ACC-ARM-JB + Arm: ACC-R2-ARM + R2A Pendant Cap: ACC-R2A-CAP", "note": "The wall arm option is needed of the camera needs be off the wall or if a better camera angle is needed"}, {"accessory": "", "note": "This camera can be mounted directly to an outdoor wall as long as proper water sealing is applied"}]}, {"model": "R120", "mount": "Indoor Ceiling", "options": [{"accessory": "Universal Drop Ceiling Mount: ACC-DCM1", "note": "The drop ceiling mount should only be used if the camera is being installed on drop celing tiles"}, {"accessory": "Junction Box: ACC-R100-JB2", "note": "The junction box is only needed indoors if mounting the camera to a ceiling is not available."}, {"accessory": "Ceiling Mount: ACC-R2-CM + Extension Rod: ACC-ROD-40CM (optional) + R2A Pendant Cap: ACC-R2A-CAP", "note": "This option is for a ceiling that is concreate, brink or metal. The rod is optional."}]}, {"model": "R120", "mount": "Outdoor Ceiling", "options": [{"accessory": "Junction Box: ACC-R100-JB2", "note": "The junction box is only needed outdoors if mounting the camera to a ceiling is not available."}, {"accessory": "Ceiling Mount: ACC-R2-CM + Extension Rod: ACC-ROD-40CM (optional) + R2A Pendant Cap: ACC-R2A-CAP", "note": "This option is for a ceiling that is concreate, brink or metal. The rod is optional."}, {"accessory": "", "note": "This camera can be mounted directly to an outdoor ceiling as long as proper water sealing is applied"}]}, {"model": "R120", "mount": "Corner Mount", "options": [{"accessory": "Corner Bracket: ACC-R2-CB + Wall Arm Junction Box: ACC-ARM-JB + Arm: ACC-R2-ARM + R2A Pendant Cap: ACC-R2A-CAP", "note": "These accessories are for a corner mounted application."}]}, {"model": "R120", "mount": "Pole Mount", "options": [{"accessory": "Pole Bracket: ACC-R2-PB + Wall Arm Junction Box: ACC-ARM-JB + Arm: ACC-R2-ARM + R2A Pendant Cap: ACC-R2A-CAP", "note": "These accessories are for a pole application."}]}, {"model": "R150", "mount": "Indoor Wall", "options": [{"accessory": "Not Applicable", "note": "No Accessory needed"}, {"accessory": "Not Applicable", "note": "No Accessory needed"}, {"accessory": "Not Applicable", "note": "No Accessory needed"}]}, {"model": "R150", "mount": "Outdoor Wall", "options": [{"accessory": "Not Applicable", "note": "No Accessory needed"}, {"accessory": "Not Applicable", "note": "No Accessory needed"}, {"accessory": "Not Applicable", "note": "No Accessory needed"}]}, {"model": "R150", "mount": "Indoor Ceiling", "options": [{"accessory": "Not Applicable", "note": "No Accessory needed"}, {"accessory": "Not Applicable", "note": "No Accessory needed"}, {"accessory": "Not Applicable", "note": "No Accessory needed"}]}, {"model": "R150", "mount": "Outdoor Ceiling", "options": [{"accessory": "Not Applicable", "note": "No Accessory needed"}, {"accessory": "Not Applicable", "note": "No Accessory needed"}, {"accessory": "Not Applicable", "note": "No Accessory needed"}]}, {"model": "R150", "mount": "Corner Mount", "options": [{"accessory": "Not Applicable", "note": "No Accessory needed"}, {"accessory": "Not Applicable", "note": "No Accessory needed"}, {"accessory": "Not Applicable", "note": "No Accessory needed"}]}, {"model": "R150", "mount": "Pole Mount", "options": [{"accessory": "Not Applicable", "note": "No Accessory needed"}, {"accessory": "Not Applicable", "note": "No Accessory needed"}, {"accessory": "Not Applicable", "note": "No Accessory needed"}]}, {"model": "R200", "mount": "Indoor Wall", "options": [{"accessory": "Junction Box: ACC-R100-JB2", "note": "The junction box is only needed indoors if mounting the camera to a wall is not available."}, {"accessory": "", "note": "This camera can be mounted directly to an indoor wall as long as proper water sealing is applied"}]}, {"model": "R200", "mount": "Outdoor Wall", "options": [{"accessory": "Junction Box: ACC-R100-JB2", "note": "The junction box is needed outdoors for proper water seal and also conduit connection (if applicable)"}, {"accessory": "Wall Arm Junction Box: ACC-ARM-JB + Arm: ACC-R2-ARM + R2A Pendant Cap: ACC-R2A-CAP", "note": "The wall arm option is needed of the camera needs be off the wall or if a better camera angle is needed"}, {"accessory": "", "note": "This camera can be mounted directly to an outdoor wall as long as proper water sealing is applied"}]}, {"model": "R200", "mount": "Indoor Ceiling", "options": [{"accessory": "Universal Drop Ceiling Mount: ACC-DCM1", "note": "The drop ceiling mount should only be used if the camera is being installed on drop celing tiles"}, {"accessory": "Junction Box: ACC-R100-JB2", "note": "The junction box is only needed indoors if mounting the camera to a ceiling is not available."}, {"accessory": "Ceiling Mount: ACC-R2-CM + Extension Rod: ACC-ROD-40CM (optional) + R2A Pendant Cap: ACC-R2A-CAP", "note": "This option is for a ceiling that is concreate, brink or metal. The rod is optional."}]}, {"model": "R200", "mount": "Outdoor Ceiling", "options": [{"accessory": "Junction Box: ACC-R100-JB2", "note": "The junction box is only needed outdoors if mounting the camera to a ceiling is not available."}, {"accessory": "Ceiling Mount: ACC-R2-CM + Extension Rod: ACC-ROD-40CM (optional) + R2A Pendant Cap: ACC-R2A-CAP", "note": "This option is for a ceiling that is concreate, brink or metal. The rod is optional."}, {"accessory": "", "note": "This camera can be mounted directly to an outdoor ceiling as long as proper water sealing is applied"}]}, {"model": "R200", "mount": "Corner Mount", "options": [{"accessory": "Corner Bracket: ACC-R2-CB + Wall Arm Junction Box: ACC-ARM-JB + Arm: ACC-R2-ARM + R2A Pendant Cap: ACC-R2A-CAP", "note": "These accessories are for a corner mounted application."}]}, {"model": "R200", "mount": "Pole Mount", "options": [{"accessory": "Pole Bracket: ACC-R2-PB + Wall Arm Junction Box: ACC-ARM-JB + Arm: ACC-R2-ARM + R2A Pendant Cap: ACC-R2A-CAP", "note": "These accessories are for a pole application."}]}, {"model": "R230", "mount": "Indoor Wall", "options": [{"accessory": "R230 Junction Box: ACC-R23-JB", "note": "The junction box is only needed indoors if mounting the camera to a wall is not available."}, {"accessory": "", "note": "Most Indoor installs will not need a accessory"}]}, {"model": "R230", "mount": "Outdoor Wall", "options": [{"accessory": "R230 Junction Box: ACC-R23-JB", "note": "The junction box is needed outdoors for proper water seal and also conduit connection (if applicable)"}, {"accessory": "Wall Arm Junction Box: ACC-ARM-JB + Arm: ACC-R2-ARM + R2A Pendant Cap: ACC-R2A-CAP", "note": "The wall arm option is needed of the camera needs be off the wall or if a better camera angle is needed"}, {"accessory": "", "note": "This camera can be mounted directly to an outdoor wall as long as proper water sealing is applied"}]}, {"model": "R230", "mount": "Indoor Ceiling", "options": [{"accessory": "Universal Drop Ceiling Mount: ACC-DCM1", "note": "The drop ceiling mount should only be used if the camera is being installed on drop celing tiles"}, {"accessory": "R230 Junction Box: ACC-R23-JB", "note": "The junction box is only needed indoors if mounting the camera to a ceiling is not available."}, {"accessory": "Ceiling Mount: ACC-R2-CM + Extension Rod: ACC-ROD-40CM (optional) + R2A Pendant Cap: ACC-R2A-CAP", "note": "This option is for a ceiling that is concreate, brink or metal. The rod is optional."}]}, {"model": "R230", "mount": "Outdoor Ceiling", "options": [{"accessory": "Junction Box: ACC-R100-JB2", "note": "The junction box is only needed outdoors if mounting the camera to a ceiling is not available and conduit run is needed"}, {"accessory": "Ceiling Mount: ACC-R2-CM + Extension Rod: ACC-ROD-40CM (optional) + R2A Pendant Cap: ACC-R2A-CAP", "note": "This option is for a ceiling that is concreate, brink or metal. The rod is optional."}, {"accessory": "", "note": "This camera can be mounted directly to an outdoor ceiling as long as proper water sealing is applied"}]}, {"model": "R230", "mount": "Corner Mount", "options": [{"accessory": "Corner Bracket: ACC-R2-CB + Wall Arm Junction Box: ACC-ARM-JB + Arm: ACC-R2-ARM + R2A Pendant Cap: ACC-R2A-CAP", "note": "These accessories are for a corner mounted application."}]}, {"model": "R230", "mount": "Pole Mount", "options": [{"accessory": "Pole Bracket: ACC-R2-PB + Wall Arm Junction Box: ACC-ARM-JB + Arm: ACC-R2-ARM + R2A Pendant Cap: ACC-R2A-CAP", "note": "These accessories are for a pole application."}]}, {"model": "R360S", "mount": "Indoor Wall", "options": [{"accessory": "R360S Wedge Mount: ACC-R3S-JBW", "note": "This mount is ideal for wall mounted applications that need to have a slight angle so the camera can see downward"}, {"accessory": "R360S Conduit Adapter: ACC-R3A-CND", "note": "This option is for when conduit is needed to connect to the camera for PoE"}, {"accessory": "", "note": "This camera can be mounted directly to an indoor wall as long as proper water sealing is applied"}]}, {"model": "R360S", "mount": "Outdoor Wall", "options": [{"accessory": "R360S Conduit Adapter: ACC-R3A-CND", "note": "This option is for when conduit is needed to connect to the camera for PoE"}, {"accessory": "Wall Arm Junction Box: ACC-ARM-JB + Arm: ACC-R2-ARM + R360S Pendant Cap: ACC-R3A-CAP", "note": "The wall arm option is needed of the camera needs be off the wall or if a better camera angle is needed"}, {"accessory": "R360S Wedge Mount: ACC-R3S-JBW", "note": "This mount is ideal for wall mounted applications that need to have a slight angle so the camera can see downward"}]}, {"model": "R360S", "mount": "Indoor Ceiling", "options": [{"accessory": "R360S Conduit Adapter: ACC-R3A-CND", "note": "This option is for when conduit is needed to connect to the camera for PoE"}, {"accessory": "Ceiling Mount: ACC-R2-CM + Extension Rod: ACC-ROD-40CM (optional) + R360S Pendant Cap: ACC-R3A-CAP", "note": "This option is for a ceiling that is concreate, brink or metal. The rod is optional."}, {"accessory": "", "note": "This camera can be mounted directly to an outdoor ceiling as long as proper water sealing is applied"}]}, {"model": "R360S", "mount": "Outdoor Ceiling", "options": [{"accessory": "Ceiling Mount: ACC-R2-CM + Extension Rod: ACC-ROD-40CM (optional) + R360S Pendant Cap: ACC-R3A-CAP", "note": "This option is for a ceiling that is concreate, brink or metal. The rod is optional."}, {"accessory": "R360S Conduit Adapter: ACC-R3A-CND", "note": "This option is for when conduit is needed to connect to the camera for PoE"}, {"accessory": "", "note": "This camera can be mounted directly to an outdoor wall as long as proper water sealing is applied"}]}, {"model": "R360S", "mount": "Corner Mount", "options": [{"accessory": "Corner Bracket: ACC-R2-CB + Wall Arm Junction Box: ACC-ARM-JB + Arm: ACC-R2-ARM + R360S Pendant Cap: ACC-R3A-CAP", "note": "These accessories are for a corner mounted application."}]}, {"model": "R360S", "mount": "Pole Mount", "options": [{"accessory": "Pole Bracket: ACC-R2-PB + Wall Arm Junction Box: ACC-ARM-JB + Arm: ACC-R2-ARM + R360S Pendant Cap: ACC-R3A-CAP", "note": "These accessories are for a pole application."}]}, {"model": "R410", "mount": "Indoor Wall", "options": [{"accessory": "R410 Conduit Adapter: ACC-R4A-CND", "note": "This option is for when conduit is needed to connect to the camera for PoE"}, {"accessory": "", "note": "This camera can be mounted directly to an indoor wall as long as proper water sealing is applied"}]}, {"model": "R410", "mount": "Outdoor Wall", "options": [{"accessory": "Wall Arm Junction Box: ACC-ARM-JB + Arm: ACC-R2-ARM + R410 Pendant Cap: ACC-R4A-CAP", "note": "The wall arm option is needed of the camera needs be off the wall or if a better camera angle is needed"}, {"accessory": "R410 Conduit Adapter: ACC-R4A-CND", "note": "This option is for when conduit is needed to connect to the camera for PoE"}, {"accessory": "", "note": "This camera can be mounted directly to an outdoor wall as long as proper water sealing is applied"}]}, {"model": "R410", "mount": "Indoor Ceiling", "options": [{"accessory": "Universal Drop Ceiling Mount: ACC-DCM1", "note": "The drop ceiling mount should only be used if the camera is being installed on drop celing tiles"}, {"accessory": "Ceiling Mount: ACC-R2-CM + Extension Rod: ACC-ROD-40CM (optional) + R410 Pendant Cap: ACC-R4A-CAP", "note": "This option is for a ceiling that is concreate, brink or metal. The rod is optional."}, {"accessory": "R410 Conduit Adapter: ACC-R4A-CND", "note": "This option is for when conduit is needed to connect to the camera for PoE"}]}, {"model": "R410", "mount": "Outdoor Ceiling", "options": [{"accessory": "Ceiling Mount: ACC-R2-CM + Extension Rod: ACC-ROD-40CM (optional) + R410 Pendant Cap: ACC-R4A-CAP", "note": "This option is for a ceiling that is concreate, brink or metal. The rod is optional."}, {"accessory": "R410 Conduit Adapter: ACC-R4A-CND", "note": "This option is for when conduit is needed to connect to the camera for PoE"}, {"accessory": "", "note": "This camera can be mounted directly to an outdoor wall as long as proper water sealing is applied"}]}, {"model": "R410", "mount": "Corner Mount", "options": [{"accessory": "Corner Bracket: ACC-R2-CB + Wall Arm Junction Box: ACC-ARM-JB + Arm: ACC-R2-ARM + R410 Pendant Cap: ACC-R4A-CAP", "note": "These accessories are for a corner mounted application."}]}, {"model": "R410", "mount": "Pole Mount", "options": [{"accessory": "Pole Bracket: ACC-R2-PB + Wall Arm Junction Box: ACC-ARM-JB + Arm: ACC-R2-ARM + R410 Pendant Cap: ACC-R4A-CAP", "note": "These accessories are for a pole application."}]}, {"model": "R540", "mount": "Indoor Wall", "options": [{"accessory": "R5 Junction Box: ACC-R5-JB", "note": "The junction box is only needed indoors if mounting the camera to a wall is not available."}, {"accessory": "", "note": "This camera can be mounted directly to an indoor wall as long as proper water sealing is applied"}]}, {"model": "R540", "mount": "Outdoor Wall", "options": [{"accessory": "R5 Junction Box: ACC-R5-JB", "note": "The junction box is needed outdoors for proper water seal and also conduit connection (if applicable)"}, {"accessory": "", "note": "This camera can be mounted directly to an outdoor wall as long as proper water sealing is applied"}]}, {"model": "R540", "mount": "Indoor Ceiling", "options": [{"accessory": "R5 Junction Box: ACC-R5-JB", "note": "The junction box is only needed indoors if mounting the camera to a wall is not available."}, {"accessory": "", "note": "This camera can be mounted directly to an indoor ceiling as long as proper water sealing is applied"}]}, {"model": "R540", "mount": "Outdoor Ceiling", "options": [{"accessory": "R5 Junction Box: ACC-R5-JB", "note": "The junction box is only needed indoors if mounting the camera to a wall is not available."}, {"accessory": "", "note": "This camera can be mounted directly to an outdoor ceiling as long as proper water sealing is applied"}]}, {"model": "R540", "mount": "Corner Mount", "options": [{"accessory": "Not Applicable", "note": ""}, {"accessory": "Not Applicable", "note": ""}, {"accessory": "Not Applicable", "note": ""}]}, {"model": "R540", "mount": "Pole Mount", "options": [{"accessory": "R5 Pole Bracket: ACC-R5-POLE", "note": "These accessories are for a pole application."}]}, {"model": "R545", "mount": "Indoor Wall", "options": [{"accessory": "R5 Junction Box: ACC-R5-JB", "note": "The junction box is only needed indoors if mounting the camera to a wall is not available."}, {"accessory": "", "note": "This camera can be mounted directly to an indoor wall as long as proper water sealing is applied"}]}, {"model": "R545", "mount": "Outdoor Wall", "options": [{"accessory": "R5 Junction Box: ACC-R5-JB", "note": "The junction box is needed outdoors for proper water seal and also conduit connection (if applicable)"}, {"accessory": "", "note": "This camera can be mounted directly to an outdoor wall as long as proper water sealing is applied"}]}, {"model": "R545", "mount": "Indoor Ceiling", "options": [{"accessory": "R5 Junction Box: ACC-R5-JB", "note": "The junction box is needed indoors for proper water seal and also conduit connection (if applicable)"}, {"accessory": "", "note": "This camera can be mounted directly to an indoor ceiling as long as proper water sealing is applied"}]}, {"model": "R545", "mount": "Outdoor Ceiling", "options": [{"accessory": "R5 Junction Box: ACC-R5-JB", "note": "The junction box is needed outdoors for proper water seal and also conduit connection (if applicable)"}, {"accessory": "", "note": "This camera can be mounted directly to an outdoor ceiling as long as proper water sealing is applied"}]}, {"model": "R545", "mount": "Corner Mount", "options": [{"accessory": "Not Applicable", "note": ""}, {"accessory": "Not Applicable", "note": ""}, {"accessory": "Not Applicable", "note": ""}]}, {"model": "R545", "mount": "Pole Mount", "options": [{"accessory": "R5 Pole Bracket: ACC-R5-POLE", "note": "These accessories are for a pole application."}]}, {"model": "R520", "mount": "Indoor Wall", "options": [{"accessory": "R520 Junction Box: ACC-R52-JB", "note": "The junction box is only needed indoors if mounting the camera to a wall is not available."}, {"accessory": "", "note": "This camera can be mounted directly to an indoor wall as long as proper water sealing is applied"}]}, {"model": "R520", "mount": "Outdoor Wall", "options": [{"accessory": "R520 Junction Box: ACC-R52-JB", "note": "The junction box is needed outdoors for proper water seal and also conduit connection (if applicable)"}, {"accessory": "", "note": "This camera can be mounted directly to an outdoor wall as long as proper water sealing is applied"}]}, {"model": "R520", "mount": "Indoor Ceiling", "options": [{"accessory": "R520 Junction Box: ACC-R52-JB", "note": "The junction box is needed indoors for proper water seal and also conduit connection (if applicable)"}, {"accessory": "", "note": "This camera can be mounted directly to an indoor ceiling as long as proper water sealing is applied"}]}, {"model": "R520", "mount": "Outdoor Ceiling", "options": [{"accessory": "R520 Junction Box: ACC-R52-JB", "note": "The junction box is needed outdoors for proper water seal and also conduit connection (if applicable)"}, {"accessory": "", "note": "This camera can be mounted directly to an outdoor ceiling as long as proper water sealing is applied"}]}, {"model": "R520", "mount": "Corner Mount", "options": [{"accessory": "Corner Bracket: ACC-R2-CB + R520 Junction Box: ACC-R52-JB", "note": "These accessories are for a corner mounted application."}]}, {"model": "R520", "mount": "Pole Mount", "options": [{"accessory": "Pole Bracket: ACC-R2-PB + R520 Junction Box: ACC-R52-JB", "note": "These accessories are for a pole application."}]}, {"model": "R600", "mount": "Indoor Wall", "options": [{"accessory": "Wall Arm Junction Box: ACC-ARM-JB + Arm: ACC-R2-ARM + R600 Pendant Cap: ACC-R600-CAP + TP-Link PoE++ Injector: ACC-POE-INJBT", "note": "This is the accessory list for the R600 for an indoor wall applications."}]}, {"model": "R600", "mount": "Outdoor Wall", "options": [{"accessory": "Wall Arm Junction Box: ACC-ARM-JB + Arm: ACC-R2-ARM + R600 Pendant Cap: ACC-R600-CAP + TP-Link PoE++ Injector: ACC-POE-INJBT", "note": "This is the accessory list for the R600 for an outdoor wall applications."}]}, {"model": "R600", "mount": "Indoor Ceiling", "options": [{"accessory": "Ceiling Mount: ACC-R2-CM + Extension Rod: ACC-ROD-40CM (optional) + R600 Pendant Cap: ACC-R600-CAP + TP-Link PoE++ Injector: ACC-POE-INJBT", "note": "This is the accessory list for the R600 for an indoor ceiling applications."}]}, {"model": "R600", "mount": "Outdoor Ceiling", "options": [{"accessory": "Ceiling Mount: ACC-R2-CM + Extension Rod: ACC-ROD-40CM (optional) + R600 Pendant Cap: ACC-R600-CAP + TP-Link PoE++ Injector: ACC-POE-INJBT", "note": "This is the accessory list for the R600 for an outdoor ceiling applications."}]}, {"model": "R600", "mount": "Corner Mount", "options": [{"accessory": "Corner Bracket: ACC-R2-CB + Wall Arm Junction Box: ACC-ARM-JB + Arm: ACC-R2-ARM + R600 Pendant Cap: ACC-R600-CAP + TP-Link PoE++ Injector: ACC-POE-INJBT", "note": "These accessories are for a corner mounted application."}]}, {"model": "R600", "mount": "Pole Mount", "options": [{"accessory": "Pole Bracket: ACC-R2-PB + Wall Arm Junction Box: ACC-ARM-JB + Arm: ACC-R2-ARM + R600 Pendant Cap: ACC-R600-CAP + TP-Link PoE++ Injector: ACC-POE-INJBT", "note": "These accessories are for a pole application."}]}], "access": [{"model": "DR20", "mount": "Indoor Wall", "options": [{"accessory": "Wall Plate: ACC-DR20-WP", "note": "This wall plate is used to attach to a 1-gang box."}, {"accessory": "", "note": "Most Indoor installs will not need a accessory"}]}, {"model": "DR20", "mount": "Outdoor Wall", "options": [{"accessory": "Wall Plate: ACC-DR20-WP", "note": "This wall plate is used to attach to a 1-gang box."}, {"accessory": "", "note": "Some outdoor installs will not need a accessory"}]}, {"model": "DR40", "mount": "Indoor Wall", "options": [{"accessory": "DR40 Wall Plate: ACC-DR40-WP + DR40 Angle Wall Mount: ACC-DR40-AWM", "note": "This wall plate is used to attach to a 1-gang box the angle mount is needed to angle the DR40."}, {"accessory": "DR40 Wall Plate: ACC-DR40-WP", "note": "This wall plate is used to attach to a 1-gang box."}, {"accessory": "", "note": "Most Indoor installs will not need a accessory"}]}, {"model": "DR40", "mount": "Outdoor Wall", "options": [{"accessory": "DR40 Wall Plate: ACC-DR40-WP + DR40 Angle Wall Mount: ACC-DR40-AWM", "note": "The junction box is only needed indoors if mounting the camera to a wall is not available."}, {"accessory": "DR40 Wall Plate: ACC-DR40-WP", "note": "Most Indoor installs will not need a accessory"}, {"accessory": "", "note": "Some outdoor installs will not need a accessory"}]}, {"model": "DC20", "mount": "Indoor Wall", "options": [{"accessory": "", "note": "No Accessories Needed"}, {"accessory": "", "note": "No Accessories Needed"}, {"accessory": "", "note": "No Accessories Needed"}]}], "sensors": [{"model": "A100", "mount": "Indoor Wall", "options": [{"accessory": "Junction Box: ACC-R100-JB2", "note": "The junction box is only needed indoors if mounting the camera to a wall is not available."}, {"accessory": "", "note": "Most Indoor installs will not need a accessory"}]}, {"model": "A100", "mount": "Outdoor Wall", "options": [{"accessory": "Junction Box: ACC-R100-JB2", "note": "The junction box is needed outdoors for proper water seal and also conduit connection (if applicable)"}, {"accessory": "Wall Arm Junction Box: ACC-ARM-JB + Arm: ACC-R2-ARM + R2A Pendant Cap: ACC-R2A-CAP", "note": "The wall arm option is needed of the camera needs be off the wall or if a better camera angle is needed"}, {"accessory": "", "note": "This camera can be mounted directly to an outdoor wall as long as proper water sealing is applied"}]}, {"model": "A100", "mount": "Indoor Ceiling", "options": [{"accessory": "Universal Drop Ceiling Mount: ACC-DCM1", "note": "The drop ceiling mount should only be used if the camera is being installed on drop celing tiles"}, {"accessory": "Junction Box: ACC-R100-JB2", "note": "The junction box is only needed indoors if mounting the camera to a ceiling is not available."}, {"accessory": "Ceiling Mount: ACC-R2-CM + Extension Rod: ACC-ROD-40CM (optional) + R2A Pendant Cap: ACC-R2A-CAP", "note": "This option is for a ceiling that is concreate, brink or metal. The rod is optional."}]}, {"model": "A100", "mount": "Outdoor Ceiling", "options": [{"accessory": "Junction Box: ACC-R100-JB2", "note": "The junction box is only needed outdoors if mounting the camera to a ceiling is not available."}, {"accessory": "Ceiling Mount: ACC-R2-CM + Extension Rod: ACC-ROD-40CM (optional) + R2A Pendant Cap: ACC-R2A-CAP", "note": "This option is for a ceiling that is concreate, brink or metal. The rod is optional."}, {"accessory": "", "note": "This camera can be mounted directly to an outdoor ceiling as long as proper water sealing is applied"}]}, {"model": "A100", "mount": "Corner Mount", "options": [{"accessory": "Corner Bracket: ACC-R2-CB + Wall Arm Junction Box: ACC-ARM-JB + Arm: ACC-R2-ARM + R2A Pendant Cap: ACC-R2A-CAP", "note": "These accessories are for a corner mounted application."}]}, {"model": "A100", "mount": "Pole Mount", "options": [{"accessory": "Pole Bracket: ACC-R2-PB + Wall Arm Junction Box: ACC-ARM-JB + Arm: ACC-R2-ARM + R2A Pendant Cap: ACC-R2A-CAP", "note": "These accessories are for a pole application."}]}, {"model": "E50", "mount": "Indoor Wall", "options": [{"accessory": "Junction Box: ACC-R100-JB2", "note": "The junction box is only needed indoors if mounting the camera to a wall is not available."}, {"accessory": "", "note": "Most Indoor installs will not need a accessory"}]}, {"model": "E50", "mount": "Outdoor Wall", "options": [{"accessory": "Junction Box: ACC-R100-JB2", "note": "The junction box is needed outdoors for proper water seal and also conduit connection (if applicable)"}, {"accessory": "Wall Arm Junction Box: ACC-ARM-JB + Arm: ACC-R2-ARM + R2A Pendant Cap: ACC-R2A-CAP", "note": "The wall arm option is needed of the camera needs be off the wall or if a better camera angle is needed"}, {"accessory": "", "note": "This camera can be mounted directly to an outdoor wall as long as proper water sealing is applied"}]}, {"model": "E50", "mount": "Indoor Ceiling", "options": [{"accessory": "Universal Drop Ceiling Mount: ACC-DCM1", "note": "The drop ceiling mount should only be used if the camera is being installed on drop celing tiles"}, {"accessory": "Junction Box: ACC-R100-JB2", "note": "The junction box is only needed indoors if mounting the camera to a ceiling is not available."}, {"accessory": "Ceiling Mount: ACC-R2-CM + Extension Rod: ACC-ROD-40CM (optional) + R2A Pendant Cap: ACC-R2A-CAP", "note": "This option is for a ceiling that is concreate, brink or metal. The rod is optional."}]}, {"model": "E50", "mount": "Outdoor Ceiling", "options": [{"accessory": "Junction Box: ACC-R100-JB2", "note": "The junction box is only needed outdoors if mounting the camera to a ceiling is not available."}, {"accessory": "Ceiling Mount: ACC-R2-CM + Extension Rod: ACC-ROD-40CM (optional) + R2A Pendant Cap: ACC-R2A-CAP", "note": "This option is for a ceiling that is concreate, brink or metal. The rod is optional."}, {"accessory": "", "note": "This camera can be mounted directly to an outdoor ceiling as long as proper water sealing is applied"}]}, {"model": "E50", "mount": "Corner Mount", "options": [{"accessory": "Corner Bracket: ACC-R2-CB + Wall Arm Junction Box: ACC-ARM-JB + Arm: ACC-R2-ARM + R2A Pendant Cap: ACC-R2A-CAP", "note": "These accessories are for a corner mounted application."}]}, {"model": "E50", "mount": "Pole Mount", "options": [{"accessory": "Pole Bracket: ACC-R2-PB + Wall Arm Junction Box: ACC-ARM-JB + Arm: ACC-R2-ARM + R2A Pendant Cap: ACC-R2A-CAP", "note": "These accessories are for a pole application."}]}], "relay": [{"model": "N100", "mount": "Rack", "options": [{"accessory": "N100 Rack Mount: ACC-N2UA", "note": "The rack mount is only needed if the client will be mounting the N100 on a rack."}]}]};
+const IMAGES = {"ACC-DR20-WP": "https://www.rhombus.com/img/r230_jb_2023-feb-14_09-57-45pm-000_customizedview14341798277_png_alpha-1.webp", "ACC-DR40-AWM": "https://www.rhombus.com/img/acc-dr40-awm.webp", "ACC-DR40-WP": "https://www.rhombus.com/img/acc-dr40-wp.webp", "ACC-ENV-TEMP": "https://www.rhombus.com/img/acc-env-temp.webp", "ACC-ENV-LEAK": "https://www.rhombus.com/img/acc-env-leak.png", "ACC-ROD-40CM": "https://www.rhombus.com/img/extension_rod.webp", "ACC-R100-JB2": "https://www.rhombus.com/img/r120r200_junction_box.webp", "ACC-R23-CAP": "https://www.rhombus.com/img/r230-cap.webp", "ACC-R23-JB": "https://www.rhombus.com/img/r230-junction-box.webp", "ACC-R2A-CAP": "https://www.rhombus.com/img/r2a-cap-min.webp", "ACC-DCM1": "https://www.rhombus.com/img/universal-ceiling-mount.webp", "ACC-ARM-JB": "https://www.rhombus.com/img/wall-arm-junction-box.webp", "ACC-R3A-CAP": "https://www.rhombus.com/img/r360S-pendant-cap.png", "ACC-R2-ARM": "https://www.rhombus.com/img/arm_mount.webp", "ACC-R2-CM": "https://www.rhombus.com/img/ceiling-mount.webp", "ACC-R4A-CAP": "https://www.rhombus.com/img/acc-r4a-cap-min.webp", "ACC-R52-JB": "https://www.rhombus.com/img/r520-junction-box.webp", "ACC-R3A-CND": "https://www.rhombus.com/img/r360S-conduit-adapter.webp", "ACC-R4A-CND": "https://www.rhombus.com/img/acc-r4a-cnd-min.webp", "ACC-R2-CB": "https://www.rhombus.com/img/corner_bracket.webp", "ACC-R2-PB": "https://www.rhombus.com/img/pole-bracket.webp", "ACC-R5-JB": "https://www.rhombus.com/img/r500-junction-box.webp", "ACC-R5-POLE": "https://www.rhombus.com/img/r500-pole-bracket.webp", "ACC-R600-CAP": "https://www.rhombus.com/img/acc-dcm1-1.webp", "ACC-R3S-JBW": "https://www.rhombus.com/img/r360-wedge-mount.webp", "ACC-N2UA": "https://www.rhombus.com/img/n100-rack-mount.webp"};
+
+let cat = 'cameras';
+
+const TITLES = {
+  cameras: 'Select Camera',
+  access:  'Select Access Control Device',
+  sensors: 'Select Sensor',
+  relay:   'Select Relay'
+};
+
+function selectCat(c) {
+  cat = c;
+  document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', t.dataset.cat === c));
+  document.getElementById('sel-title').textContent = TITLES[c];
+  const models = [...new Set(DATA[c].map(r => r.model))];
+  const ms = document.getElementById('sel-model');
+  ms.innerHTML = '<option value="">— Choose model —</option>' + models.map(m => `<option>${m}</option>`).join('');
+  document.getElementById('sel-mount').innerHTML = '<option value="">— Choose mount type —</option>';
+  document.getElementById('results-area').innerHTML =
+    '<div class="placeholder"><span class="icon">👆</span>Choose a model and mount type above to see required accessories</div>';
+}
+
+function onModelChange() {
+  const model = document.getElementById('sel-model').value;
+  const ms    = document.getElementById('sel-mount');
+  if (!model) { ms.innerHTML = '<option value="">— Choose mount type —</option>'; return; }
+  const mounts = [...new Set(DATA[cat].filter(r => r.model === model).map(r => r.mount))];
+  ms.innerHTML = '<option value="">— Choose mount type —</option>' + mounts.map(m => `<option>${m}</option>`).join('');
+  if (mounts.length === 1) { ms.value = mounts[0]; showResult(); }
+  else document.getElementById('results-area').innerHTML =
+    '<div class="placeholder"><span class="icon">👆</span>Now choose a mount type</div>';
+}
+
+// Extract ACC-XXXX part numbers from a string
+function extractParts(acc) {
+  const matches = acc.match(/ACC-[A-Z0-9\-]+/g) || [];
+  // Also split by ' + ' to get labels
+  const segments = acc.split(' + ').map(s => s.trim()).filter(Boolean);
+  return segments.map(seg => {
+    const sku = (seg.match(/ACC-[A-Z0-9\-]+/) || [])[0] || null;
+    const label = seg.replace(/ACC-[A-Z0-9\-]+/, '').replace(/:\s*$/, '').replace(/^\s*:\s*/, '').trim();
+    return { sku, label: label || seg, raw: seg };
+  });
+}
+
+function renderParts(acc) {
+  if (!acc) return '';
+  const parts = extractParts(acc);
+  if (!parts.length) return `<div class="na-text">✅ No accessory required</div>`;
+
+  const isNA = acc.toLowerCase().includes('not applicable') || acc.toLowerCase().includes('no accessor');
+  if (isNA) return `<div class="na-text">✅ No accessory required for this configuration</div>`;
+
+  let html = '<div class="acc-label">Required Accessories</div><div class="parts-grid">';
+  for (const p of parts) {
+    const img = p.sku ? IMAGES[p.sku] : null;
+    if (img) {
+      html += `<div class="part-tile">
+        <img src="${img}" alt="${p.label || p.sku}" loading="lazy" onerror="this.style.display='none'">
+        <div class="part-name">${p.label || ''}</div>
+        <div class="part-sku">${p.sku}</div>
+      </div>`;
+    } else {
+      html += `<div class="part-tile no-img">
+        <div class="part-name">${p.label || p.raw}</div>
+        ${p.sku ? `<div class="part-sku">${p.sku}</div>` : ''}
+      </div>`;
+    }
+  }
+  html += '</div>';
+  return html;
+}
+
+function showResult() {
+  const model = document.getElementById('sel-model').value;
+  const mount = document.getElementById('sel-mount').value;
+  const area  = document.getElementById('results-area');
+  if (!model || !mount) return;
+
+  const row = DATA[cat].find(r => r.model === model && r.mount === mount);
+  if (!row) { area.innerHTML = '<div class="placeholder"><span class="icon">🔍</span>No data found</div>'; return; }
+
+  const hdrColors = ['#1F3864','#2E74B5','#4472C4'];
+  let html = `<div class="results-hdr">
+    <h3>${model} — ${mount}</h3>
+    <span class="badge">${row.options.length} option${row.options.length !== 1 ? 's' : ''}</span>
+  </div>`;
+
+  row.options.forEach((opt, i) => {
+    const acc  = opt.accessory || '';
+    const note = opt.note || '';
+    const isNA = !acc || acc.toLowerCase().includes('not applicable') || acc.toLowerCase().includes('no accessor');
+    const noteIsNA = note.toLowerCase().includes('no accessor') || note.toLowerCase().includes('not applicable');
+
+    html += `<div class="opt-card">
+      <div class="opt-hdr" style="background:${hdrColors[i] || hdrColors[2]}">
+        <span class="opt-num">${i+1}</span>
+        Option ${i+1}${i===0 ? ' — Most Common' : ''}
+      </div>
+      <div class="opt-body">
+        ${isNA ? '<div class="na-text">✅ No accessory required for this configuration</div>' : renderParts(acc)}
+        ${note && !noteIsNA ? `<div class="note-box">${note}</div>` : ''}
+      </div>
+    </div>`;
+  });
+
+  area.innerHTML = html;
+}
+
+selectCat('cameras');
+</script>
+</body>
+</html>
