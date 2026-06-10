@@ -236,6 +236,16 @@
     transition: transform .12s;
   }
   .remove-btn:hover { transform: scale(1.2); }
+  .ji-left { flex: 1; min-width: 0; }
+  .ji-skus { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 5px; }
+  .ji-sku-chip {
+    display: inline-flex; align-items: center; gap: 4px;
+    background: var(--navy); color: #fff;
+    border-radius: 5px; padding: 2px 8px; font-size: .68rem; font-weight: 700;
+    font-family: 'Courier New', monospace; white-space: nowrap;
+  }
+  .ji-sku-name { font-family: 'DM Sans', sans-serif; font-weight: 400; color: rgba(255,255,255,.7); font-size: .66rem; }
+  .ji-no-acc { color: #27ae60; font-style: italic; font-size: .75rem; }
 
   /* ORDER SUMMARY */
   .order-summary { padding: 14px 16px; }
@@ -559,16 +569,24 @@ function renderJobPanel() {
   panel.style.display = 'block';
   countEl.textContent = jobList.reduce((s, j) => s + j.qty, 0);
 
-  itemsEl.innerHTML = jobList.map((j, i) => `
+  itemsEl.innerHTML = jobList.map((j, i) => {
+    const skuList = j.skus.length
+      ? `<div class="ji-skus">${j.skus.map(p => `<span class="ji-sku-chip">${p.sku}${p.label ? ` <span class="ji-sku-name">${p.label}</span>` : ''}</span>`).join('')}</div>`
+      : `<div class="ji-skus ji-no-acc">No accessories required</div>`;
+    return `
     <div class="job-item">
-      <div class="ji-label">${j.label} <span class="ji-opt">${j.optLabel}</span></div>
+      <div class="ji-left">
+        <div class="ji-label">${j.label} <span class="ji-opt">${j.optLabel}</span></div>
+        ${skuList}
+      </div>
       <div class="ji-qty">
         <button class="qty-btn" onclick="changeQty(${i},-1)">−</button>
         <span class="qty-val">${j.qty}</span>
         <button class="qty-btn" onclick="changeQty(${i},1)">+</button>
       </div>
       <button class="remove-btn" onclick="removeJob(${i})" title="Remove">✕</button>
-    </div>`).join('');
+    </div>`;
+  }).join('');
 
   // aggregate SKUs
   const skuMap = {};
