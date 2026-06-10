@@ -169,6 +169,111 @@
   }
   .placeholder .icon { font-size: 2.4rem; display: block; margin-bottom: 10px; }
 
+  /* ADD TO JOB BUTTON */
+  .add-job-btn {
+    display: inline-flex; align-items: center; gap: 6px;
+    margin-top: 10px; padding: 7px 14px;
+    background: var(--navy); color: #fff;
+    border: none; border-radius: 7px; cursor: pointer;
+    font-size: .78rem; font-weight: 700; font-family: 'DM Sans', sans-serif;
+    transition: background .14s;
+  }
+  .add-job-btn:hover { background: var(--blue); }
+  .add-job-btn.added { background: #22c55e; }
+
+  /* JOB LIST PANEL */
+  #job-panel {
+    background: #fff; border-radius: var(--r);
+    border: 2px solid var(--navy); margin-top: 28px;
+    box-shadow: 0 4px 20px rgba(23,50,59,.14); overflow: hidden;
+  }
+  .job-panel-hdr {
+    background: var(--navy); color: #fff;
+    padding: 12px 18px; display: flex; align-items: center; gap: 10px;
+    font-family: 'Sora', sans-serif; font-weight: 700; font-size: .9rem;
+  }
+  .job-panel-hdr .job-count {
+    background: var(--accent); color: var(--navy);
+    border-radius: 20px; padding: 2px 9px; font-size: .72rem; font-weight: 800;
+  }
+  .job-panel-hdr .job-actions { margin-left: auto; display: flex; gap: 8px; }
+  .job-action-btn {
+    background: rgba(255,255,255,.15); border: 1px solid rgba(255,255,255,.3);
+    color: #fff; border-radius: 6px; padding: 4px 10px;
+    font-size: .72rem; font-weight: 700; cursor: pointer; font-family: 'DM Sans', sans-serif;
+    transition: background .12s;
+  }
+  .job-action-btn:hover { background: rgba(255,255,255,.28); }
+  .job-action-btn.green { background: #16a34a; border-color: #16a34a; }
+  .job-action-btn.green:hover { background: #15803d; }
+  .job-action-btn.copied { background: #22c55e; border-color: #22c55e; }
+
+  .job-items { padding: 12px 16px; border-bottom: 1px solid var(--border); }
+  .job-item {
+    display: flex; align-items: center; gap: 10px;
+    padding: 8px 10px; border-radius: 7px; margin-bottom: 6px;
+    background: var(--gray); border: 1px solid var(--border);
+    font-size: .82rem;
+  }
+  .job-item:last-child { margin-bottom: 0; }
+  .job-item .ji-label { flex: 1; font-weight: 600; color: var(--text); }
+  .job-item .ji-opt { color: var(--muted); font-size: .75rem; }
+  .job-item .ji-qty {
+    display: flex; align-items: center; gap: 6px;
+  }
+  .qty-btn {
+    width: 24px; height: 24px; border-radius: 5px;
+    border: 1.5px solid var(--border); background: #fff;
+    font-size: .85rem; font-weight: 700; cursor: pointer; color: var(--navy);
+    display: flex; align-items: center; justify-content: center;
+    transition: border-color .12s;
+  }
+  .qty-btn:hover { border-color: var(--accent); }
+  .qty-val { font-weight: 700; color: var(--navy); min-width: 18px; text-align: center; font-size: .85rem; }
+  .remove-btn {
+    background: none; border: none; cursor: pointer; color: #ef4444;
+    font-size: 1rem; padding: 0 2px; line-height: 1;
+    transition: transform .12s;
+  }
+  .remove-btn:hover { transform: scale(1.2); }
+
+  /* ORDER SUMMARY */
+  .order-summary { padding: 14px 16px; }
+  .order-summary h4 {
+    font-size: .78rem; font-weight: 700; color: var(--muted);
+    text-transform: uppercase; letter-spacing: .4px; margin-bottom: 10px;
+    font-family: 'Sora', sans-serif;
+  }
+  .sku-table { width: 100%; border-collapse: collapse; font-size: .82rem; }
+  .sku-table th {
+    text-align: left; padding: 5px 8px;
+    color: var(--muted); font-size: .72rem; font-weight: 700;
+    text-transform: uppercase; letter-spacing: .3px;
+    border-bottom: 2px solid var(--border);
+  }
+  .sku-table td { padding: 6px 8px; border-bottom: 1px solid var(--border); }
+  .sku-table tr:last-child td { border-bottom: none; }
+  .sku-table .sku-col { font-family: 'Courier New', monospace; font-weight: 700; color: var(--navy); }
+  .sku-table .qty-col { font-weight: 700; color: var(--blue); text-align: center; }
+  .job-empty { padding: 24px; text-align: center; color: var(--muted); font-size: .88rem; }
+
+  /* PRINT */
+  @media print {
+    header, .tabs, .selector-card, #results-area,
+    .job-panel-hdr .job-actions, .add-job-btn,
+    .qty-btn, .remove-btn { display: none !important; }
+    body { background: #fff; font-size: 11pt; }
+    main { padding: 0; max-width: 100%; }
+    #job-panel { border: none; box-shadow: none; margin-top: 0; }
+    .job-panel-hdr { background: #fff; color: #000; padding: 0 0 8px; border-bottom: 2px solid #000; }
+    .job-panel-hdr::before { content: 'Rhombus Accessories — Job Checklist'; font-size: 14pt; font-weight: bold; display: block; }
+    .job-count { display: none; }
+    .job-item { background: none; border: none; padding: 4px 0; border-bottom: 1px solid #ddd; }
+    .ji-label { font-weight: bold; }
+    .order-summary h4 { margin-top: 16pt; }
+    .sku-table { font-size: 10pt; }
+  }
+
   @media(max-width:560px) {
     .tab { min-width: calc(50% - 4px); flex: none; }
     .part-tile { width: 110px; }
@@ -214,6 +319,20 @@
 
   <div id="results-area">
     <div class="placeholder"><span class="icon">👆</span>Choose a model and mount type above to see required accessories</div>
+  </div>
+
+  <div id="job-panel" style="display:none">
+    <div class="job-panel-hdr">
+      📋 Job List
+      <span class="job-count" id="job-count">0</span>
+      <div class="job-actions">
+        <button class="job-action-btn" onclick="printJobList()">🖨 Print Checklist</button>
+        <button class="job-action-btn green" id="copy-order-btn" onclick="copyOrder()">📋 Copy Order</button>
+        <button class="job-action-btn" onclick="clearJobList()">✕ Clear All</button>
+      </div>
+    </div>
+    <div class="job-items" id="job-items"></div>
+    <div class="order-summary" id="order-summary"></div>
   </div>
 </main>
 
@@ -376,12 +495,132 @@ function showResult() {
       <div class="opt-body">
         ${isNA ? '<div class="na-text">✅ No accessory required for this configuration</div>' : renderParts(acc)}
         ${note && !noteIsNA ? `<div class="note-box">${note}</div>` : ''}
+        <button class="add-job-btn" id="add-btn-${i}" onclick="addToJob(${i})">+ Add to Job List</button>
       </div>
     </div>`;
   });
 
   area.innerHTML = html;
 }
+
+// --- Job List ---
+let jobList = [];
+
+function addToJob(optIdx) {
+  const model = document.getElementById('sel-model').value;
+  const mount = document.getElementById('sel-mount').value;
+  if (!model || !mount) return;
+  const row = DATA[cat].find(r => r.model === model && r.mount === mount);
+  if (!row) return;
+  const opt = row.options[optIdx];
+  const acc = opt.accessory || '';
+  const isNA = !acc || acc.toLowerCase().includes('not applicable') || acc.toLowerCase().includes('no accessor');
+  const skus = isNA ? [] : extractParts(acc).filter(p => p.sku);
+
+  // bump qty if same config+option already in list
+  const existing = jobList.find(j => j.cat === cat && j.model === model && j.mount === mount && j.optIdx === optIdx);
+  if (existing) { existing.qty++; }
+  else { jobList.push({ cat, model, mount, optIdx, qty: 1, label: `${model} — ${mount}`, optLabel: `Option ${optIdx+1}${optIdx===0?' (Most Common)':''}`, skus }); }
+
+  renderJobPanel();
+
+  // flash button
+  const btn = document.getElementById(`add-btn-${optIdx}`);
+  if (btn) {
+    btn.textContent = '✓ Added';
+    btn.classList.add('added');
+    setTimeout(() => { btn.textContent = '+ Add to Job List'; btn.classList.remove('added'); }, 1200);
+  }
+}
+
+function changeQty(idx, delta) {
+  jobList[idx].qty = Math.max(1, jobList[idx].qty + delta);
+  renderJobPanel();
+}
+
+function removeJob(idx) {
+  jobList.splice(idx, 1);
+  renderJobPanel();
+}
+
+function clearJobList() {
+  if (jobList.length && !confirm('Clear all job list items?')) return;
+  jobList = [];
+  renderJobPanel();
+}
+
+function renderJobPanel() {
+  const panel = document.getElementById('job-panel');
+  const itemsEl = document.getElementById('job-items');
+  const summaryEl = document.getElementById('order-summary');
+  const countEl = document.getElementById('job-count');
+
+  if (!jobList.length) { panel.style.display = 'none'; return; }
+  panel.style.display = 'block';
+  countEl.textContent = jobList.reduce((s, j) => s + j.qty, 0);
+
+  itemsEl.innerHTML = jobList.map((j, i) => `
+    <div class="job-item">
+      <div class="ji-label">${j.label} <span class="ji-opt">${j.optLabel}</span></div>
+      <div class="ji-qty">
+        <button class="qty-btn" onclick="changeQty(${i},-1)">−</button>
+        <span class="qty-val">${j.qty}</span>
+        <button class="qty-btn" onclick="changeQty(${i},1)">+</button>
+      </div>
+      <button class="remove-btn" onclick="removeJob(${i})" title="Remove">✕</button>
+    </div>`).join('');
+
+  // aggregate SKUs
+  const skuMap = {};
+  for (const j of jobList) {
+    for (const p of j.skus) {
+      skuMap[p.sku] = skuMap[p.sku] || { label: p.label, qty: 0 };
+      skuMap[p.sku].qty += j.qty;
+    }
+  }
+  const rows = Object.entries(skuMap).sort((a,b) => a[0].localeCompare(b[0]));
+
+  if (!rows.length) { summaryEl.innerHTML = ''; return; }
+
+  summaryEl.innerHTML = `
+    <h4>Order Summary — ${rows.length} unique SKU${rows.length!==1?'s':''}</h4>
+    <table class="sku-table">
+      <thead><tr><th>SKU</th><th>Description</th><th style="text-align:center">Qty</th></tr></thead>
+      <tbody>${rows.map(([sku,v]) => `
+        <tr>
+          <td class="sku-col">${sku}</td>
+          <td>${v.label || '—'}</td>
+          <td class="qty-col">${v.qty}</td>
+        </tr>`).join('')}
+      </tbody>
+    </table>`;
+}
+
+function copyOrder() {
+  const skuMap = {};
+  for (const j of jobList) {
+    for (const p of j.skus) {
+      skuMap[p.sku] = skuMap[p.sku] || { label: p.label, qty: 0 };
+      skuMap[p.sku].qty += j.qty;
+    }
+  }
+  const lines = Object.entries(skuMap)
+    .sort((a,b) => a[0].localeCompare(b[0]))
+    .map(([sku,v]) => `${sku}\t${v.label || ''}\tQty: ${v.qty}`)
+    .join('\n');
+
+  const header = jobList.map(j => `${j.label} | ${j.optLabel} ×${j.qty}`).join('\n');
+  const text = `JOB LIST\n${header}\n\nORDER SUMMARY\n${lines}`;
+
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = document.getElementById('copy-order-btn');
+    btn.textContent = '✓ Copied!';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = '📋 Copy Order'; btn.classList.remove('copied'); }, 1800);
+  });
+}
+
+function printJobList() { window.print(); }
 
 // --- Boot: read URL params and restore state ---
 (function init() {
