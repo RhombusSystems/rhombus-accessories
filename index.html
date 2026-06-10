@@ -95,6 +95,21 @@
   }
   .opt-body { padding: 14px 16px; }
 
+  /* CONDUIT BADGES */
+  .conduit-badge {
+    margin-left: auto; flex-shrink: 0;
+    border-radius: 5px; padding: 2px 8px;
+    font-size: .68rem; font-weight: 700; letter-spacing: .3px;
+    text-transform: uppercase; white-space: nowrap;
+  }
+  .conduit-badge.adapter {
+    background: var(--accent); color: var(--navy);
+  }
+  .conduit-badge.ready {
+    background: rgba(255,255,255,.22); color: rgba(255,255,255,.9);
+    border: 1px solid rgba(255,255,255,.35);
+  }
+
   /* PARTS GRID */
   .parts-grid { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 10px; }
   .part-tile {
@@ -344,10 +359,19 @@ function showResult() {
     const isNA = !acc || acc.toLowerCase().includes('not applicable') || acc.toLowerCase().includes('no accessor');
     const noteIsNA = note.toLowerCase().includes('no accessor') || note.toLowerCase().includes('not applicable');
 
+    const hasConduitAdapter = acc.match(/ACC-[A-Z0-9]*CND[A-Z0-9]*/);
+    const hasConduitNote = (acc + note).toLowerCase().includes('conduit');
+    const conduitBadge = hasConduitAdapter
+      ? `<span class="conduit-badge adapter">🔧 Conduit Adapter</span>`
+      : hasConduitNote
+        ? `<span class="conduit-badge ready">🔧 Conduit Ready</span>`
+        : '';
+
     html += `<div class="opt-card">
       <div class="opt-hdr" style="background:${hdrColors[i] || hdrColors[2]}">
         <span class="opt-num">${i+1}</span>
         Option ${i+1}${i===0 ? ' — Most Common' : ''}
+        ${conduitBadge}
       </div>
       <div class="opt-body">
         ${isNA ? '<div class="na-text">✅ No accessory required for this configuration</div>' : renderParts(acc)}
