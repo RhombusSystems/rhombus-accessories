@@ -385,6 +385,7 @@
       <div class="job-actions">
         <button class="job-action-btn" onclick="printJobList()">🖨 Print Checklist</button>
         <button class="job-action-btn green" id="copy-order-btn" onclick="copyOrder()">📋 Copy Order</button>
+        <button class="job-action-btn" onclick="exportCsv()">⬇ Export CSV</button>
         <button class="job-action-btn" onclick="clearJobList()">✕ Clear All</button>
       </div>
     </div>
@@ -780,6 +781,29 @@ function copyOrder() {
 }
 
 function printJobList() { window.print(); }
+
+function exportCsv() {
+  const skuMap = {};
+  for (const j of jobList) {
+    for (const p of j.skus) {
+      skuMap[p.sku] = skuMap[p.sku] || { label: p.label, qty: 0 };
+      skuMap[p.sku].qty += j.qty;
+    }
+  }
+  const rows = [['SKU','Description','Quantity']];
+  Object.entries(skuMap)
+    .sort((a,b) => a[0].localeCompare(b[0]))
+    .forEach(([sku,v]) => rows.push([sku, v.label || '', v.qty]));
+
+  const csv = rows.map(r => r.map(c => `"${String(c).replace(/"/g,'""')}"`).join(',')).join('\r\n');
+  const blob = new Blob([csv], { type: 'text/csv' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'rhombus-order.csv';
+  a.click();
+  URL.revokeObjectURL(url);
+}
 
 // --- Boot: read URL params and restore state ---
 (function init() {
