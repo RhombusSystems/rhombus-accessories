@@ -330,6 +330,54 @@
     .part-tile { width: 110px; }
     .part-tile img { width: 68px; height: 68px; }
   }
+
+  /* ── Feedback button & modal ── */
+  #feedback-btn {
+    position: fixed; bottom: 24px; right: 24px; z-index: 1000;
+    background: #17323b; color: #4bebff; border: 2px solid #4bebff;
+    border-radius: 24px; padding: 10px 18px; font-size: 13px; font-weight: 700;
+    cursor: pointer; box-shadow: 0 4px 14px rgba(0,0,0,.25);
+    transition: background .15s, color .15s;
+  }
+  #feedback-btn:hover { background: #4bebff; color: #17323b; }
+  #feedback-overlay {
+    display: none; position: fixed; inset: 0; background: rgba(0,0,0,.45);
+    z-index: 1001; align-items: center; justify-content: center;
+  }
+  #feedback-overlay.open { display: flex; }
+  #feedback-modal {
+    background: #fff; border-radius: 12px; padding: 28px 28px 24px;
+    width: 100%; max-width: 420px; box-shadow: 0 8px 40px rgba(0,0,0,.2);
+    position: relative;
+  }
+  #feedback-modal h3 { margin: 0 0 4px; color: #17323b; font-size: 17px; }
+  #feedback-modal p.sub { margin: 0 0 16px; color: #64748b; font-size: 12px; }
+  #feedback-modal label { display: block; font-size: 12px; font-weight: 700; color: #334155; margin-bottom: 4px; }
+  #feedback-modal select,
+  #feedback-modal input,
+  #feedback-modal textarea {
+    width: 100%; box-sizing: border-box; border: 1px solid #d1e8ec;
+    border-radius: 6px; padding: 8px 10px; font-size: 13px; color: #334155;
+    margin-bottom: 14px; font-family: inherit;
+  }
+  #feedback-modal textarea { resize: vertical; min-height: 90px; }
+  #feedback-modal select:focus,
+  #feedback-modal input:focus,
+  #feedback-modal textarea:focus { outline: 2px solid #4bebff; border-color: #4bebff; }
+  #feedback-close {
+    position: absolute; top: 14px; right: 16px; background: none; border: none;
+    font-size: 20px; cursor: pointer; color: #64748b; line-height: 1;
+  }
+  #feedback-submit {
+    width: 100%; background: #17323b; color: #4bebff; border: none;
+    border-radius: 8px; padding: 11px; font-size: 14px; font-weight: 700;
+    cursor: pointer; transition: background .15s;
+  }
+  #feedback-submit:hover { background: #1f4a57; }
+  #feedback-submit:disabled { background: #94a3b8; color: #fff; cursor: default; }
+  #feedback-success { display:none; text-align:center; padding: 20px 0 8px; color: #17323b; }
+  #feedback-success .check { font-size: 36px; }
+  #feedback-success p { margin: 8px 0 0; font-size: 14px; color: #64748b; }
 </style>
 </head>
 <body>
@@ -825,6 +873,81 @@ function exportCsv() {
     }
   }
 })();
+</script>
+
+<!-- Feedback button -->
+<button id="feedback-btn" onclick="document.getElementById('feedback-overlay').classList.add('open')">💬 Feedback</button>
+
+<!-- Feedback modal -->
+<div id="feedback-overlay" onclick="if(event.target===this)closeFeedback()">
+  <div id="feedback-modal">
+    <button id="feedback-close" onclick="closeFeedback()">×</button>
+    <h3>Feedback / Feature Request</h3>
+    <p class="sub">Suggestions go straight to Trevor.</p>
+    <div id="feedback-form-wrap">
+      <form id="feedback-form" onsubmit="submitFeedback(event)">
+        <label>Type</label>
+        <select name="type" required>
+          <option value="">Select...</option>
+          <option value="Feature Request">Feature Request</option>
+          <option value="Missing Camera / Accessory">Missing Camera / Accessory</option>
+          <option value="Wrong Information">Wrong Information</option>
+          <option value="Other">Other</option>
+        </select>
+        <label>Your Name (optional)</label>
+        <input type="text" name="name" placeholder="e.g. Alex">
+        <label>Message</label>
+        <textarea name="message" placeholder="Describe the feature or issue..." required></textarea>
+        <button type="submit" id="feedback-submit">Send Feedback</button>
+      </form>
+    </div>
+    <div id="feedback-success">
+      <div class="check">✅</div>
+      <strong>Thanks!</strong>
+      <p>Your feedback was sent to Trevor.</p>
+    </div>
+  </div>
+</div>
+
+<script>
+function closeFeedback() {
+  document.getElementById('feedback-overlay').classList.remove('open');
+  setTimeout(() => {
+    document.getElementById('feedback-form-wrap').style.display = '';
+    document.getElementById('feedback-success').style.display = 'none';
+    document.getElementById('feedback-form').reset();
+    document.getElementById('feedback-submit').disabled = false;
+    document.getElementById('feedback-submit').textContent = 'Send Feedback';
+  }, 300);
+}
+
+async function submitFeedback(e) {
+  e.preventDefault();
+  const btn = document.getElementById('feedback-submit');
+  btn.disabled = true;
+  btn.textContent = 'Sending…';
+  const form = e.target;
+  const data = { type: form.type.value, name: form.name.value, message: form.message.value };
+  try {
+    const res = await fetch('https://formspree.io/f/xykaolaj', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify(data)
+    });
+    if (res.ok) {
+      document.getElementById('feedback-form-wrap').style.display = 'none';
+      document.getElementById('feedback-success').style.display = 'block';
+    } else {
+      btn.disabled = false;
+      btn.textContent = 'Send Feedback';
+      alert('Something went wrong. Please try again.');
+    }
+  } catch {
+    btn.disabled = false;
+    btn.textContent = 'Send Feedback';
+    alert('Network error. Please try again.');
+  }
+}
 </script>
 </body>
 </html>
