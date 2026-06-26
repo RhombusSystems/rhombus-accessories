@@ -451,7 +451,29 @@ function showResult() {
         '<button class="add-bom-btn" onclick="addToBOM(' + i + ')">+ Add to BOM</button>' +
       '</div></div></div>';
   });
+  if (poe) {
+    var poeIdx = row.options.length;
+    html += '<div class="opt-card"><div class="opt-hdr" style="background:#e65100"><span class="opt-num">&#9889;</span>PoE++ Injector (Optional)</div><div class="opt-body">' +
+      '<div class="acc-label">Optional Accessory</div><div class="parts-grid">' +
+      '<div class="part-tile"><img src="' + (IMAGES['ACC-POE-INJBT'] || '') + '" alt="PoE++ Injector" loading="lazy" onerror="this.style.display=\'none\'"><div class="part-name">TP-Link PoE++ Injector</div><div class="part-sku">ACC-POE-INJBT</div></div></div>' +
+      '<div class="note-box">' + poe.text + '</div>' +
+      '<div class="add-row">' +
+        '<input type="number" class="qty-input" id="qty-poe" value="1" min="1" max="999">' +
+        '<input type="text" class="loc-input" id="loc-poe" placeholder="Location (e.g. Front entrance)" style="flex:1;min-width:140px;">' +
+        '<button class="add-bom-btn" onclick="addPoEInjector()">+ Add to BOM</button>' +
+      '</div></div></div>';
+  }
   area.innerHTML = html;
+}
+
+function addPoEInjector() {
+  var qty = Math.max(1, parseInt(document.getElementById('qty-poe').value) || 1);
+  var loc = (document.getElementById('loc-poe').value || '').trim();
+  addBOMItem('ACC-POE-INJBT', 'TP-Link PoE++ Injector', qty, loc);
+  renderBOM(); saveBOM();
+  var btn = document.querySelectorAll('.add-bom-btn');
+  var last = btn[btn.length - 1];
+  if (last) { last.textContent = 'Added!'; setTimeout(function() { last.textContent = '+ Add to BOM'; }, 1200); }
 }
 
 function addToBOM(optionIndex) {
