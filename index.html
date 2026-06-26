@@ -3,27 +3,25 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Rhombus Accessories Guide</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<title>Rhombus Accessories & BOM Builder</title>
 <style>
   :root {
-    --navy:   #17323b;
-    --blue:   #1f6b7a;
-    --lblue:  #c8eef4;
-    --xlblue: #e4f7fb;
-    --accent: #4bebff;
+    --navy:   #1F3864;
+    --blue:   #2E74B5;
+    --lblue:  #DEEAF1;
+    --xlblue: #EBF3FB;
+    --accent: #4472C4;
     --white:  #fff;
-    --gray:   #f2f6f7;
-    --text:   #111e22;
-    --muted:  #5a7278;
-    --border: #c5d8dc;
+    --gray:   #f5f7fa;
+    --text:   #1a1a2e;
+    --muted:  #666;
+    --border: #d0d8e4;
+    --green:  #27ae60;
     --r: 10px;
-    --sh: 0 2px 12px rgba(23,50,59,.1);
+    --sh: 0 2px 12px rgba(31,56,100,.12);
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: 'DM Sans', 'Segoe UI', Arial, sans-serif; background: var(--gray); color: var(--text); min-height: 100vh; }
+  body { font-family: 'Segoe UI', Arial, sans-serif; background: var(--gray); color: var(--text); min-height: 100vh; }
 
   header {
     background: var(--navy);
@@ -31,10 +29,12 @@
     display: flex; align-items: center; gap: 14px;
     box-shadow: 0 2px 10px rgba(0,0,0,.3);
   }
-  header h1 { color: #fff; font-size: 1.2rem; font-weight: 700; font-family: 'Sora', sans-serif; }
+  header h1 { color: #fff; font-size: 1.2rem; font-weight: 700; }
   header p  { color: rgba(255,255,255,.6); font-size: .78rem; margin-top: 2px; }
 
-  main { max-width: 960px; margin: 0 auto; padding: 22px 16px 60px; }
+  .layout { display: flex; gap: 20px; max-width: 1400px; margin: 0 auto; padding: 22px 16px 60px; }
+  .left-panel { flex: 1; min-width: 0; }
+  .right-panel { width: 400px; flex-shrink: 0; position: sticky; top: 22px; align-self: flex-start; }
 
   .tabs { display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; }
   .tab {
@@ -42,51 +42,47 @@
     background: #fff; border: 2px solid var(--border);
     border-radius: var(--r); padding: 11px 8px; cursor: pointer;
     text-align: center; font-size: .84rem; font-weight: 600; color: var(--muted);
-    transition: all .16s; box-shadow: var(--sh); font-family: 'DM Sans', sans-serif;
+    transition: all .16s; box-shadow: var(--sh);
   }
   .tab .icon { font-size: 1.3rem; display: block; margin-bottom: 3px; }
   .tab:hover  { border-color: var(--blue); color: var(--blue); }
-  .tab.active { background: var(--navy); border-color: var(--navy); color: #fff; box-shadow: 0 4px 18px rgba(23,50,59,.28); }
+  .tab.active { background: var(--navy); border-color: var(--navy); color: #fff; box-shadow: 0 4px 18px rgba(31,56,100,.28); }
 
   .selector-card {
     background: #fff; border-radius: var(--r);
     padding: 18px 20px 20px; margin-bottom: 18px;
     box-shadow: var(--sh); border: 1px solid var(--border);
   }
-  .selector-card h2 { font-size: .88rem; font-weight: 700; color: var(--navy); margin-bottom: 12px; text-transform: uppercase; letter-spacing: .5px; font-family: 'Sora', sans-serif; }
+  .selector-card h2 { font-size: .88rem; font-weight: 700; color: var(--navy); margin-bottom: 12px; text-transform: uppercase; letter-spacing: .5px; }
   .selectors { display: flex; gap: 12px; flex-wrap: wrap; }
-  .sel-group { flex: 1; min-width: 170px; }
+  .sel-group { flex: 1; min-width: 120px; }
   .sel-group label { display: block; font-size: .73rem; font-weight: 700; color: var(--muted); margin-bottom: 4px; text-transform: uppercase; letter-spacing: .4px; }
+  select, .qty-input, .loc-input {
+    width: 100%; padding: 9px 11px; border-radius: 7px;
+    border: 2px solid var(--border); font-size: .93rem;
+    transition: border .14s;
+  }
   select {
-    width: 100%; padding: 9px 32px 9px 11px; border-radius: 7px;
-    border: 2px solid var(--border); font-size: .93rem; font-family: 'DM Sans', sans-serif;
-    background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%234bebff' stroke-width='2' fill='none' stroke-linecap='round'/%3E%3C/svg%3E") no-repeat right 11px center;
-    appearance: none; cursor: pointer; transition: border .14s;
+    padding-right: 32px;
+    background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%234472C4' stroke-width='2' fill='none' stroke-linecap='round'/%3E%3C/svg%3E") no-repeat right 11px center;
+    appearance: none; cursor: pointer;
   }
-  select:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(75,235,255,.2); }
+  select:focus, .qty-input:focus, .loc-input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(68,114,196,.14); }
+  .qty-input { width: 70px; text-align: center; font-weight: 700; }
+  .loc-input { font-size: .85rem; }
+  .loc-input::placeholder { color: #bbb; }
 
-  /* POE++ BANNER */
-  .poe-banner {
-    display: flex; align-items: flex-start; gap: 10px;
-    background: #fff8e1; border: 1.5px solid #f59e0b;
-    border-radius: 8px; padding: 12px 14px; margin-bottom: 16px;
-    font-size: .85rem; color: #7c4a00; line-height: 1.5;
-  }
-  .poe-banner .poe-icon { font-size: 1.2rem; flex-shrink: 0; margin-top: 1px; }
-  .poe-banner strong { display: block; font-weight: 700; margin-bottom: 2px; color: #5c3500; }
-
-  /* OPTION CARD */
   .opt-card {
     background: #fff; border-radius: var(--r);
     border: 1px solid var(--border); margin-bottom: 14px;
     box-shadow: var(--sh); overflow: hidden;
     transition: transform .14s, box-shadow .14s;
   }
-  .opt-card:hover { transform: translateY(-2px); box-shadow: 0 6px 22px rgba(23,50,59,.14); }
+  .opt-card:hover { transform: translateY(-2px); box-shadow: 0 6px 22px rgba(31,56,100,.16); }
   .opt-hdr {
     color: #fff; padding: 10px 16px;
     font-size: .8rem; font-weight: 700; text-transform: uppercase; letter-spacing: .5px;
-    display: flex; align-items: center; gap: 8px; font-family: 'Sora', sans-serif;
+    display: flex; align-items: center; gap: 8px;
   }
   .opt-num {
     background: rgba(255,255,255,.22); border-radius: 50%;
@@ -95,22 +91,6 @@
   }
   .opt-body { padding: 14px 16px; }
 
-  /* CONDUIT BADGES */
-  .conduit-badge {
-    margin-left: auto; flex-shrink: 0;
-    border-radius: 5px; padding: 2px 8px;
-    font-size: .68rem; font-weight: 700; letter-spacing: .3px;
-    text-transform: uppercase; white-space: nowrap;
-  }
-  .conduit-badge.adapter {
-    background: var(--accent); color: var(--navy);
-  }
-  .conduit-badge.ready {
-    background: rgba(255,255,255,.22); color: rgba(255,255,255,.9);
-    border: 1px solid rgba(255,255,255,.35);
-  }
-
-  /* PARTS GRID */
   .parts-grid { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 10px; }
   .part-tile {
     background: var(--xlblue); border: 1px solid var(--lblue);
@@ -120,7 +100,7 @@
     transition: box-shadow .14s, transform .14s;
     cursor: default;
   }
-  .part-tile:hover { box-shadow: 0 3px 12px rgba(23,50,59,.16); transform: translateY(-1px); }
+  .part-tile:hover { box-shadow: 0 3px 12px rgba(31,56,100,.18); transform: translateY(-1px); }
   .part-tile img {
     width: 80px; height: 80px; object-fit: contain;
     border-radius: 6px; background: #fff;
@@ -130,36 +110,23 @@
   .part-tile .part-sku  {
     font-size: .7rem; font-weight: 700; color: var(--navy);
     font-family: 'Courier New', monospace;
-    background: rgba(23,50,59,.08); border-radius: 4px; padding: 2px 6px;
+    background: rgba(31,56,100,.08); border-radius: 4px; padding: 2px 6px;
   }
   .part-tile.no-img .part-sku {
     font-size: .8rem; background: var(--lblue); padding: 4px 8px;
   }
 
-  /* COPY BUTTON */
-  .copy-btn {
-    background: none; border: 1.5px solid var(--accent);
-    border-radius: 5px; padding: 2px 8px;
-    font-size: .65rem; font-weight: 700; color: var(--blue);
-    cursor: pointer; transition: background .12s, color .12s;
-    font-family: 'DM Sans', sans-serif; letter-spacing: .3px;
-    white-space: nowrap;
-  }
-  .copy-btn:hover { background: var(--accent); color: var(--navy); }
-  .copy-btn.copied { background: #22c55e; border-color: #22c55e; color: #fff; }
-
   .note-box {
-    background: #f6fbfc; border-left: 3px solid var(--accent);
+    background: #f9fafc; border-left: 3px solid var(--accent);
     border-radius: 0 6px 6px 0; padding: 8px 12px;
     font-size: .84rem; color: var(--muted); line-height: 1.5; margin-top: 4px;
   }
-  .note-box::before { content: '💡 '; }
 
   .acc-label { font-size: .7rem; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: .4px; margin-bottom: 8px; }
-  .na-text { font-size: .92rem; color: #27ae60; font-style: italic; padding: 4px 0; }
+  .na-text { font-size: .92rem; color: var(--green); font-style: italic; padding: 4px 0; }
 
   .results-hdr { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
-  .results-hdr h3 { font-size: 1rem; color: var(--navy); font-weight: 700; font-family: 'Sora', sans-serif; }
+  .results-hdr h3 { font-size: 1rem; color: var(--navy); font-weight: 700; }
   .badge { background: var(--lblue); color: var(--navy); border-radius: 20px; padding: 3px 10px; font-size: .73rem; font-weight: 700; }
 
   .placeholder {
@@ -169,787 +136,609 @@
   }
   .placeholder .icon { font-size: 2.4rem; display: block; margin-bottom: 10px; }
 
-  /* SEARCH */
-  .search-wrap { position: relative; margin-bottom: 16px; }
-  .search-input {
-    width: 100%; padding: 10px 14px 10px 38px; border-radius: var(--r);
-    border: 2px solid var(--border); font-size: .93rem; font-family: 'DM Sans', sans-serif;
-    background: #fff; transition: border .14s;
-  }
-  .search-input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(75,235,255,.2); }
-  .search-icon {
-    position: absolute; left: 12px; top: 50%; transform: translateY(-50%);
-    font-size: 1rem; pointer-events: none; color: var(--muted);
-  }
-  .search-results {
-    position: absolute; top: calc(100% + 4px); left: 0; right: 0;
-    background: #fff; border: 2px solid var(--accent); border-radius: var(--r);
-    box-shadow: 0 8px 24px rgba(23,50,59,.18); z-index: 100; overflow: hidden;
-    display: none;
-  }
-  .search-results.open { display: block; }
-  .search-result-item {
-    padding: 9px 14px; cursor: pointer; font-size: .88rem;
-    display: flex; align-items: center; gap: 8px;
-    border-bottom: 1px solid var(--border);
-    transition: background .1s;
-  }
-  .search-result-item:last-child { border-bottom: none; }
-  .search-result-item:hover, .search-result-item.focused { background: var(--xlblue); }
-  .search-result-item .sr-model { font-weight: 700; color: var(--navy); }
-  .search-result-item .sr-cat { font-size: .72rem; color: var(--muted); background: var(--lblue); border-radius: 4px; padding: 1px 6px; }
-  .search-no-results { padding: 10px 14px; color: var(--muted); font-size: .85rem; }
-
-  /* ADD TO JOB BUTTON */
-  .add-job-row { display: flex; align-items: center; gap: 8px; margin-top: 10px; flex-wrap: wrap; }
-  .add-qty-input {
-    width: 52px; padding: 6px 8px; border-radius: 7px;
-    border: 2px solid var(--border); font-size: .9rem; font-weight: 700;
-    font-family: 'DM Sans', sans-serif; color: var(--navy); text-align: center;
-    -moz-appearance: textfield;
-  }
-  .add-qty-input::-webkit-inner-spin-button,
-  .add-qty-input::-webkit-outer-spin-button { -webkit-appearance: none; }
-  .add-qty-input:focus { outline: none; border-color: var(--accent); }
-  .add-job-btn {
+  .add-row { display: flex; align-items: center; gap: 8px; margin-top: 10px; flex-wrap: wrap; }
+  .add-bom-btn {
     display: inline-flex; align-items: center; gap: 6px;
-    padding: 7px 14px;
-    background: var(--navy); color: #fff;
-    border: none; border-radius: 7px; cursor: pointer;
-    font-size: .78rem; font-weight: 700; font-family: 'DM Sans', sans-serif;
-    transition: background .14s;
+    background: var(--green); color: #fff; border: none;
+    border-radius: 6px; padding: 8px 14px; font-size: .82rem;
+    font-weight: 700; cursor: pointer;
+    transition: background .14s, transform .1s;
   }
-  .add-job-btn:hover { background: var(--blue); }
-  .add-job-btn.added { background: #22c55e; }
+  .add-bom-btn:hover { background: #219a52; transform: scale(1.03); }
+  .add-bom-btn:active { transform: scale(.97); }
 
-  /* JOB LIST PANEL */
-  #job-panel {
+  /* BOM Panel */
+  .bom-panel {
     background: #fff; border-radius: var(--r);
-    border: 2px solid var(--navy); margin-top: 28px;
-    box-shadow: 0 4px 20px rgba(23,50,59,.14); overflow: hidden;
+    border: 2px solid var(--navy); box-shadow: 0 4px 20px rgba(31,56,100,.18);
+    overflow: hidden;
   }
-  .job-panel-hdr {
-    background: var(--navy); color: #fff;
-    padding: 12px 18px; display: flex; align-items: center; gap: 10px;
-    font-family: 'Sora', sans-serif; font-weight: 700; font-size: .9rem;
+  .bom-header {
+    background: var(--navy); color: #fff; padding: 14px 16px;
+    display: flex; align-items: center; justify-content: space-between;
   }
-  .job-panel-hdr .job-count {
-    background: var(--accent); color: var(--navy);
-    border-radius: 20px; padding: 2px 9px; font-size: .72rem; font-weight: 800;
-  }
-  .job-panel-hdr .job-actions { margin-left: auto; display: flex; gap: 8px; }
-  .job-action-btn {
-    background: rgba(255,255,255,.15); border: 1px solid rgba(255,255,255,.3);
-    color: #fff; border-radius: 6px; padding: 4px 10px;
-    font-size: .72rem; font-weight: 700; cursor: pointer; font-family: 'DM Sans', sans-serif;
-    transition: background .12s;
-  }
-  .job-action-btn:hover { background: rgba(255,255,255,.28); }
-  .job-action-btn.green { background: #16a34a; border-color: #16a34a; }
-  .job-action-btn.green:hover { background: #15803d; }
-  .job-action-btn.copied { background: #22c55e; border-color: #22c55e; }
+  .bom-header h3 { font-size: .95rem; font-weight: 700; }
+  .bom-header .bom-count { background: rgba(255,255,255,.2); border-radius: 12px; padding: 2px 10px; font-size: .75rem; }
+  .bom-body { padding: 0 16px; max-height: 65vh; overflow-y: auto; }
+  .bom-empty { text-align: center; color: var(--muted); padding: 20px 0; font-size: .85rem; }
 
-  .job-items { padding: 12px 16px; border-bottom: 1px solid var(--border); }
-  .job-item {
-    display: flex; align-items: center; gap: 10px;
-    padding: 8px 10px; border-radius: 7px; margin-bottom: 6px;
-    background: var(--gray); border: 1px solid var(--border);
+  .bom-group-hdr {
+    font-size: .72rem; font-weight: 700; color: var(--navy); text-transform: uppercase;
+    letter-spacing: .5px; padding: 12px 0 4px; border-bottom: 2px solid var(--navy);
+    margin-bottom: 4px; display: flex; align-items: center; gap: 6px;
+  }
+  .bom-item {
+    display: flex; align-items: flex-start; gap: 8px;
+    padding: 8px 0; border-bottom: 1px solid var(--border);
     font-size: .82rem;
   }
-  .job-item:last-child { margin-bottom: 0; }
-  .job-item .ji-label { flex: 1; font-weight: 600; color: var(--text); }
-  .job-item .ji-opt { color: var(--muted); font-size: .75rem; }
-  .job-item .ji-qty {
-    display: flex; align-items: center; gap: 6px;
+  .bom-item:last-child { border-bottom: none; }
+  .bom-item-info { flex: 1; min-width: 0; }
+  .bom-item-sku { font-family: 'Courier New', monospace; font-weight: 700; color: var(--navy); font-size: .78rem; }
+  .bom-item-name { font-size: .72rem; color: var(--muted); }
+  .bom-item-loc {
+    font-size: .68rem; color: var(--accent); font-style: italic; margin-top: 2px;
+    cursor: pointer; padding: 1px 4px; border-radius: 3px;
   }
-  .qty-btn {
-    width: 24px; height: 24px; border-radius: 5px;
-    border: 1.5px solid var(--border); background: #fff;
-    font-size: .85rem; font-weight: 700; cursor: pointer; color: var(--navy);
+  .bom-item-loc:hover { background: var(--xlblue); }
+  .bom-item-loc-input {
+    font-size: .72rem; border: 1px solid var(--accent); border-radius: 4px;
+    padding: 2px 6px; width: 100%; margin-top: 2px; outline: none;
+  }
+  .bom-item-qty {
+    display: flex; align-items: center; gap: 4px;
+  }
+  .bom-item-qty button {
+    width: 22px; height: 22px; border-radius: 4px; border: 1px solid var(--border);
+    background: var(--gray); cursor: pointer; font-size: .8rem; font-weight: 700;
     display: flex; align-items: center; justify-content: center;
-    transition: border-color .12s;
+    transition: background .1s;
   }
-  .qty-btn:hover { border-color: var(--accent); }
-  .qty-val { font-weight: 700; color: var(--navy); min-width: 18px; text-align: center; font-size: .85rem; }
-  .remove-btn {
-    background: none; border: none; cursor: pointer; color: #ef4444;
-    font-size: 1rem; padding: 0 2px; line-height: 1;
-    transition: transform .12s;
+  .bom-item-qty button:hover { background: var(--lblue); }
+  .bom-item-qty span { font-weight: 700; min-width: 18px; text-align: center; }
+  .bom-item-remove {
+    background: none; border: none; color: #e74c3c; cursor: pointer;
+    font-size: 1rem; padding: 2px 4px; opacity: .6; transition: opacity .1s;
+    margin-top: 2px;
   }
-  .remove-btn:hover { transform: scale(1.2); }
-  .ji-left { flex: 1; min-width: 0; }
-  .ji-skus { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 5px; }
-  .ji-sku-chip {
-    display: inline-flex; align-items: center; gap: 4px;
-    background: var(--navy); color: #fff;
-    border-radius: 5px; padding: 2px 8px; font-size: .68rem; font-weight: 700;
-    font-family: 'Courier New', monospace; white-space: nowrap;
-  }
-  .ji-sku-name { font-family: 'DM Sans', sans-serif; font-weight: 400; color: rgba(255,255,255,.7); font-size: .66rem; }
-  .ji-no-acc { color: #27ae60; font-style: italic; font-size: .75rem; }
+  .bom-item-remove:hover { opacity: 1; }
 
-  /* ORDER SUMMARY */
-  .order-summary { padding: 14px 16px; }
-  .order-summary h4 {
-    font-size: .78rem; font-weight: 700; color: var(--muted);
-    text-transform: uppercase; letter-spacing: .4px; margin-bottom: 10px;
-    font-family: 'Sora', sans-serif;
+  .bom-footer {
+    border-top: 2px solid var(--navy); padding: 12px 16px;
+    display: flex; flex-direction: column; gap: 8px;
   }
-  .sku-table { width: 100%; border-collapse: collapse; font-size: .82rem; }
-  .sku-table th {
-    text-align: left; padding: 5px 8px;
-    color: var(--muted); font-size: .72rem; font-weight: 700;
-    text-transform: uppercase; letter-spacing: .3px;
-    border-bottom: 2px solid var(--border);
+  .bom-actions { display: flex; gap: 8px; }
+  .bom-actions button {
+    flex: 1; padding: 8px; border-radius: 6px; font-size: .78rem;
+    font-weight: 700; cursor: pointer; transition: all .14s; border: none;
   }
-  .sku-table td { padding: 6px 8px; border-bottom: 1px solid var(--border); }
-  .sku-table tr:last-child td { border-bottom: none; }
-  .sku-table .sku-col { font-family: 'Courier New', monospace; font-weight: 700; color: var(--navy); }
-  .sku-table .qty-col { font-weight: 700; color: var(--blue); text-align: center; }
-  .job-empty { padding: 24px; text-align: center; color: var(--muted); font-size: .88rem; }
+  .btn-copy { background: var(--accent); color: #fff; }
+  .btn-copy:hover { background: var(--blue); }
+  .btn-clear { background: #fff; color: #e74c3c; border: 1px solid #e74c3c !important; }
+  .btn-clear:hover { background: #fdf0ef; }
+  .btn-csv { background: var(--navy); color: #fff; }
+  .btn-csv:hover { background: #162b50; }
+  .btn-print { background: var(--green); color: #fff; }
+  .btn-print:hover { background: #219a52; }
 
-  /* PRINT */
-  @media print {
-    header, .tabs, .selector-card, #results-area,
-    .job-panel-hdr .job-actions, .add-job-btn,
-    .qty-btn, .remove-btn { display: none !important; }
-    body { background: #fff; font-size: 11pt; }
-    main { padding: 0; max-width: 100%; }
-    #job-panel { border: none; box-shadow: none; margin-top: 0; }
-    .job-panel-hdr { background: #fff; color: #000; padding: 0 0 8px; border-bottom: 2px solid #000; }
-    .job-panel-hdr::before { content: 'Rhombus Accessories — Job Checklist'; font-size: 14pt; font-weight: bold; display: block; }
-    .job-count { display: none; }
-    .job-item { background: none; border: none; padding: 4px 0; border-bottom: 1px solid #ddd; }
-    .ji-label { font-weight: bold; }
-    .order-summary h4 { margin-top: 16pt; }
-    .sku-table { font-size: 10pt; }
+  .poe-warning {
+    background: #fff8e1; border: 1px solid #ffe082; border-left: 4px solid #ffa000;
+    border-radius: 0 8px 8px 0; padding: 12px 16px; margin-bottom: 14px;
+    font-size: .85rem; line-height: 1.5; color: #5d4037;
   }
+  .poe-warning strong { color: #e65100; }
+  .poe-warning .poe-icon { font-size: 1.1rem; margin-right: 6px; }
 
-  @media(max-width:560px) {
+  @media(max-width:900px) {
+    .layout { flex-direction: column; }
+    .right-panel { width: 100%; position: static; }
     .tab { min-width: calc(50% - 4px); flex: none; }
     .part-tile { width: 110px; }
     .part-tile img { width: 68px; height: 68px; }
   }
 
-  /* ── Feedback button & modal ── */
-  #feedback-btn {
-    position: fixed; bottom: 24px; left: 24px; z-index: 1000;
-    background: #17323b; color: #4bebff; border: 2px solid #4bebff;
-    border-radius: 24px; padding: 10px 18px; font-size: 13px; font-weight: 700;
-    cursor: pointer; box-shadow: 0 4px 14px rgba(0,0,0,.25);
-    transition: background .15s, color .15s;
-  }
-  #feedback-btn:hover { background: #4bebff; color: #17323b; }
-  #feedback-overlay {
-    display: none; position: fixed; inset: 0; background: rgba(0,0,0,.45);
-    z-index: 1001; align-items: center; justify-content: center;
-  }
-  #feedback-overlay.open { display: flex; }
-  #feedback-modal {
-    background: #fff; border-radius: 12px; padding: 28px 28px 24px;
-    width: 100%; max-width: 420px; box-shadow: 0 8px 40px rgba(0,0,0,.2);
-    position: relative;
-  }
-  #feedback-modal h3 { margin: 0 0 4px; color: #17323b; font-size: 17px; }
-  #feedback-modal p.sub { margin: 0 0 16px; color: #64748b; font-size: 12px; }
-  #feedback-modal label { display: block; font-size: 12px; font-weight: 700; color: #334155; margin-bottom: 4px; }
-  #feedback-modal select,
-  #feedback-modal input,
-  #feedback-modal textarea {
-    width: 100%; box-sizing: border-box; border: 1px solid #d1e8ec;
-    border-radius: 6px; padding: 8px 10px; font-size: 13px; color: #334155;
-    margin-bottom: 14px; font-family: inherit;
-  }
-  #feedback-modal textarea { resize: vertical; min-height: 90px; }
-  #feedback-modal select:focus,
-  #feedback-modal input:focus,
-  #feedback-modal textarea:focus { outline: 2px solid #4bebff; border-color: #4bebff; }
-  #feedback-close {
-    position: absolute; top: 14px; right: 16px; background: none; border: none;
-    font-size: 20px; cursor: pointer; color: #64748b; line-height: 1;
-  }
-  #feedback-submit {
-    width: 100%; background: #17323b; color: #4bebff; border: none;
-    border-radius: 8px; padding: 11px; font-size: 14px; font-weight: 700;
-    cursor: pointer; transition: background .15s;
-  }
-  #feedback-submit:hover { background: #1f4a57; }
-  #feedback-submit:disabled { background: #94a3b8; color: #fff; cursor: default; }
-  #feedback-success { display:none; text-align:center; padding: 20px 0 8px; color: #17323b; }
-  #feedback-success .check { font-size: 36px; }
-  #feedback-success p { margin: 8px 0 0; font-size: 14px; color: #64748b; }
+  @media print { body { display: none; } }
 </style>
 </head>
 <body>
 
 <header>
-  <div style="display:flex;align-items:center;gap:16px">
-    <svg width="140" height="35" viewBox="0 0 154 39" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M41.8918 15.792H43.419C43.6847 15.792 43.9105 15.9855 43.9477 16.2448L44.2057 18.0422H44.2596C45.2542 16.2145 47.0534 15.6326 48.3701 15.6326C48.5639 15.6326 48.7384 15.639 48.9001 15.6503C49.1773 15.6718 49.3916 15.9008 49.3916 16.1753V18.0675C49.3916 18.3736 49.1273 18.6177 48.818 18.5924C48.6435 18.5785 48.4664 18.5722 48.2893 18.5722C46.4079 18.5722 44.5278 19.684 44.5278 22.4655V29.7246C44.5278 30.0156 44.2891 30.2508 43.9939 30.2508H41.8918C41.5967 30.2508 41.358 30.0156 41.358 29.7246V16.3182C41.358 16.0273 41.5967 15.792 41.8918 15.792Z" fill="white"/><path d="M55.7865 17.4073H55.8404C56.6733 16.2689 58.1786 15.448 59.9239 15.448C63.122 15.448 65.1638 17.2757 65.1638 20.6656V29.7259C65.1638 30.0168 64.9251 30.2521 64.6299 30.2521H62.5278C62.2327 30.2521 61.994 30.0168 61.994 29.7259V21.6193C61.994 19.3944 61.0263 18.3091 59.0384 18.3091C57.2649 18.3091 55.7878 19.3425 55.7878 21.4346V29.7272C55.7878 30.0181 55.5491 30.2534 55.2539 30.2534H53.1518C52.8566 30.2534 52.6179 30.0181 52.6179 29.7272V9.56501C52.6179 9.27409 52.8566 9.03882 53.1518 9.03882H55.2539C55.5491 9.03882 55.7878 9.27409 55.7878 9.56501V17.4073H55.7865Z" fill="white"/><path d="M67.9589 23.0208C67.9589 18.6241 71.2096 15.4467 75.4292 15.4467C79.6488 15.4467 82.8725 18.6241 82.8725 23.0208C82.8725 27.4175 79.6758 30.5949 75.4292 30.5949C71.1827 30.5949 67.9589 27.4175 67.9589 23.0208ZM79.6745 23.0208C79.6745 20.0281 77.6057 18.3066 75.4292 18.3066C73.2527 18.3066 71.157 20.0281 71.157 23.0208C71.157 26.0135 73.2527 27.735 75.4292 27.735C77.6057 27.735 79.6745 26.0135 79.6745 23.0208Z" fill="white"/><path d="M105.79 20.6378V29.7246C105.79 30.0156 105.552 30.2508 105.256 30.2508H103.154C102.859 30.2508 102.62 30.0156 102.62 29.7246V21.1943C102.62 19.34 101.895 18.361 100.149 18.361C98.4022 18.361 97.4345 19.6853 97.4345 21.1412V29.7246C97.4345 30.0156 97.1958 30.2508 96.9007 30.2508H94.7986C94.5034 30.2508 94.2647 30.0156 94.2647 29.7246V21.1943C94.2647 19.34 93.5396 18.361 91.793 18.361C90.0464 18.361 89.1057 19.765 89.1057 21.3006V29.7246C89.1057 30.0156 88.867 30.2508 88.5718 30.2508H86.4697C86.1745 30.2508 85.9359 30.0156 85.9359 29.7246V16.3182C85.9359 16.0273 86.1745 15.792 86.4697 15.792H87.9276C88.1894 15.792 88.4127 15.9792 88.455 16.2334L88.7309 17.8841H88.8118C89.5638 16.5332 90.8805 15.448 92.7889 15.448C94.5393 15.448 95.7264 16.112 96.4938 17.2416C96.6979 17.5413 97.1368 17.5704 97.3614 17.2858C98.2443 16.1614 99.4917 15.448 101.119 15.448C104.317 15.448 105.794 17.5666 105.794 20.639L105.79 20.6378Z" fill="white"/><path d="M112.911 16.6331C112.911 17.0948 113.476 17.3427 113.812 17.0227C114.872 16.0134 116.364 15.448 117.855 15.448C121.294 15.448 124.411 18.3875 124.411 23.0221C124.411 27.6566 121.188 30.5961 117.748 30.5961C116.085 30.5961 114.557 29.9296 113.474 28.7671C113.164 28.4357 112.606 28.5976 112.544 29.0429L112.439 29.7967C112.403 30.0573 112.176 30.2508 111.91 30.2508H110.277C109.982 30.2508 109.743 30.0156 109.743 29.7246V9.56501C109.743 9.27409 109.982 9.03882 110.277 9.03882H112.379C112.674 9.03882 112.913 9.27409 112.913 9.56501V16.6331H112.911ZM112.858 23.0208C112.858 25.801 114.658 27.735 117.022 27.735C119.386 27.735 121.213 25.8023 121.213 23.0474C121.213 20.2924 119.386 18.3066 116.995 18.3066C114.604 18.3066 112.858 20.2659 112.858 23.0208Z" fill="white"/><path d="M127.207 24.5842V16.3182C127.207 16.0273 127.445 15.792 127.74 15.792H129.843C130.138 15.792 130.376 16.0273 130.376 16.3182V24.6107C130.376 26.5966 131.504 27.7363 133.413 27.7363C135.321 27.7363 136.584 26.5979 136.584 24.5842V16.3182C136.584 16.0273 136.823 15.792 137.118 15.792H139.22C139.515 15.792 139.754 16.0273 139.754 16.3182V24.5576C139.754 28.1069 137.336 30.5961 133.413 30.5961C129.49 30.5961 127.207 28.1069 127.207 24.5842Z" fill="white"/><path d="M153.135 16.9519V18.5494C153.135 18.9466 152.704 19.2072 152.351 19.0174C151.345 18.4748 150.045 18.1219 148.728 18.1219C147.062 18.1219 146.149 18.7569 146.149 19.7637C146.149 20.849 147.25 21.2474 149.104 21.7761C151.414 22.3858 153.994 23.1536 153.994 26.1197C153.994 28.8481 151.817 30.5949 148.19 30.5949C146.335 30.5949 144.598 30.1206 143.279 29.2174C143.138 29.1213 143.058 28.9594 143.058 28.7912V27.0785C143.058 26.651 143.545 26.4069 143.901 26.6497C145.013 27.4074 146.414 27.9475 148.083 27.9475C149.883 27.9475 150.903 27.2063 150.903 26.1463C150.903 24.9548 149.64 24.5576 147.626 23.9479C145.235 23.2598 143.058 22.4124 143.058 19.8434C143.058 17.2744 145.154 15.4467 148.62 15.4467C150.185 15.4467 151.795 15.854 152.878 16.5003C153.037 16.5952 153.134 16.7672 153.134 16.9506L153.135 16.9519Z" fill="white"/><path d="M31.067 17.7298L18.1784 5.02537C16.9695 3.83385 15.0099 3.83385 13.801 5.02537L0.911192 17.7298C-0.297708 18.9213 -0.297708 20.8528 0.911192 22.0443L13.801 34.7487C15.0099 35.9403 16.9695 35.9403 18.1784 34.7487L31.0682 22.0443C32.2771 20.8528 32.2771 18.9213 31.0682 17.7298H31.067ZM16.1431 24.5159C13.4263 24.6019 11.2061 22.4137 11.2921 19.7359C11.3704 17.3111 13.3749 15.3354 15.8351 15.2582C18.5519 15.1722 20.7721 17.3617 20.6848 20.0395C20.6065 22.4642 18.6019 24.44 16.1418 24.5171L16.1431 24.5159Z" fill="url(#rh_grad)"/><defs><linearGradient id="rh_grad" x1="7.356" y1="28.396" x2="24.372" y2="11.131" gradientUnits="userSpaceOnUse"><stop stop-color="#2A7DE1"/><stop offset="1" stop-color="#00C1DE"/></linearGradient></defs></svg>
-    <div style="width:1px;height:32px;background:rgba(255,255,255,.25);margin:0 4px"></div>
-    <p style="color:rgba(255,255,255,.7);font-size:.82rem;line-height:1.3">Accessories<br>Installation Guide</p>
+  <div>
+    <h1>Rhombus Accessories & BOM Builder</h1>
+    <p>Select a device and mount type, then add to your Bill of Materials</p>
   </div>
 </header>
 
-<main>
-  <div class="search-wrap">
-    <span class="search-icon">🔍</span>
-    <input class="search-input" id="search-input" type="text" placeholder="Search model (e.g. R600, DR40, A100)…" oninput="onSearch(event)" onkeydown="onSearchKey(event)" autocomplete="off">
-    <div class="search-results" id="search-results"></div>
-  </div>
-
-  <div class="tabs" id="tabs">
-    <div class="tab active" data-cat="cameras" onclick="selectCat('cameras')"><span class="icon">📷</span>Cameras</div>
-    <div class="tab" data-cat="access"         onclick="selectCat('access')"><span class="icon">🔑</span>Access Control</div>
-    <div class="tab" data-cat="sensors"        onclick="selectCat('sensors')"><span class="icon">📡</span>Sensors</div>
-    <div class="tab" data-cat="relay"          onclick="selectCat('relay')"><span class="icon">📦</span>Relay</div>
-  </div>
-
-  <div class="selector-card">
-    <h2 id="sel-title">Select Camera</h2>
-    <div class="selectors">
-      <div class="sel-group">
-        <label for="sel-model">Model</label>
-        <select id="sel-model" onchange="onModelChange()">
-          <option value="">— Choose model —</option>
-        </select>
-      </div>
-      <div class="sel-group">
-        <label for="sel-mount">Mount Type</label>
-        <select id="sel-mount" onchange="showResult()">
-          <option value="">— Choose mount type —</option>
-        </select>
-      </div>
+<div class="layout">
+  <div class="left-panel">
+    <div class="tabs" id="tabs">
+      <div class="tab active" data-cat="cameras" onclick="selectCat('cameras')"><span class="icon">&#128247;</span>Cameras</div>
+      <div class="tab" data-cat="access" onclick="selectCat('access')"><span class="icon">&#128273;</span>Access Control</div>
+      <div class="tab" data-cat="sensors" onclick="selectCat('sensors')"><span class="icon">&#128225;</span>Sensors</div>
+      <div class="tab" data-cat="relay" onclick="selectCat('relay')"><span class="icon">&#128230;</span>Relay</div>
     </div>
-  </div>
 
-  <div id="results-area">
-    <div class="placeholder"><span class="icon">👆</span>Choose a model and mount type above to see required accessories</div>
-  </div>
-
-  <div id="job-panel" style="display:none">
-    <div class="job-panel-hdr">
-      📋 Job List
-      <span class="job-count" id="job-count">0</span>
-      <div class="job-actions">
-        <button class="job-action-btn" onclick="printJobList()">🖨 Print Checklist</button>
-        <button class="job-action-btn green" id="copy-order-btn" onclick="copyOrder()">📋 Copy Order</button>
-        <button class="job-action-btn" onclick="exportCsv()">⬇ Export CSV</button>
-        <button class="job-action-btn" onclick="clearJobList()">✕ Clear All</button>
-      </div>
-    </div>
-    <div class="job-items" id="job-items"></div>
-    <div class="order-summary" id="order-summary"></div>
-  </div>
-</main>
-
-<script>
-const DATA   = {"cameras":[{"model":"R120","mount":"Indoor Wall","options":[{"accessory":"Junction Box: ACC-R100-JB2","note":"The junction box is only needed indoors if mounting the camera to a wall is not available."},{"accessory":"","note":"Most Indoor installs will not need a accessory"}]},{"model":"R120","mount":"Outdoor Wall","options":[{"accessory":"Junction Box: ACC-R100-JB2","note":"The junction box is needed outdoors for proper water seal and also conduit connection (if applicable)"},{"accessory":"Wall Arm Junction Box: ACC-ARM-JB + Arm: ACC-R2-ARM + R2A Pendant Cap: ACC-R2A-CAP","note":"The wall arm option is needed of the camera needs be off the wall or if a better camera angle is needed"},{"accessory":"","note":"This camera can be mounted directly to an outdoor wall as long as proper water sealing is applied"}]},{"model":"R120","mount":"Indoor Ceiling","options":[{"accessory":"Universal Drop Ceiling Mount: ACC-DCM1","note":"The drop ceiling mount should only be used if the camera is being installed on drop celing tiles"},{"accessory":"Junction Box: ACC-R100-JB2","note":"The junction box is only needed indoors if mounting the camera to a ceiling is not available."},{"accessory":"Ceiling Mount: ACC-R2-CM + Extension Rod: ACC-ROD-40CM (optional) + R2A Pendant Cap: ACC-R2A-CAP","note":"This option is for a ceiling that is concreate, brink or metal. The rod is optional."}]},{"model":"R120","mount":"Outdoor Ceiling","options":[{"accessory":"Junction Box: ACC-R100-JB2","note":"The junction box is only needed outdoors if mounting the camera to a ceiling is not available."},{"accessory":"Ceiling Mount: ACC-R2-CM + Extension Rod: ACC-ROD-40CM (optional) + R2A Pendant Cap: ACC-R2A-CAP","note":"This option is for a ceiling that is concreate, brink or metal. The rod is optional."},{"accessory":"","note":"This camera can be mounted directly to an outdoor ceiling as long as proper water sealing is applied"}]},{"model":"R120","mount":"Corner Mount","options":[{"accessory":"Corner Bracket: ACC-R2-CB + Wall Arm Junction Box: ACC-ARM-JB + Arm: ACC-R2-ARM + R2A Pendant Cap: ACC-R2A-CAP","note":"These accessories are for a corner mounted application."}]},{"model":"R120","mount":"Pole Mount","options":[{"accessory":"Pole Bracket: ACC-R2-PB + Wall Arm Junction Box: ACC-ARM-JB + Arm: ACC-R2-ARM + R2A Pendant Cap: ACC-R2A-CAP","note":"These accessories are for a pole application."}]},{"model":"R150","mount":"Indoor Wall","options":[{"accessory":"Not Applicable","note":"No Accessory needed"},{"accessory":"Not Applicable","note":"No Accessory needed"},{"accessory":"Not Applicable","note":"No Accessory needed"}]},{"model":"R150","mount":"Outdoor Wall","options":[{"accessory":"Not Applicable","note":"No Accessory needed"},{"accessory":"Not Applicable","note":"No Accessory needed"},{"accessory":"Not Applicable","note":"No Accessory needed"}]},{"model":"R150","mount":"Indoor Ceiling","options":[{"accessory":"Not Applicable","note":"No Accessory needed"},{"accessory":"Not Applicable","note":"No Accessory needed"},{"accessory":"Not Applicable","note":"No Accessory needed"}]},{"model":"R150","mount":"Outdoor Ceiling","options":[{"accessory":"Not Applicable","note":"No Accessory needed"},{"accessory":"Not Applicable","note":"No Accessory needed"},{"accessory":"Not Applicable","note":"No Accessory needed"}]},{"model":"R150","mount":"Corner Mount","options":[{"accessory":"Not Applicable","note":"No Accessory needed"},{"accessory":"Not Applicable","note":"No Accessory needed"},{"accessory":"Not Applicable","note":"No Accessory needed"}]},{"model":"R150","mount":"Pole Mount","options":[{"accessory":"Not Applicable","note":"No Accessory needed"},{"accessory":"Not Applicable","note":"No Accessory needed"},{"accessory":"Not Applicable","note":"No Accessory needed"}]},{"model":"R200","mount":"Indoor Wall","options":[{"accessory":"Junction Box: ACC-R100-JB2","note":"The junction box is only needed indoors if mounting the camera to a wall is not available."},{"accessory":"","note":"This camera can be mounted directly to an indoor wall as long as proper water sealing is applied"}]},{"model":"R200","mount":"Outdoor Wall","options":[{"accessory":"Junction Box: ACC-R100-JB2","note":"The junction box is needed outdoors for proper water seal and also conduit connection (if applicable)"},{"accessory":"Wall Arm Junction Box: ACC-ARM-JB + Arm: ACC-R2-ARM + R2A Pendant Cap: ACC-R2A-CAP","note":"The wall arm option is needed of the camera needs be off the wall or if a better camera angle is needed"},{"accessory":"","note":"This camera can be mounted directly to an outdoor wall as long as proper water sealing is applied"}]},{"model":"R200","mount":"Indoor Ceiling","options":[{"accessory":"Universal Drop Ceiling Mount: ACC-DCM1","note":"The drop ceiling mount should only be used if the camera is being installed on drop celing tiles"},{"accessory":"Junction Box: ACC-R100-JB2","note":"The junction box is only needed indoors if mounting the camera to a ceiling is not available."},{"accessory":"Ceiling Mount: ACC-R2-CM + Extension Rod: ACC-ROD-40CM (optional) + R2A Pendant Cap: ACC-R2A-CAP","note":"This option is for a ceiling that is concreate, brink or metal. The rod is optional."}]},{"model":"R200","mount":"Outdoor Ceiling","options":[{"accessory":"Junction Box: ACC-R100-JB2","note":"The junction box is only needed outdoors if mounting the camera to a ceiling is not available."},{"accessory":"Ceiling Mount: ACC-R2-CM + Extension Rod: ACC-ROD-40CM (optional) + R2A Pendant Cap: ACC-R2A-CAP","note":"This option is for a ceiling that is concreate, brink or metal. The rod is optional."},{"accessory":"","note":"This camera can be mounted directly to an outdoor ceiling as long as proper water sealing is applied"}]},{"model":"R200","mount":"Corner Mount","options":[{"accessory":"Corner Bracket: ACC-R2-CB + Wall Arm Junction Box: ACC-ARM-JB + Arm: ACC-R2-ARM + R2A Pendant Cap: ACC-R2A-CAP","note":"These accessories are for a corner mounted application."}]},{"model":"R200","mount":"Pole Mount","options":[{"accessory":"Pole Bracket: ACC-R2-PB + Wall Arm Junction Box: ACC-ARM-JB + Arm: ACC-R2-ARM + R2A Pendant Cap: ACC-R2A-CAP","note":"These accessories are for a pole application."}]},{"model":"R230","mount":"Indoor Wall","options":[{"accessory":"R230 Junction Box: ACC-R23-JB","note":"The junction box is only needed indoors if mounting the camera to a wall is not available."},{"accessory":"","note":"Most Indoor installs will not need a accessory"}]},{"model":"R230","mount":"Outdoor Wall","options":[{"accessory":"R230 Junction Box: ACC-R23-JB","note":"The junction box is needed outdoors for proper water seal and also conduit connection (if applicable)"},{"accessory":"Wall Arm Junction Box: ACC-ARM-JB + Arm: ACC-R2-ARM + R2A Pendant Cap: ACC-R2A-CAP","note":"The wall arm option is needed of the camera needs be off the wall or if a better camera angle is needed"},{"accessory":"","note":"This camera can be mounted directly to an outdoor wall as long as proper water sealing is applied"}]},{"model":"R230","mount":"Indoor Ceiling","options":[{"accessory":"Universal Drop Ceiling Mount: ACC-DCM1","note":"The drop ceiling mount should only be used if the camera is being installed on drop celing tiles"},{"accessory":"R230 Junction Box: ACC-R23-JB","note":"The junction box is only needed indoors if mounting the camera to a ceiling is not available."},{"accessory":"Ceiling Mount: ACC-R2-CM + Extension Rod: ACC-ROD-40CM (optional) + R2A Pendant Cap: ACC-R2A-CAP","note":"This option is for a ceiling that is concreate, brink or metal. The rod is optional."}]},{"model":"R230","mount":"Outdoor Ceiling","options":[{"accessory":"Junction Box: ACC-R100-JB2","note":"The junction box is only needed outdoors if mounting the camera to a ceiling is not available and conduit run is needed"},{"accessory":"Ceiling Mount: ACC-R2-CM + Extension Rod: ACC-ROD-40CM (optional) + R2A Pendant Cap: ACC-R2A-CAP","note":"This option is for a ceiling that is concreate, brink or metal. The rod is optional."},{"accessory":"","note":"This camera can be mounted directly to an outdoor ceiling as long as proper water sealing is applied"}]},{"model":"R230","mount":"Corner Mount","options":[{"accessory":"Corner Bracket: ACC-R2-CB + Wall Arm Junction Box: ACC-ARM-JB + Arm: ACC-R2-ARM + R2A Pendant Cap: ACC-R2A-CAP","note":"These accessories are for a corner mounted application."}]},{"model":"R230","mount":"Pole Mount","options":[{"accessory":"Pole Bracket: ACC-R2-PB + Wall Arm Junction Box: ACC-ARM-JB + Arm: ACC-R2-ARM + R2A Pendant Cap: ACC-R2A-CAP","note":"These accessories are for a pole application."}]},{"model":"R360S","mount":"Indoor Wall","options":[{"accessory":"R360S Wedge Mount: ACC-R3S-JBW","note":"This mount is ideal for wall mounted applications that need to have a slight angle so the camera can see downward"},{"accessory":"R360S Conduit Adapter: ACC-R3A-CND","note":"This option is for when conduit is needed to connect to the camera for PoE"},{"accessory":"","note":"This camera can be mounted directly to an indoor wall as long as proper water sealing is applied"},{"accessory":"TP-Link PoE++ Injector: ACC-POE-INJBT","note":"Optional \u2014 add if your PoE switch does not provide sufficient power. Required if switch is not PoE+ (802.3at) capable."}]},{"model":"R360S","mount":"Outdoor Wall","options":[{"accessory":"R360S Conduit Adapter: ACC-R3A-CND","note":"This option is for when conduit is needed to connect to the camera for PoE"},{"accessory":"Wall Arm Junction Box: ACC-ARM-JB + Arm: ACC-R2-ARM + R360S Pendant Cap: ACC-R3A-CAP","note":"The wall arm option is needed of the camera needs be off the wall or if a better camera angle is needed"},{"accessory":"R360S Wedge Mount: ACC-R3S-JBW","note":"This mount is ideal for wall mounted applications that need to have a slight angle so the camera can see downward"},{"accessory":"TP-Link PoE++ Injector: ACC-POE-INJBT","note":"Optional \u2014 add if your PoE switch does not provide sufficient power. Required if switch is not PoE+ (802.3at) capable."}]},{"model":"R360S","mount":"Indoor Ceiling","options":[{"accessory":"R360S Conduit Adapter: ACC-R3A-CND","note":"This option is for when conduit is needed to connect to the camera for PoE"},{"accessory":"Ceiling Mount: ACC-R2-CM + Extension Rod: ACC-ROD-40CM (optional) + R360S Pendant Cap: ACC-R3A-CAP","note":"This option is for a ceiling that is concreate, brink or metal. The rod is optional."},{"accessory":"","note":"This camera can be mounted directly to an outdoor ceiling as long as proper water sealing is applied"},{"accessory":"TP-Link PoE++ Injector: ACC-POE-INJBT","note":"Optional \u2014 add if your PoE switch does not provide sufficient power. Required if switch is not PoE+ (802.3at) capable."}]},{"model":"R360S","mount":"Outdoor Ceiling","options":[{"accessory":"Ceiling Mount: ACC-R2-CM + Extension Rod: ACC-ROD-40CM (optional) + R360S Pendant Cap: ACC-R3A-CAP","note":"This option is for a ceiling that is concreate, brink or metal. The rod is optional."},{"accessory":"R360S Conduit Adapter: ACC-R3A-CND","note":"This option is for when conduit is needed to connect to the camera for PoE"},{"accessory":"","note":"This camera can be mounted directly to an outdoor wall as long as proper water sealing is applied"},{"accessory":"TP-Link PoE++ Injector: ACC-POE-INJBT","note":"Optional \u2014 add if your PoE switch does not provide sufficient power. Required if switch is not PoE+ (802.3at) capable."}]},{"model":"R360S","mount":"Corner Mount","options":[{"accessory":"Corner Bracket: ACC-R2-CB + Wall Arm Junction Box: ACC-ARM-JB + Arm: ACC-R2-ARM + R360S Pendant Cap: ACC-R3A-CAP","note":"These accessories are for a corner mounted application."},{"accessory":"TP-Link PoE++ Injector: ACC-POE-INJBT","note":"Optional \u2014 add if your PoE switch does not provide sufficient power. Required if switch is not PoE+ (802.3at) capable."}]},{"model":"R360S","mount":"Pole Mount","options":[{"accessory":"Pole Bracket: ACC-R2-PB + Wall Arm Junction Box: ACC-ARM-JB + Arm: ACC-R2-ARM + R360S Pendant Cap: ACC-R3A-CAP","note":"These accessories are for a pole application."},{"accessory":"TP-Link PoE++ Injector: ACC-POE-INJBT","note":"Optional \u2014 add if your PoE switch does not provide sufficient power. Required if switch is not PoE+ (802.3at) capable."}]},{"model":"R360","mount":"Indoor Wall","options":[{"accessory":"R360 Wedge Mount: ACC-R3-JBW","note":"Ideal for wall installations needing a slight downward angle. \u26a0\ufe0f R360 uses ACC-R3-JBW \u2014 different from R360S which uses ACC-R3S-JBW."},{"accessory":"R360 Junction Box: ACC-R23-JB","note":"Only needed if direct wall mounting is not available. Shared with R230."},{"accessory":"","note":"The R360 can be mounted directly to an indoor wall."}]},{"model":"R360","mount":"Outdoor Wall","options":[{"accessory":"R360 Wedge Mount: ACC-R3-JBW","note":"Ideal for wall installations needing a slight downward angle. \u26a0\ufe0f R360 uses ACC-R3-JBW \u2014 different from R360S which uses ACC-R3S-JBW."},{"accessory":"Wall Arm Junction Box: ACC-ARM-JB + Arm: ACC-R2-ARM + R360/R400 Pendant Cap: ACC-R3R4-CAP","note":"Use when the camera needs off-wall clearance or a better angle. \u26a0\ufe0f R360 uses ACC-R3R4-CAP \u2014 different from R360S which uses ACC-R3A-CAP."},{"accessory":"","note":"The R360 can be mounted directly to an outdoor wall with proper water sealing."}]},{"model":"R360","mount":"Indoor Ceiling","options":[{"accessory":"Universal Drop Ceiling Mount: ACC-DCM1","note":"Use only for drop ceiling tile installations."},{"accessory":"Ceiling Mount: ACC-R2-CM + Extension Rod: ACC-ROD-40CM (optional) + R360/R400 Pendant Cap: ACC-R3R4-CAP","note":"For concrete, brick or metal ceilings. Extension rod is optional. \u26a0\ufe0f R360 uses ACC-R3R4-CAP \u2014 different from R360S which uses ACC-R3A-CAP."},{"accessory":"","note":"The R360 can be mounted directly to an indoor ceiling."}]},{"model":"R360","mount":"Outdoor Ceiling","options":[{"accessory":"Ceiling Mount: ACC-R2-CM + Extension Rod: ACC-ROD-40CM (optional) + R360/R400 Pendant Cap: ACC-R3R4-CAP","note":"For concrete, brick or metal ceilings. Extension rod is optional. \u26a0\ufe0f R360 uses ACC-R3R4-CAP \u2014 different from R360S which uses ACC-R3A-CAP."},{"accessory":"","note":"The R360 can be mounted directly to an outdoor ceiling with proper water sealing."}]},{"model":"R360","mount":"Corner Mount","options":[{"accessory":"Corner Bracket: ACC-R2-CB + Wall Arm Junction Box: ACC-ARM-JB + Arm: ACC-R2-ARM + R360/R400 Pendant Cap: ACC-R3R4-CAP","note":"For corner mounted applications. \u26a0\ufe0f R360 uses ACC-R3R4-CAP \u2014 different from R360S which uses ACC-R3A-CAP."}]},{"model":"R360","mount":"Pole Mount","options":[{"accessory":"Pole Bracket: ACC-R2-PB + Wall Arm Junction Box: ACC-ARM-JB + Arm: ACC-R2-ARM + R360/R400 Pendant Cap: ACC-R3R4-CAP","note":"For pole mounted applications. \u26a0\ufe0f R360 uses ACC-R3R4-CAP \u2014 different from R360S which uses ACC-R3A-CAP."}]},{"model":"R400","mount":"Indoor Wall","options":[{"accessory":"Wall Arm Junction Box: ACC-ARM-JB + Arm: ACC-R2-ARM + R360/R400 Pendant Cap: ACC-R3R4-CAP","note":"Wall arm provides off-wall clearance or a better camera angle. Uses ACC-R3R4-CAP \u2014 same cap as R360."},{"accessory":"","note":"The R400 can be mounted directly to an indoor wall."}]},{"model":"R400","mount":"Outdoor Wall","options":[{"accessory":"Wall Arm Junction Box: ACC-ARM-JB + Arm: ACC-R2-ARM + R360/R400 Pendant Cap: ACC-R3R4-CAP","note":"Wall arm provides off-wall clearance or a better camera angle. Uses ACC-R3R4-CAP \u2014 same cap as R360."},{"accessory":"","note":"The R400 can be mounted directly to an outdoor wall with proper water sealing."}]},{"model":"R400","mount":"Indoor Ceiling","options":[{"accessory":"Universal Drop Ceiling Mount: ACC-DCM1","note":"Use only for drop ceiling tile installations."},{"accessory":"Ceiling Mount: ACC-R2-CM + Extension Rod: ACC-ROD-40CM (optional) + R360/R400 Pendant Cap: ACC-R3R4-CAP","note":"For concrete, brick or metal ceilings. Extension rod is optional."},{"accessory":"","note":"The R400 can be mounted directly to an indoor ceiling."}]},{"model":"R400","mount":"Outdoor Ceiling","options":[{"accessory":"Ceiling Mount: ACC-R2-CM + Extension Rod: ACC-ROD-40CM (optional) + R360/R400 Pendant Cap: ACC-R3R4-CAP","note":"For concrete, brick or metal ceilings. Extension rod is optional."},{"accessory":"","note":"The R400 can be mounted directly to an outdoor ceiling with proper water sealing."}]},{"model":"R400","mount":"Corner Mount","options":[{"accessory":"Corner Bracket: ACC-R2-CB + Wall Arm Junction Box: ACC-ARM-JB + Arm: ACC-R2-ARM + R360/R400 Pendant Cap: ACC-R3R4-CAP","note":"For corner mounted applications."}]},{"model":"R400","mount":"Pole Mount","options":[{"accessory":"Pole Bracket: ACC-R2-PB + Wall Arm Junction Box: ACC-ARM-JB + Arm: ACC-R2-ARM + R360/R400 Pendant Cap: ACC-R3R4-CAP","note":"For pole mounted applications."}]},{"model":"R410","mount":"Indoor Wall","options":[{"accessory":"R410 Conduit Adapter: ACC-R4A-CND","note":"This option is for when conduit is needed to connect to the camera for PoE"},{"accessory":"","note":"This camera can be mounted directly to an indoor wall as long as proper water sealing is applied"},{"accessory":"TP-Link PoE++ Injector: ACC-POE-INJBT","note":"Optional \u2014 add if your PoE switch does not provide sufficient power. Required if switch is not PoE+ (802.3at) capable."}]},{"model":"R410","mount":"Outdoor Wall","options":[{"accessory":"Wall Arm Junction Box: ACC-ARM-JB + Arm: ACC-R2-ARM + R410 Pendant Cap: ACC-R4A-CAP","note":"The wall arm option is needed of the camera needs be off the wall or if a better camera angle is needed"},{"accessory":"R410 Conduit Adapter: ACC-R4A-CND","note":"This option is for when conduit is needed to connect to the camera for PoE"},{"accessory":"","note":"This camera can be mounted directly to an outdoor wall as long as proper water sealing is applied"},{"accessory":"TP-Link PoE++ Injector: ACC-POE-INJBT","note":"Optional \u2014 add if your PoE switch does not provide sufficient power. Required if switch is not PoE+ (802.3at) capable."}]},{"model":"R410","mount":"Indoor Ceiling","options":[{"accessory":"Universal Drop Ceiling Mount: ACC-DCM1","note":"The drop ceiling mount should only be used if the camera is being installed on drop celing tiles"},{"accessory":"Ceiling Mount: ACC-R2-CM + Extension Rod: ACC-ROD-40CM (optional) + R410 Pendant Cap: ACC-R4A-CAP","note":"This option is for a ceiling that is concreate, brink or metal. The rod is optional."},{"accessory":"R410 Conduit Adapter: ACC-R4A-CND","note":"This option is for when conduit is needed to connect to the camera for PoE"},{"accessory":"TP-Link PoE++ Injector: ACC-POE-INJBT","note":"Optional \u2014 add if your PoE switch does not provide sufficient power. Required if switch is not PoE+ (802.3at) capable."}]},{"model":"R410","mount":"Outdoor Ceiling","options":[{"accessory":"Ceiling Mount: ACC-R2-CM + Extension Rod: ACC-ROD-40CM (optional) + R410 Pendant Cap: ACC-R4A-CAP","note":"This option is for a ceiling that is concreate, brink or metal. The rod is optional."},{"accessory":"R410 Conduit Adapter: ACC-R4A-CND","note":"This option is for when conduit is needed to connect to the camera for PoE"},{"accessory":"","note":"This camera can be mounted directly to an outdoor wall as long as proper water sealing is applied"},{"accessory":"TP-Link PoE++ Injector: ACC-POE-INJBT","note":"Optional \u2014 add if your PoE switch does not provide sufficient power. Required if switch is not PoE+ (802.3at) capable."}]},{"model":"R410","mount":"Corner Mount","options":[{"accessory":"Corner Bracket: ACC-R2-CB + Wall Arm Junction Box: ACC-ARM-JB + Arm: ACC-R2-ARM + R410 Pendant Cap: ACC-R4A-CAP","note":"These accessories are for a corner mounted application."},{"accessory":"TP-Link PoE++ Injector: ACC-POE-INJBT","note":"Optional \u2014 add if your PoE switch does not provide sufficient power. Required if switch is not PoE+ (802.3at) capable."}]},{"model":"R410","mount":"Pole Mount","options":[{"accessory":"Pole Bracket: ACC-R2-PB + Wall Arm Junction Box: ACC-ARM-JB + Arm: ACC-R2-ARM + R410 Pendant Cap: ACC-R4A-CAP","note":"These accessories are for a pole application."},{"accessory":"TP-Link PoE++ Injector: ACC-POE-INJBT","note":"Optional \u2014 add if your PoE switch does not provide sufficient power. Required if switch is not PoE+ (802.3at) capable."}]},{"model":"R500","mount":"Indoor Wall","options":[{"accessory":"R5 Junction Box: ACC-R5-JB","note":"The junction box is only needed indoors if mounting the camera to a wall is not available."},{"accessory":"","note":"This camera can be mounted directly to an indoor wall."}]},{"model":"R500","mount":"Outdoor Wall","options":[{"accessory":"R5 Junction Box: ACC-R5-JB","note":"The junction box is needed outdoors for proper water seal and also conduit connection (if applicable)"},{"accessory":"","note":"This camera can be mounted directly to an outdoor wall."}]},{"model":"R500","mount":"Indoor Ceiling","options":[{"accessory":"R5 Junction Box: ACC-R5-JB","note":"The junction box is only needed indoors if mounting the camera to a ceiling is not available."},{"accessory":"","note":"This camera can be mounted directly to an indoor ceiling."}]},{"model":"R500","mount":"Outdoor Ceiling","options":[{"accessory":"R5 Junction Box: ACC-R5-JB","note":"The junction box is needed outdoors for proper water seal and also conduit connection (if applicable)"},{"accessory":"","note":"This camera can be mounted directly to an outdoor ceiling."}]},{"model":"R500","mount":"Corner Mount","options":[{"accessory":"Not Applicable","note":""},{"accessory":"Not Applicable","note":""},{"accessory":"Not Applicable","note":""}]},{"model":"R500","mount":"Pole Mount","options":[{"accessory":"R5 Pole Bracket: ACC-R5-POLE","note":"These accessories are for a pole application."}]},{"model":"R510","mount":"Indoor Wall","options":[{"accessory":"R5 Junction Box: ACC-R5-JB","note":"The junction box is only needed indoors if mounting the camera to a wall is not available."},{"accessory":"","note":"This camera can be mounted directly to an indoor wall."}]},{"model":"R510","mount":"Outdoor Wall","options":[{"accessory":"R5 Junction Box: ACC-R5-JB","note":"The junction box is needed outdoors for proper water seal and also conduit connection (if applicable)"},{"accessory":"","note":"This camera can be mounted directly to an outdoor wall."}]},{"model":"R510","mount":"Indoor Ceiling","options":[{"accessory":"R5 Junction Box: ACC-R5-JB","note":"The junction box is only needed indoors if mounting the camera to a ceiling is not available."},{"accessory":"","note":"This camera can be mounted directly to an indoor ceiling."}]},{"model":"R510","mount":"Outdoor Ceiling","options":[{"accessory":"R5 Junction Box: ACC-R5-JB","note":"The junction box is needed outdoors for proper water seal and also conduit connection (if applicable)"},{"accessory":"","note":"This camera can be mounted directly to an outdoor ceiling."}]},{"model":"R510","mount":"Corner Mount","options":[{"accessory":"Not Applicable","note":""},{"accessory":"Not Applicable","note":""},{"accessory":"Not Applicable","note":""}]},{"model":"R510","mount":"Pole Mount","options":[{"accessory":"R5 Pole Bracket: ACC-R5-POLE","note":"These accessories are for a pole application."}]},{"model":"R540","mount":"Indoor Wall","options":[{"accessory":"R5 Junction Box: ACC-R5-JB","note":"The junction box is only needed indoors if mounting the camera to a wall is not available."},{"accessory":"","note":"This camera can be mounted directly to an indoor wall as long as proper water sealing is applied"},{"accessory":"TP-Link PoE++ Injector: ACC-POE-INJBT","note":"Optional \u2014 add if your PoE switch does not provide sufficient power. Required if switch is not PoE+ (802.3at) capable."}]},{"model":"R540","mount":"Outdoor Wall","options":[{"accessory":"R5 Junction Box: ACC-R5-JB","note":"The junction box is needed outdoors for proper water seal and also conduit connection (if applicable)"},{"accessory":"","note":"This camera can be mounted directly to an outdoor wall as long as proper water sealing is applied"},{"accessory":"TP-Link PoE++ Injector: ACC-POE-INJBT","note":"Optional \u2014 add if your PoE switch does not provide sufficient power. Required if switch is not PoE+ (802.3at) capable."}]},{"model":"R540","mount":"Indoor Ceiling","options":[{"accessory":"R5 Junction Box: ACC-R5-JB","note":"The junction box is only needed indoors if mounting the camera to a wall is not available."},{"accessory":"","note":"This camera can be mounted directly to an indoor ceiling as long as proper water sealing is applied"},{"accessory":"TP-Link PoE++ Injector: ACC-POE-INJBT","note":"Optional \u2014 add if your PoE switch does not provide sufficient power. Required if switch is not PoE+ (802.3at) capable."}]},{"model":"R540","mount":"Outdoor Ceiling","options":[{"accessory":"R5 Junction Box: ACC-R5-JB","note":"The junction box is only needed indoors if mounting the camera to a wall is not available."},{"accessory":"","note":"This camera can be mounted directly to an outdoor ceiling as long as proper water sealing is applied"},{"accessory":"TP-Link PoE++ Injector: ACC-POE-INJBT","note":"Optional \u2014 add if your PoE switch does not provide sufficient power. Required if switch is not PoE+ (802.3at) capable."}]},{"model":"R540","mount":"Corner Mount","options":[{"accessory":"Not Applicable","note":""},{"accessory":"Not Applicable","note":""},{"accessory":"Not Applicable","note":""}]},{"model":"R540","mount":"Pole Mount","options":[{"accessory":"R5 Pole Bracket: ACC-R5-POLE","note":"These accessories are for a pole application."},{"accessory":"TP-Link PoE++ Injector: ACC-POE-INJBT","note":"Optional \u2014 add if your PoE switch does not provide sufficient power. Required if switch is not PoE+ (802.3at) capable."}]},{"model":"R545","mount":"Indoor Wall","options":[{"accessory":"R5 Junction Box: ACC-R5-JB","note":"The junction box is only needed indoors if mounting the camera to a wall is not available."},{"accessory":"","note":"This camera can be mounted directly to an indoor wall as long as proper water sealing is applied"},{"accessory":"TP-Link PoE++ Injector: ACC-POE-INJBT","note":"Optional \u2014 add if your PoE switch does not provide sufficient power. Required if switch is not PoE+ (802.3at) capable."}]},{"model":"R545","mount":"Outdoor Wall","options":[{"accessory":"R5 Junction Box: ACC-R5-JB","note":"The junction box is needed outdoors for proper water seal and also conduit connection (if applicable)"},{"accessory":"","note":"This camera can be mounted directly to an outdoor wall as long as proper water sealing is applied"},{"accessory":"TP-Link PoE++ Injector: ACC-POE-INJBT","note":"Optional \u2014 add if your PoE switch does not provide sufficient power. Required if switch is not PoE+ (802.3at) capable."}]},{"model":"R545","mount":"Indoor Ceiling","options":[{"accessory":"R5 Junction Box: ACC-R5-JB","note":"The junction box is needed indoors for proper water seal and also conduit connection (if applicable)"},{"accessory":"","note":"This camera can be mounted directly to an indoor ceiling as long as proper water sealing is applied"},{"accessory":"TP-Link PoE++ Injector: ACC-POE-INJBT","note":"Optional \u2014 add if your PoE switch does not provide sufficient power. Required if switch is not PoE+ (802.3at) capable."}]},{"model":"R545","mount":"Outdoor Ceiling","options":[{"accessory":"R5 Junction Box: ACC-R5-JB","note":"The junction box is needed outdoors for proper water seal and also conduit connection (if applicable)"},{"accessory":"","note":"This camera can be mounted directly to an outdoor ceiling as long as proper water sealing is applied"},{"accessory":"TP-Link PoE++ Injector: ACC-POE-INJBT","note":"Optional \u2014 add if your PoE switch does not provide sufficient power. Required if switch is not PoE+ (802.3at) capable."}]},{"model":"R545","mount":"Corner Mount","options":[{"accessory":"Not Applicable","note":""},{"accessory":"Not Applicable","note":""},{"accessory":"Not Applicable","note":""}]},{"model":"R545","mount":"Pole Mount","options":[{"accessory":"R5 Pole Bracket: ACC-R5-POLE","note":"These accessories are for a pole application."},{"accessory":"TP-Link PoE++ Injector: ACC-POE-INJBT","note":"Optional \u2014 add if your PoE switch does not provide sufficient power. Required if switch is not PoE+ (802.3at) capable."}]},{"model":"R520","mount":"Indoor Wall","options":[{"accessory":"R520 Junction Box: ACC-R52-JB","note":"The junction box is only needed indoors if mounting the camera to a wall is not available."},{"accessory":"","note":"This camera can be mounted directly to an indoor wall as long as proper water sealing is applied"}]},{"model":"R520","mount":"Outdoor Wall","options":[{"accessory":"R520 Junction Box: ACC-R52-JB","note":"The junction box is needed outdoors for proper water seal and also conduit connection (if applicable)"},{"accessory":"","note":"This camera can be mounted directly to an outdoor wall as long as proper water sealing is applied"}]},{"model":"R520","mount":"Indoor Ceiling","options":[{"accessory":"R520 Junction Box: ACC-R52-JB","note":"The junction box is needed indoors for proper water seal and also conduit connection (if applicable)"},{"accessory":"","note":"This camera can be mounted directly to an indoor ceiling as long as proper water sealing is applied"}]},{"model":"R520","mount":"Outdoor Ceiling","options":[{"accessory":"R520 Junction Box: ACC-R52-JB","note":"The junction box is needed outdoors for proper water seal and also conduit connection (if applicable)"},{"accessory":"","note":"This camera can be mounted directly to an outdoor ceiling as long as proper water sealing is applied"}]},{"model":"R520","mount":"Corner Mount","options":[{"accessory":"Corner Bracket: ACC-R2-CB + R520 Junction Box: ACC-R52-JB","note":"These accessories are for a corner mounted application."}]},{"model":"R520","mount":"Pole Mount","options":[{"accessory":"Pole Bracket: ACC-R2-PB + R520 Junction Box: ACC-R52-JB","note":"These accessories are for a pole application."}]},{"model":"R600","mount":"Indoor Wall","options":[{"accessory":"Wall Arm Junction Box: ACC-ARM-JB + Arm: ACC-R2-ARM + R600 Pendant Cap: ACC-R600-CAP + TP-Link PoE++ Injector: ACC-POE-INJBT","note":"This is the accessory list for the R600 for an indoor wall applications."}]},{"model":"R600","mount":"Outdoor Wall","options":[{"accessory":"Wall Arm Junction Box: ACC-ARM-JB + Arm: ACC-R2-ARM + R600 Pendant Cap: ACC-R600-CAP + TP-Link PoE++ Injector: ACC-POE-INJBT","note":"This is the accessory list for the R600 for an outdoor wall applications."}]},{"model":"R600","mount":"Indoor Ceiling","options":[{"accessory":"Ceiling Mount: ACC-R2-CM + Extension Rod: ACC-ROD-40CM (optional) + R600 Pendant Cap: ACC-R600-CAP + TP-Link PoE++ Injector: ACC-POE-INJBT","note":"This is the accessory list for the R600 for an indoor ceiling applications."}]},{"model":"R600","mount":"Outdoor Ceiling","options":[{"accessory":"Ceiling Mount: ACC-R2-CM + Extension Rod: ACC-ROD-40CM (optional) + R600 Pendant Cap: ACC-R600-CAP + TP-Link PoE++ Injector: ACC-POE-INJBT","note":"This is the accessory list for the R600 for an outdoor ceiling applications."}]},{"model":"R600","mount":"Corner Mount","options":[{"accessory":"Corner Bracket: ACC-R2-CB + Wall Arm Junction Box: ACC-ARM-JB + Arm: ACC-R2-ARM + R600 Pendant Cap: ACC-R600-CAP + TP-Link PoE++ Injector: ACC-POE-INJBT","note":"These accessories are for a corner mounted application."}]},{"model":"R600","mount":"Pole Mount","options":[{"accessory":"Pole Bracket: ACC-R2-PB + Wall Arm Junction Box: ACC-ARM-JB + Arm: ACC-R2-ARM + R600 Pendant Cap: ACC-R600-CAP + TP-Link PoE++ Injector: ACC-POE-INJBT","note":"These accessories are for a pole application."}]}],"access":[{"model":"DR20","mount":"Indoor Wall","options":[{"accessory":"Wall Plate: ACC-DR20-WP","note":"This wall plate is used to attach to a 1-gang box and covers an existing single gang opening."},{"accessory":"","note":"Most Indoor installs will not need a accessory"}]},{"model":"DR20","mount":"Outdoor Wall","options":[{"accessory":"Wall Plate: ACC-DR20-WP","note":"This wall plate is used to attach to a 1-gang box and covers an existing single gang opening."},{"accessory":"","note":"Some outdoor installs will not need a accessory"}]},{"model":"DR40","mount":"Indoor Wall","options":[{"accessory":"DR40 Wall Plate: ACC-DR40-WP + DR40 Angle Wall Mount: ACC-DR40-AWM","note":"This wall plate covers an existing single gang opening and attaches to a 1-gang box. The angle mount is needed when angling the DR40 is required."},{"accessory":"DR40 Wall Plate: ACC-DR40-WP","note":"This wall plate is used to attach to a 1-gang box and covers an existing single gang opening."},{"accessory":"","note":"Most Indoor installs will not need a accessory"}]},{"model":"DR40","mount":"Outdoor Wall","options":[{"accessory":"DR40 Wall Plate: ACC-DR40-WP + DR40 Angle Wall Mount: ACC-DR40-AWM","note":"The junction box is only needed indoors if mounting the camera to a wall is not available."},{"accessory":"DR40 Wall Plate: ACC-DR40-WP","note":"Most Indoor installs will not need a accessory"},{"accessory":"","note":"Some outdoor installs will not need a accessory"}]},{"model":"DC20","mount":"Indoor Wall","options":[{"accessory":"","note":"No Accessories Needed"},{"accessory":"","note":"No Accessories Needed"},{"accessory":"","note":"No Accessories Needed"}]}],"sensors":[{"model":"A100","mount":"Indoor Wall","options":[{"accessory":"Junction Box: ACC-R100-JB2","note":"The junction box is only needed indoors if mounting the camera to a wall is not available."},{"accessory":"","note":"Most Indoor installs will not need a accessory"}]},{"model":"A100","mount":"Outdoor Wall","options":[{"accessory":"Junction Box: ACC-R100-JB2","note":"The junction box is needed outdoors for proper water seal and also conduit connection (if applicable)"},{"accessory":"Wall Arm Junction Box: ACC-ARM-JB + Arm: ACC-R2-ARM + R2A Pendant Cap: ACC-R2A-CAP","note":"The wall arm option is needed of the camera needs be off the wall or if a better camera angle is needed"},{"accessory":"","note":"This camera can be mounted directly to an outdoor wall as long as proper water sealing is applied"}]},{"model":"A100","mount":"Indoor Ceiling","options":[{"accessory":"Universal Drop Ceiling Mount: ACC-DCM1","note":"The drop ceiling mount should only be used if the camera is being installed on drop celing tiles"},{"accessory":"Junction Box: ACC-R100-JB2","note":"The junction box is only needed indoors if mounting the camera to a ceiling is not available."},{"accessory":"Ceiling Mount: ACC-R2-CM + Extension Rod: ACC-ROD-40CM (optional) + R2A Pendant Cap: ACC-R2A-CAP","note":"This option is for a ceiling that is concreate, brink or metal. The rod is optional."}]},{"model":"A100","mount":"Outdoor Ceiling","options":[{"accessory":"Junction Box: ACC-R100-JB2","note":"The junction box is only needed outdoors if mounting the camera to a ceiling is not available."},{"accessory":"Ceiling Mount: ACC-R2-CM + Extension Rod: ACC-ROD-40CM (optional) + R2A Pendant Cap: ACC-R2A-CAP","note":"This option is for a ceiling that is concreate, brink or metal. The rod is optional."},{"accessory":"","note":"This camera can be mounted directly to an outdoor ceiling as long as proper water sealing is applied"}]},{"model":"A100","mount":"Corner Mount","options":[{"accessory":"Corner Bracket: ACC-R2-CB + Wall Arm Junction Box: ACC-ARM-JB + Arm: ACC-R2-ARM + R2A Pendant Cap: ACC-R2A-CAP","note":"These accessories are for a corner mounted application."}]},{"model":"A100","mount":"Pole Mount","options":[{"accessory":"Pole Bracket: ACC-R2-PB + Wall Arm Junction Box: ACC-ARM-JB + Arm: ACC-R2-ARM + R2A Pendant Cap: ACC-R2A-CAP","note":"These accessories are for a pole application."}]},{"model":"E50","mount":"Indoor Wall","options":[{"accessory":"Junction Box: ACC-R100-JB2","note":"The junction box is only needed indoors if mounting the camera to a wall is not available."},{"accessory":"","note":"Most Indoor installs will not need a accessory"}]},{"model":"E50","mount":"Outdoor Wall","options":[{"accessory":"Junction Box: ACC-R100-JB2","note":"The junction box is needed outdoors for proper water seal and also conduit connection (if applicable)"},{"accessory":"Wall Arm Junction Box: ACC-ARM-JB + Arm: ACC-R2-ARM + R2A Pendant Cap: ACC-R2A-CAP","note":"The wall arm option is needed of the camera needs be off the wall or if a better camera angle is needed"},{"accessory":"","note":"This camera can be mounted directly to an outdoor wall as long as proper water sealing is applied"}]},{"model":"E50","mount":"Indoor Ceiling","options":[{"accessory":"Universal Drop Ceiling Mount: ACC-DCM1","note":"The drop ceiling mount should only be used if the camera is being installed on drop celing tiles"},{"accessory":"Junction Box: ACC-R100-JB2","note":"The junction box is only needed indoors if mounting the camera to a ceiling is not available."},{"accessory":"Ceiling Mount: ACC-R2-CM + Extension Rod: ACC-ROD-40CM (optional) + R2A Pendant Cap: ACC-R2A-CAP","note":"This option is for a ceiling that is concreate, brink or metal. The rod is optional."}]},{"model":"E50","mount":"Outdoor Ceiling","options":[{"accessory":"Junction Box: ACC-R100-JB2","note":"The junction box is only needed outdoors if mounting the camera to a ceiling is not available."},{"accessory":"Ceiling Mount: ACC-R2-CM + Extension Rod: ACC-ROD-40CM (optional) + R2A Pendant Cap: ACC-R2A-CAP","note":"This option is for a ceiling that is concreate, brink or metal. The rod is optional."},{"accessory":"","note":"This camera can be mounted directly to an outdoor ceiling as long as proper water sealing is applied"}]},{"model":"E50","mount":"Corner Mount","options":[{"accessory":"Corner Bracket: ACC-R2-CB + Wall Arm Junction Box: ACC-ARM-JB + Arm: ACC-R2-ARM + R2A Pendant Cap: ACC-R2A-CAP","note":"These accessories are for a corner mounted application."}]},{"model":"E50","mount":"Pole Mount","options":[{"accessory":"Pole Bracket: ACC-R2-PB + Wall Arm Junction Box: ACC-ARM-JB + Arm: ACC-R2-ARM + R2A Pendant Cap: ACC-R2A-CAP","note":"These accessories are for a pole application."}]}],"relay":[{"model":"N100","mount":"Rack","options":[{"accessory":"N100 Rack Mount: ACC-N2UA","note":"The rack mount is only needed if the client will be mounting the N100 on a rack. One ACC-N2UA fits up to 3 N100 units."}]}]};
-const IMAGES = {"ACC-DR20-WP": "https://www.rhombus.com/img/r230_jb_2023-feb-14_09-57-45pm-000_customizedview14341798277_png_alpha-1.webp", "ACC-DR40-AWM": "https://www.rhombus.com/img/acc-dr40-awm.webp", "ACC-DR40-WP": "https://www.rhombus.com/img/acc-dr40-wp.webp", "ACC-ENV-TEMP": "https://www.rhombus.com/img/acc-env-temp.webp", "ACC-ENV-LEAK": "https://www.rhombus.com/img/acc-env-leak.png", "ACC-ROD-40CM": "https://www.rhombus.com/img/extension_rod.webp", "ACC-R100-JB2": "https://www.rhombus.com/img/r120r200_junction_box.webp", "ACC-R23-CAP": "https://www.rhombus.com/img/r230-cap.webp", "ACC-R23-JB": "https://www.rhombus.com/img/r230-junction-box.webp", "ACC-R2A-CAP": "https://www.rhombus.com/img/r2a-cap-min.webp", "ACC-DCM1": "https://www.rhombus.com/img/universal-ceiling-mount.webp", "ACC-ARM-JB": "https://www.rhombus.com/img/wall-arm-junction-box.webp", "ACC-R3A-CAP": "https://www.rhombus.com/img/r360S-pendant-cap.png", "ACC-R2-ARM": "https://www.rhombus.com/img/arm_mount.webp", "ACC-R2-CM": "https://www.rhombus.com/img/ceiling-mount.webp", "ACC-R4A-CAP": "https://www.rhombus.com/img/acc-r4a-cap-min.webp", "ACC-R52-JB": "https://www.rhombus.com/img/r520-junction-box.webp", "ACC-R3A-CND": "https://www.rhombus.com/img/r360S-conduit-adapter.webp", "ACC-R4A-CND": "https://www.rhombus.com/img/acc-r4a-cnd-min.webp", "ACC-R2-CB": "https://www.rhombus.com/img/corner_bracket.webp", "ACC-R2-PB": "https://www.rhombus.com/img/pole-bracket.webp", "ACC-R5-JB": "https://www.rhombus.com/img/r500-junction-box.webp", "ACC-R5-POLE": "https://www.rhombus.com/img/r500-pole-bracket.webp", "ACC-R600-CAP": "https://www.rhombus.com/img/acc-dcm1-1.webp", "ACC-R3S-JBW": "https://www.rhombus.com/img/r360-wedge-mount.webp", "ACC-N2UA": "https://www.rhombus.com/img/n100-rack-mount.webp"};
-
-const POE_PLUS_PLUS_MODELS = new Set(['R600', 'R540', 'R545', 'R360S', 'R410']);
-
-let cat = 'cameras';
-
-const TITLES = {
-  cameras: 'Select Camera',
-  access:  'Select Access Control Device',
-  sensors: 'Select Sensor',
-  relay:   'Select Relay'
-};
-
-// --- URL param helpers ---
-function getParams() {
-  const p = new URLSearchParams(location.search);
-  return { cat: p.get('cat'), model: p.get('model'), mount: p.get('mount') };
-}
-
-function pushParams(c, model, mount) {
-  const p = new URLSearchParams();
-  if (c)     p.set('cat', c);
-  if (model) p.set('model', model);
-  if (mount) p.set('mount', mount);
-  const qs = p.toString();
-  history.replaceState(null, '', qs ? '?' + qs : location.pathname);
-}
-
-function selectCat(c, skipPush) {
-  cat = c;
-  document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', t.dataset.cat === c));
-  document.getElementById('sel-title').textContent = TITLES[c];
-  const models = [...new Set(DATA[c].map(r => r.model))];
-  const ms = document.getElementById('sel-model');
-  ms.innerHTML = '<option value="">— Choose model —</option>' + models.map(m => `<option>${m}</option>`).join('');
-  document.getElementById('sel-mount').innerHTML = '<option value="">— Choose mount type —</option>';
-  document.getElementById('results-area').innerHTML =
-    '<div class="placeholder"><span class="icon">👆</span>Choose a model and mount type above to see required accessories</div>';
-  if (!skipPush) pushParams(c, '', '');
-}
-
-function onModelChange(skipPush) {
-  const model = document.getElementById('sel-model').value;
-  const ms    = document.getElementById('sel-mount');
-  if (!model) { ms.innerHTML = '<option value="">— Choose mount type —</option>'; pushParams(cat, '', ''); return; }
-  const mounts = [...new Set(DATA[cat].filter(r => r.model === model).map(r => r.mount))];
-  ms.innerHTML = '<option value="">— Choose mount type —</option>' + mounts.map(m => `<option>${m}</option>`).join('');
-  if (!skipPush) pushParams(cat, model, '');
-  if (mounts.length === 1) { ms.value = mounts[0]; showResult(); }
-  else document.getElementById('results-area').innerHTML =
-    '<div class="placeholder"><span class="icon">👆</span>Now choose a mount type</div>';
-}
-
-// --- Copy SKU to clipboard ---
-function copySku(sku, btn) {
-  navigator.clipboard.writeText(sku).then(() => {
-    btn.textContent = 'Copied!';
-    btn.classList.add('copied');
-    setTimeout(() => { btn.textContent = 'Copy SKU'; btn.classList.remove('copied'); }, 1500);
-  });
-}
-
-// Extract ACC-XXXX part numbers from a string
-function extractParts(acc) {
-  const segments = acc.split(' + ').map(s => s.trim()).filter(Boolean);
-  return segments.map(seg => {
-    const sku = (seg.match(/ACC-[A-Z0-9\-]+/) || [])[0] || null;
-    const label = seg.replace(/ACC-[A-Z0-9\-]+/, '').replace(/:\s*$/, '').replace(/^\s*:\s*/, '').trim();
-    return { sku, label: label || seg, raw: seg };
-  });
-}
-
-function renderParts(acc) {
-  if (!acc) return '';
-  const parts = extractParts(acc);
-  if (!parts.length) return `<div class="na-text">✅ No accessory required</div>`;
-
-  const isNA = acc.toLowerCase().includes('not applicable') || acc.toLowerCase().includes('no accessor');
-  if (isNA) return `<div class="na-text">✅ No accessory required for this configuration</div>`;
-
-  let html = '<div class="acc-label">Required Accessories</div><div class="parts-grid">';
-  for (const p of parts) {
-    const img = p.sku ? IMAGES[p.sku] : null;
-    const copyBtn = p.sku ? `<button class="copy-btn" onclick="copySku('${p.sku}', this)">Copy SKU</button>` : '';
-    const optionalBadge = p.sku === 'ACC-ARM-JB' ? `<span style="background:#fef9c3;color:#854d0e;border:1px solid #fde047;border-radius:4px;padding:1px 6px;font-size:.62rem;font-weight:700;letter-spacing:.3px;text-transform:uppercase">Conduit Optional</span>` : '';
-    if (img) {
-      html += `<div class="part-tile">
-        <img src="${img}" alt="${p.label || p.sku}" loading="lazy" onerror="this.style.display='none'">
-        <div class="part-name">${p.label || ''}</div>
-        <div class="part-sku">${p.sku}</div>
-        ${optionalBadge}
-        ${copyBtn}
-      </div>`;
-    } else {
-      html += `<div class="part-tile no-img">
-        <div class="part-name">${p.label || p.raw}</div>
-        ${p.sku ? `<div class="part-sku">${p.sku}</div>` : ''}
-        ${optionalBadge}
-        ${copyBtn}
-      </div>`;
-    }
-  }
-  html += '</div>';
-  return html;
-}
-
-function showResult() {
-  const model = document.getElementById('sel-model').value;
-  const mount = document.getElementById('sel-mount').value;
-  const area  = document.getElementById('results-area');
-  if (!model || !mount) return;
-
-  pushParams(cat, model, mount);
-
-  const row = DATA[cat].find(r => r.model === model && r.mount === mount);
-  if (!row) { area.innerHTML = '<div class="placeholder"><span class="icon">🔍</span>No data found</div>'; return; }
-
-  const hdrColors = ['#17323b', '#1f6b7a', '#2a8a9b'];
-
-  let html = '';
-
-  // Sensor outdoor rain warning
-  const RAIN_SENSOR_MODELS = new Set(['A100', 'E50']);
-  if (cat === 'sensors' && RAIN_SENSOR_MODELS.has(model) && mount.toLowerCase().includes('outdoor')) {
-    html += `<div class="poe-banner" style="background:#e8f4fd;border-color:#3b82f6;">
-      <span class="poe-icon">🌧️</span>
-      <div>
-        <strong style="color:#1e3a5f">Overhang Required for Outdoor Installs</strong>
-        <span style="color:#1e4976">The ${model} is not fully weatherproof on its own. Outdoor installations are only suitable when the device is protected by an overhang or other cover that prevents direct rain exposure.</span>
-      </div>
-    </div>`;
-  }
-
-  // PoE++ warning banner
-  if (cat === 'cameras' && POE_PLUS_PLUS_MODELS.has(model)) {
-    html += `<div class="poe-banner">
-      <span class="poe-icon">⚡</span>
-      <div>
-        <strong>PoE+ Power Required</strong>
-        The ${model} requires a PoE+ (802.3at) capable switch. If your switch does not provide sufficient power, Rhombus offers a PoE++ injector (ACC-POE-INJBT) as an accessory to ensure proper power delivery.
-      </div>
-    </div>`;
-  }
-
-  html += `<div class="results-hdr">
-    <h3>${model} — ${mount}</h3>
-    <span class="badge">${row.options.length} option${row.options.length !== 1 ? 's' : ''}</span>
-  </div>`;
-
-  row.options.forEach((opt, i) => {
-    const acc  = opt.accessory || '';
-    const note = opt.note || '';
-    const isNA = !acc || acc.toLowerCase().includes('not applicable') || acc.toLowerCase().includes('no accessor');
-    const noteIsNA = note.toLowerCase().includes('no accessor') || note.toLowerCase().includes('not applicable');
-
-    const hasConduitAdapter = acc.match(/ACC-[A-Z0-9]*CND[A-Z0-9]*/);
-    const hasConduitNote = (acc + note).toLowerCase().includes('conduit') || acc.includes('ACC-ARM-JB');
-    const conduitBadge = hasConduitAdapter
-      ? `<span class="conduit-badge adapter">🔧 Conduit Adapter</span>`
-      : hasConduitNote
-        ? `<span class="conduit-badge ready">🔧 Conduit Ready</span>`
-        : '';
-
-    html += `<div class="opt-card">
-      <div class="opt-hdr" style="background:${hdrColors[i] || hdrColors[2]}">
-        <span class="opt-num">${i+1}</span>
-        Option ${i+1}${i===0 ? ' — Most Common' : ''}
-        ${conduitBadge}
-      </div>
-      <div class="opt-body">
-        ${isNA ? '<div class="na-text">✅ No accessory required for this configuration</div>' : renderParts(acc)}
-        ${note && !noteIsNA ? `<div class="note-box">${note}</div>` : ''}
-        <div class="add-job-row">
-          <button class="qty-btn" onclick="adjustAddQty(${i},-1)">−</button>
-          <input class="add-qty-input" id="add-qty-${i}" type="number" value="1" min="1" max="99">
-          <button class="qty-btn" onclick="adjustAddQty(${i},1)">+</button>
-          <button class="add-job-btn" id="add-btn-${i}" onclick="addToJob(${i})">+ Add to Job List</button>
+    <div class="selector-card">
+      <h2 id="sel-title">Select Camera</h2>
+      <div class="selectors">
+        <div class="sel-group">
+          <label for="sel-model">Model</label>
+          <select id="sel-model" onchange="onModelChange()">
+            <option value="">-- Choose model --</option>
+          </select>
+        </div>
+        <div class="sel-group">
+          <label for="sel-storage">Storage</label>
+          <select id="sel-storage" onchange="showResult()">
+            <option value="">-- Choose storage --</option>
+          </select>
+        </div>
+        <div class="sel-group">
+          <label for="sel-mount">Mount Type</label>
+          <select id="sel-mount" onchange="showResult()">
+            <option value="">-- Choose mount type --</option>
+          </select>
         </div>
       </div>
-    </div>`;
-  });
-
-  area.innerHTML = html;
-}
-
-// --- Job List ---
-let jobList = [];
-
-function adjustAddQty(optIdx, delta) {
-  const input = document.getElementById(`add-qty-${optIdx}`);
-  if (!input) return;
-  input.value = Math.max(1, Math.min(99, (parseInt(input.value) || 1) + delta));
-}
-
-function addToJob(optIdx) {
-  const model = document.getElementById('sel-model').value;
-  const mount = document.getElementById('sel-mount').value;
-  if (!model || !mount) return;
-  const row = DATA[cat].find(r => r.model === model && r.mount === mount);
-  if (!row) return;
-  const opt = row.options[optIdx];
-  const acc = opt.accessory || '';
-  const isNA = !acc || acc.toLowerCase().includes('not applicable') || acc.toLowerCase().includes('no accessor');
-  const skus = isNA ? [] : extractParts(acc).filter(p => p.sku);
-
-  const qtyInput = document.getElementById(`add-qty-${optIdx}`);
-  const qty = Math.max(1, parseInt(qtyInput?.value) || 1);
-
-  const existing = jobList.find(j => j.cat === cat && j.model === model && j.mount === mount && j.optIdx === optIdx);
-  if (existing) { existing.qty += qty; }
-  else { jobList.push({ cat, model, mount, optIdx, qty, label: `${model} — ${mount}`, optLabel: `Option ${optIdx+1}${optIdx===0?' (Most Common)':''}`, skus }); }
-
-  renderJobPanel();
-
-  const btn = document.getElementById(`add-btn-${optIdx}`);
-  if (btn) {
-    btn.textContent = `✓ Added ×${qty}`;
-    btn.classList.add('added');
-    setTimeout(() => { btn.textContent = '+ Add to Job List'; btn.classList.remove('added'); }, 1400);
-  }
-}
-
-// --- Search ---
-const CAT_LABELS = { cameras: 'Camera', access: 'Access Control', sensors: 'Sensor', relay: 'Relay' };
-let searchFocusIdx = -1;
-
-function onSearch(e) {
-  const q = e.target.value.trim().toLowerCase();
-  const box = document.getElementById('search-results');
-  searchFocusIdx = -1;
-  if (!q) { box.classList.remove('open'); return; }
-
-  const results = [];
-  for (const [c, rows] of Object.entries(DATA)) {
-    for (const model of [...new Set(rows.map(r => r.model))]) {
-      if (model.toLowerCase().includes(q)) results.push({ c, model });
-    }
-  }
-
-  if (!results.length) {
-    box.innerHTML = `<div class="search-no-results">No models match "${e.target.value}"</div>`;
-  } else {
-    box.innerHTML = results.map((r, i) =>
-      `<div class="search-result-item" data-idx="${i}" data-cat="${r.c}" data-model="${r.model}"
-            onmousedown="selectSearchResult('${r.c}','${r.model}')">
-        <span class="sr-model">${r.model}</span>
-        <span class="sr-cat">${CAT_LABELS[r.c]}</span>
-      </div>`
-    ).join('');
-  }
-  box.classList.add('open');
-}
-
-function onSearchKey(e) {
-  const box = document.getElementById('search-results');
-  const items = box.querySelectorAll('.search-result-item');
-  if (e.key === 'ArrowDown') {
-    searchFocusIdx = Math.min(searchFocusIdx + 1, items.length - 1);
-    items.forEach((el, i) => el.classList.toggle('focused', i === searchFocusIdx));
-    e.preventDefault();
-  } else if (e.key === 'ArrowUp') {
-    searchFocusIdx = Math.max(searchFocusIdx - 1, 0);
-    items.forEach((el, i) => el.classList.toggle('focused', i === searchFocusIdx));
-    e.preventDefault();
-  } else if (e.key === 'Enter' && searchFocusIdx >= 0) {
-    const el = items[searchFocusIdx];
-    if (el) selectSearchResult(el.dataset.cat, el.dataset.model);
-  } else if (e.key === 'Escape') {
-    box.classList.remove('open');
-    document.getElementById('search-input').value = '';
-  }
-}
-
-function selectSearchResult(c, model) {
-  document.getElementById('search-results').classList.remove('open');
-  document.getElementById('search-input').value = '';
-  selectCat(c, false);
-  const ms = document.getElementById('sel-model');
-  ms.value = model;
-  onModelChange(false);
-  ms.scrollIntoView({ behavior: 'smooth', block: 'center' });
-}
-
-document.addEventListener('click', e => {
-  if (!e.target.closest('.search-wrap')) {
-    document.getElementById('search-results').classList.remove('open');
-  }
-});
-
-function changeQty(idx, delta) {
-  jobList[idx].qty = Math.max(1, jobList[idx].qty + delta);
-  renderJobPanel();
-}
-
-function removeJob(idx) {
-  jobList.splice(idx, 1);
-  renderJobPanel();
-}
-
-function clearJobList() {
-  if (jobList.length && !confirm('Clear all job list items?')) return;
-  jobList = [];
-  renderJobPanel();
-}
-
-function renderJobPanel() {
-  const panel = document.getElementById('job-panel');
-  const itemsEl = document.getElementById('job-items');
-  const summaryEl = document.getElementById('order-summary');
-  const countEl = document.getElementById('job-count');
-
-  if (!jobList.length) { panel.style.display = 'none'; return; }
-  panel.style.display = 'block';
-  countEl.textContent = jobList.reduce((s, j) => s + j.qty, 0);
-
-  itemsEl.innerHTML = jobList.map((j, i) => {
-    const skuList = j.skus.length
-      ? `<div class="ji-skus">${j.skus.map(p => `<span class="ji-sku-chip">${p.sku}${p.label ? ` <span class="ji-sku-name">${p.label}</span>` : ''}</span>`).join('')}</div>`
-      : `<div class="ji-skus ji-no-acc">No accessories required</div>`;
-    return `
-    <div class="job-item">
-      <div class="ji-left">
-        <div class="ji-label">${j.label} <span class="ji-opt">${j.optLabel}</span></div>
-        ${skuList}
-      </div>
-      <div class="ji-qty">
-        <button class="qty-btn" onclick="changeQty(${i},-1)">−</button>
-        <span class="qty-val">${j.qty}</span>
-        <button class="qty-btn" onclick="changeQty(${i},1)">+</button>
-      </div>
-      <button class="remove-btn" onclick="removeJob(${i})" title="Remove">✕</button>
-    </div>`;
-  }).join('');
-
-  // aggregate SKUs
-  const skuMap = {};
-  for (const j of jobList) {
-    for (const p of j.skus) {
-      skuMap[p.sku] = skuMap[p.sku] || { label: p.label, qty: 0 };
-      skuMap[p.sku].qty += j.qty;
-    }
-  }
-  const rows = Object.entries(skuMap).sort((a,b) => a[0].localeCompare(b[0]));
-
-  if (!rows.length) { summaryEl.innerHTML = ''; return; }
-
-  summaryEl.innerHTML = `
-    <h4>Order Summary — ${rows.length} unique SKU${rows.length!==1?'s':''}</h4>
-    <table class="sku-table">
-      <thead><tr><th>SKU</th><th>Description</th><th style="text-align:center">Qty</th></tr></thead>
-      <tbody>${rows.map(([sku,v]) => `
-        <tr>
-          <td class="sku-col">${sku}</td>
-          <td>${v.label || '—'}</td>
-          <td class="qty-col">${v.qty}</td>
-        </tr>`).join('')}
-      </tbody>
-    </table>`;
-}
-
-function copyOrder() {
-  const skuMap = {};
-  for (const j of jobList) {
-    for (const p of j.skus) {
-      skuMap[p.sku] = skuMap[p.sku] || { label: p.label, qty: 0 };
-      skuMap[p.sku].qty += j.qty;
-    }
-  }
-  const lines = Object.entries(skuMap)
-    .sort((a,b) => a[0].localeCompare(b[0]))
-    .map(([sku,v]) => `${sku}\t${v.label || ''}\tQty: ${v.qty}`)
-    .join('\n');
-
-  const header = jobList.map(j => `${j.label} | ${j.optLabel} ×${j.qty}`).join('\n');
-  const text = `JOB LIST\n${header}\n\nORDER SUMMARY\n${lines}`;
-
-  navigator.clipboard.writeText(text).then(() => {
-    const btn = document.getElementById('copy-order-btn');
-    btn.textContent = '✓ Copied!';
-    btn.classList.add('copied');
-    setTimeout(() => { btn.textContent = '📋 Copy Order'; btn.classList.remove('copied'); }, 1800);
-  });
-}
-
-function printJobList() { window.print(); }
-
-function exportCsv() {
-  const skuMap = {};
-  for (const j of jobList) {
-    for (const p of j.skus) {
-      skuMap[p.sku] = skuMap[p.sku] || { label: p.label, qty: 0 };
-      skuMap[p.sku].qty += j.qty;
-    }
-  }
-  const rows = [['SKU','Description','Quantity']];
-  Object.entries(skuMap)
-    .sort((a,b) => a[0].localeCompare(b[0]))
-    .forEach(([sku,v]) => rows.push([sku, v.label || '', v.qty]));
-
-  const csv = rows.map(r => r.map(c => `"${String(c).replace(/"/g,'""')}"`).join(',')).join('\r\n');
-  const blob = new Blob([csv], { type: 'text/csv' });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = 'rhombus-order.csv';
-  a.click();
-  URL.revokeObjectURL(url);
-}
-
-// --- Boot: read URL params and restore state ---
-(function init() {
-  const { cat: pc, model: pm, mount: pmt } = getParams();
-  const startCat = (pc && DATA[pc]) ? pc : 'cameras';
-  selectCat(startCat, true);
-  if (pm) {
-    const ms = document.getElementById('sel-model');
-    if ([...ms.options].some(o => o.value === pm)) {
-      ms.value = pm;
-      onModelChange(true);
-      if (pmt) {
-        const mountSel = document.getElementById('sel-mount');
-        if ([...mountSel.options].some(o => o.value === pmt)) {
-          mountSel.value = pmt;
-          showResult();
-        }
-      }
-    }
-  }
-})();
-</script>
-
-<!-- Feedback button -->
-<button id="feedback-btn" onclick="document.getElementById('feedback-overlay').classList.add('open')">💬 Feedback</button>
-
-<!-- Feedback modal -->
-<div id="feedback-overlay" onclick="if(event.target===this)closeFeedback()">
-  <div id="feedback-modal">
-    <button id="feedback-close" onclick="closeFeedback()">×</button>
-    <h3>Feedback / Feature Request</h3>
-    <p class="sub">Suggestions go straight to Trevor.</p>
-    <div id="feedback-form-wrap">
-      <form id="feedback-form" onsubmit="submitFeedback(event)">
-        <label>Type</label>
-        <select name="type" required>
-          <option value="">Select...</option>
-          <option value="Feature Request">Feature Request</option>
-          <option value="Missing Camera / Accessory">Missing Camera / Accessory</option>
-          <option value="Wrong Information">Wrong Information</option>
-          <option value="Other">Other</option>
-        </select>
-        <label>Your Name (optional)</label>
-        <input type="text" name="name" placeholder="e.g. Alex">
-        <label>Message</label>
-        <textarea name="message" placeholder="Describe the feature or issue..." required></textarea>
-        <button type="submit" id="feedback-submit">Send Feedback</button>
-      </form>
     </div>
-    <div id="feedback-success">
-      
-      <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADQAAABDCAYAAADTXyaSAAAEDmlDQ1BrQ0dDb2xvclNwYWNlR2VuZXJpY1JHQgAAOI2NVV1oHFUUPpu5syskzoPUpqaSDv41lLRsUtGE2uj+ZbNt3CyTbLRBkMns3Z1pJjPj/KRpKT4UQRDBqOCT4P9bwSchaqvtiy2itFCiBIMo+ND6R6HSFwnruTOzu5O4a73L3PnmnO9+595z7t4LkLgsW5beJQIsGq4t5dPis8fmxMQ6dMF90A190C0rjpUqlSYBG+PCv9rt7yDG3tf2t/f/Z+uuUEcBiN2F2Kw4yiLiZQD+FcWyXYAEQfvICddi+AnEO2ycIOISw7UAVxieD/Cyz5mRMohfRSwoqoz+xNuIB+cj9loEB3Pw2448NaitKSLLRck2q5pOI9O9g/t/tkXda8Tbg0+PszB9FN8DuPaXKnKW4YcQn1Xk3HSIry5ps8UQ/2W5aQnxIwBdu7yFcgrxPsRjVXu8HOh0qao30cArp9SZZxDfg3h1wTzKxu5E/LUxX5wKdX5SnAzmDx4A4OIqLbB69yMesE1pKojLjVdoNsfyiPi45hZmAn3uLWdpOtfQOaVmikEs7ovj8hFWpz7EV6mel0L9Xy23FMYlPYZenAx0yDB1/PX6dledmQjikjkXCxqMJS9WtfFCyH9XtSekEF+2dH+P4tzITduTygGfv58a5VCTH5PtXD7EFZiNyUDBhHnsFTBgE0SQIA9pfFtgo6cKGuhooeilaKH41eDs38Ip+f4At1Rq/sjr6NEwQqb/I/DQqsLvaFUjvAx+eWirddAJZnAj1DFJL0mSg/gcIpPkMBkhoyCSJ8lTZIxk0TpKDjXHliJzZPO50dR5ASNSnzeLvIvod0HG/mdkmOC0z8VKnzcQ2M/Yz2vKldduXjp9bleLu0ZWn7vWc+l0JGcaai10yNrUnXLP/8Jf59ewX+c3Wgz+B34Df+vbVrc16zTMVgp9um9bxEfzPU5kPqUtVWxhs6OiWTVW+gIfywB9uXi7CGcGW/zk98k/kmvJ95IfJn/j3uQ+4c5zn3Kfcd+AyF3gLnJfcl9xH3OfR2rUee80a+6vo7EK5mmXUdyfQlrYLTwoZIU9wsPCZEtP6BWGhAlhL3p2N6sTjRdduwbHsG9kq32sgBepc+xurLPW4T9URpYGJ3ym4+8zA05u44QjST8ZIoVtu3qE7fWmdn5LPdqvgcZz8Ww8BWJ8X3w0PhQ/wnCDGd+LvlHs8dRy6bLLDuKMaZ20tZrqisPJ5ONiCq8yKhYM5cCgKOu66Lsc0aYOtZdo5QCwezI4wm9J/v0X23mlZXOfBjj8Jzv3WrY5D+CsA9D7aMs2gGfjve8ArD6mePZSeCfEYt8CONWDw8FXTxrPqx/r9Vt4biXeANh8vV7/+/16ffMD1N8AuKD/A/8leAvFY9bLAAAAOGVYSWZNTQAqAAAACAABh2kABAAAAAEAAAAaAAAAAAACoAIABAAAAAEAAAA0oAMABAAAAAEAAABDAAAAADWF8+YAACCrSURBVGgF3ZtZc6T3dd6fXt7eNzT2ZYABZ0ZcJFKWqcUVsaSqXMoXTjl3uclXcMm5yIfITW5TuXElcSW5kBPJKSkqO4nISBYlixQpkhqus2AwABpA73v3253f88cAjK18gfgFexrofpf/2Z7znHP+TAyHw6X+AR3Jf0CyBFHS1wK1p0/1m5Mfqlxc0WQ61Ebtth5efqbFYqa1/IoK2aKeNs7UU0fz3Ei5WUariU2lZmllMymtra6q3+1rOh8rnseqVlc0Xy40SSzV6neUWBbVarW14Pw4s9RR/1TLxVyFdEmFZFbVbF7FYlLZ7FKDeKStyppmk5lyiZwu+i2loqRur+1oulhoNhgriiKl0imlkpHq5ZeUSdX/rkCJRUJ3Nl5Rr3mprfKORqORismyNlfKGmqus4tzVapl9TodxWMpkcwoTki5XEblXFbz6VxKJxUl88plvbCyRoNLzaZj3uc67xxxXVKLSVKlUklfXP19nfeeKkolVU5nVMol1R1faJ7KaDSfqD/saiO/Fha+nJWVzkTqdwZaoqwlD57yvAFrjPGxfPauMvkr09xYKJ/NqdkeKJmN1Bw2NUaIRXKMlS5USte0RNsjtF9IlVScl7RV2tWCm86Xc512uzxgpnIBbXJ+OV/TSWOgyxYCzRb68L0Tvf/Ob/Xk6ERJLXVw+5Y2tza1sr2qld1VlW+to+WKStW6WqOe6tU1LaexxompjttnurtxF2vFWFnqjzpKIsSM562trOvTJw+xNJp9dtwINBlP0PIC98lqoRhLNJTNRSg94u+5KmUWeXmi+XzOw+tqds5UzdU17kw1xWSD3kDdi4meHLc04toHnzxUu9NV47SpYX+GxYeKF0ssm9DHHx/pstFVdP8hihjrld97UV96+Tl9+at3dQuPwGdxS6mYq2gymuCyTeH72ljb0niZVbff1TKX0MXgXBncPXhH8e9ZKBNlVc4WcJm0iqmsKitF7jvVDG1Ml7FmmqqORgZoaDwfKpPmnNqG5vGZ2k+GeuetEzVOOnrw2SNdnjWCRasrVQ362BpvRBQUg/8TFzPcZsaHBbwim83qb376K3Wx8oMHD7X3xW1V1/PaqFa0sZpShnM6PDMXpdXBcxrNE21Xt7W9fsjnXQ1HC6Wj3LWBlLiG7dm8pYveb1EErjUeKJe/OqlUqOrRBYscHCsfVbRSXlEmzqk7HONW5+p0Jnr3px/qvXfvB7++OLfWIhXzRc0XMQvO4f+ZABhKpwnilHosPpXN4EJLFfJZ1Sol4jOvtXoVd0oqmU7o9p1NHdzZlZLL4FLFWqREcaEUfrdWQpGLqbqXI00mKb10+JrWajtBqBuBJrOmHjfe5AE1xTHuNxnjHhELyoMgaTXaDS7g5rhrs93Ekjlddsb6wX/6X/r1376jmFhJseByqawx144GI2IwXKJEgl8SCeUKRRacUrFcwqmTfARK+ZpqTfiu8oCK7VhfqyqRAsVwq5W1gp5/8VAX5w2Vtgra2jJIsbZ0rFv5W6BgQXvrX1UhtxUEuomh2JZBo+3WkSqZFSUTmDJL9ExHAEVaGWDS8ZMQEL15Sx+890B/+ec/0mefHCkCpUDQsPBuD/9G80EGznbWHg6GLHOp6WSqbD5PLPkvwoJXIoGloiLudaDTxx+i0IyaD461t3+gQYdnA+vvvv1It/d3lO2l9eWvvaJKkfsCRlEqryH3jPCA6+NGoEQiVqWUV2Pcx5wjYRqdj59qL7+j1qCnCVBardTVa0/123c/1vf+/fd0edFzrAYBHNyz2ZKHpBQj0Hg60SJm2YYmrBPPUU5yriTWi7BKrlxWH0GHfZBwPFT79AgLgr2g26A3Uu/DT5Uv5tXp9VXCosePGtpYL2mlmtNrrx2Sz2Y67jTV7mOpnUNVfwcUSJwRsVHjp9MfqLBME8AsIpNQubKqQetUTbR/etLXX//wJ6BXR/0+Pgx8LkCvNCaya1n748kE38eW5JgxIBDH5A5+FrzPZ4Z6AdEVkjjWQsDpbKTxaIBgedyvojxum8kX8IWYoB+q1WySazIA0JZ++ONfqdMd6MWXd/TJ0SM1W1OV8i8h0HYwkr08HINxj0R3pkk8JSuLmy31wq2X1JydqzcZkvQ6ag9ife/PfqAHHz5Sq90LSGWv98INJrP5LMQPJuGeWCVehN8sjA8La+GH/b6aLNKWikCvyQgkBEm7fJ7m79l0GmIwVgRYbBKXVdVXNzTBA5Sp6S//29/qP//H14mjVdU395QksV8fNwKlEpFqINpUExZIJiaRPbl8pHQurX7qQtlKRW/8xf/W+eNjXK3D9QmlCeoE7jTH/EsWumTB/ntBErZVFsSkk2DWNIVf0rijEbBQKOBWPTXOzlSANaT43Nf6dfL0BBpV10p9lfNKWt+5BTiUsCLYzzNnuOQindPPf/ahfvQXP0VVqJT1Xh83AvXGIx2dXCg9zyubLOL6oFFUUi1V1WZuX42Px7r/q99oPIZBsHhWHd6dT/x7Gm2bW82DFQgsPksgRAqEtNbzwLOFcWJN81kelzKsnyJArQ4TcYzx94C4ev8376vfvmSNC/JYH+HquJuVk7xSQq6oSn1Nn+Ip99/7ULN4di2PbkBhkciqMy5h1oKykMYiWolxoUwRrUJ33v2rX/DQpUagSjqNT6Ibx4rdKcWCbY058eTDVgqWQrgZL5/rw0hpXU4mI1UhvJVSDQQchNfG1obOGg3iDLeEKbQum1oQk5khcTroqFAsqHHR0NnJU9xvTYeH91QoF3X6qKtkyA/hEZ8LZLPPWAjKQ1M5fDpJTCx0TKLsQGM++eC+BtCjIf4ek4zsQjmQ0P5u7TlhJoilFGu3MHYPvCG4n+UxF5zimqViMbjcFDCYs/DKSi0sfgiSbm6saQiqZYDhEUI4eZaKVy45nhgprTAsDD1rd9rQNLsxrhpfCeN/byw0nU10ObtUepHSemFfPWhPc9TSknu8/v0faTqe6uychyBkjiAc4qIhYfoRaNJWS/BAPByAs2IoE7AmkoSFOyO7FOktekERUZQJPK61aGplpa5Oq6kE1lny8vXrfHbaJARQNBdqvbwb8l02NwjvZhtPOi3t729icej/s+MmhlCvMipAb6pYwN4rbUMn5o2lLh4/0cCLY7l5yGCaODCqWfNOoEn+nqEAczX7uY8Y7SfJQZHhm5Mc8Pwavp8R4NMZPJH3fqenJl5Qr68EMNraWg/Xl0s5hFpBkTAOPhn0OpxTQwlT8lUhXO/1mGnHRr9nx41A5lyFfElpCgyoFNpykkzq8Vu/VjEDUwBJIqhJ1hyMhaI3DtgErsZdeXctlDL1wv0QmMX69zT3qMPV/CrgShm0n+X7CvepkoesAPiknjx+HO7ouFxZqWhA7OzsbIXnFUtFuOBAn3z0qVbX1onVCXEDEBlcEC5pPvbsuBFojsbSMO0IqJyRiyaJgU5bFFww3RoBSZijYRIn8TIeTS0DAnM+LuHbxcRHDDCEW6MMx5iRzu7S6/Y0YoG2kAXMUn3a/xdmDXzoXOacdfr0DNaNxVzZcmmT2urw4ACmUFN9Y5P4HZFgrQTifQadYp1JXkuee33cCOSgncDb/N6HnJ73n2oBOSzU6jw8At2GXAg7RrMuuQ0EBgTXUUniJEthmEEIW9Lf57Cqk2bKFuHdcWdhfS52RAFzYilSHiVFdk0jCEJYcCug1aZMmVCVAhJ5zrNrF3J5VaFM+QglEo8p1npxfgaADK7l+RwUQlIUWpxktFNYV2HOw1RUc3NTF+8tWSwLTFPjE+xjHu4Fz2b2YUCCBWd4YjLpXALkR3Ay3GC4JE6wpNEvjbsmqaH8exILpi1UsCDnhzRAMmeBc6RG5lCKHD85Ua/WVx3rZyC1K9WSeq1GKPuNeEnivo/wfVz2+rhBOb5Dc1mq0T041Ujr1Q31Bl1QDZSCj+0RkAW0b0iekYbiOShmis3TM7zbdSI402QKCLCgHCjmcttQ4sNgZfe0dTgZYoo3YLMSCddu6ISccZOCZ0z5vD2chIRsCJ8DSL1WCwjPYylwdE6txnNJ7SGOTNOujxuBMjREVssvQvwamtJLGJAHoiwLWEyCEH3KXmvVZDRH7GRLNC2AcifUPC7JOog9Cjoswdo1HtoNlvQjcA+EXfLdOj2HSq6gGZaIyD9DNH+Bdo12C9w1hdV97iXPwGtJxKgEFmD8NdqJZxruRwgbxMEbKoBNsVS4ludzl5sj8YDFLczd6A9MMpjfAHB2Gai6tb2NlS7w7RlB6e+qlbxWAZE+9KcJZbFQ5ncFXMiBGigS2nYucZtqDxjOEA/OMz5GNFnWiNsRyNYidqwQmkJAeTcgojnhEkQbkAIKRXeWqKdw7wmlShH6M0ZIF5+O7evjxkJzemGD0akiTL8Ki814oZz8ZPqm1oDKFknueXpv3zo8pBN0SdNjGh7qBPr+8bEmWCamteWeQSZNmVwp4xUAQIKKFECoA72lXC5Y21Bt5t3UgC4PbkP8GTRGNEQuIa0Vgr+E4BOQbwj6uq7yZ9yKhG12cAX1FaiPhZ4g9PVxIxA5SqUMNRFB7C5K+7SBUPngBh3cx7XMNiTR+H9AyRwXgWgrmsSW294iMCm70WAJ0ul8FTgZi84TAzliKwNdcQJeIKSPhKEXq3UHpzqF9jRRhJuIJc7frJWJwwTtNKxGl8Zg4djNUc265JjNXVjOoUAohu8yz/ofvu+NQCaOzuhpEqwLrgFmL9EDQDm4YF+bFo6bTtGGs7XzTD5DA4QHl0x7ytdmJ6cgtJmze2fGAPM8/wT4ClDhRy+1CRp++85dKuOBnnbouiJQlLdL4tLmfXSi5nFTF5DZLusZgcA1kq4Z/tTEGOVMAIxareobhuNGINOLCdruQEUWkMLqwV0W5loDmCUODvB/v9v/7bOXVK9NdYOVCgRqno5nEStEfG9qlGFRi4LhAYl8IG+gS/6Vhbi6SUIlinDHNB2iAq2oPrEywBNmKCmDJVySbJETh5d8Doec4QUFKxZlZrGkgWaCct3lvT4+F4iHzFhoib5Bs3kayuAptUie5p4T2HPQ+2KUoAgsA6OFQGUaCN8G2s+bWBNt3qLzWUKwBC5noV0PLQMVdlPDBSBS2U0RGLsFFkGYQrP4NWR8EizKsRKXdJXSWGmTZs0QYT5ptkNDpNvvhdpqjBClSlG1TAWvvwIZC3Uj0BJ3cy6YOAj54uj0U+oc+m/0tGsEdKUID4N6TwczHTVatGg7GpBYh5i+RH+7SwA/oL3l+CouyEEWJiBdHPx8jjAmuG27s90WAU13Ah9zGYKkdtUp98zUK/Tt6OBiAQtXo2RJ4/YphHZsupB0gehu7de+/SqClSxLOG4E6vdmevxorq29LAmzSrF3qW1K3cfv/0ZfBeXiyVIPT1o6arb06LxJeQFKkYe6CLlRp/GHO2w5j6CYF1ZWg0XQe8g5JpxTFjeENtit+uSdFAy4WsyFeMnQqS05afMz4LsJndVcvYhLuVUFASV+8tx7EgPRGMPTjSytszwueeuFW6Fl/TsCLWglLRhbHN0nB/XoIWxuq02bagyMbty9rTmldxG0OsCt1oF055ge5HIJmDxuDXSRmrGYKcJe6gAymWHBMZnfybdjaoLrNMexLujiTLm2TS6J0j0YSFkv056qAssGoAkueomrLeFr+F/oN+QBJ6eHPGhmN7bgK3jNdimr9dpKWMvvCOTW0Bvf/69MBVZV4QZ7VJaP3ntbBYjjmut/zGv1JGnoMwQKbpPEHXJE+yEJto6tx2i3yEK6uEho+UIajUiXJMA0kPuYUcwMC8LCVN7d1/HFqR48aegNmvfPIdhX9nbJX+QrXGpKRbrc2g1w7eakW8YRjfopVjO034akHkyJ+WgNYkyD/9lx43L17QN965/9C/XOTzU4ua83/+rH2krOtI4wGdDPCJjk5ZqnRlPfybCPRSbkD9dNayTNKE9uIT6oislJuBmadvYfgkQLCkAz8RKDHLvfgtLgXhZL8+oP+mphsdc/eaQXNlYCb8znqKeI6RSkOANQGPXW6CZOECiF1dfoSlXhkx1i0a236+NGoCR97GQB6+xXVd65p91Xvq3O//wzbaWuhkwJSGqahbpmstadYGswg4hyIolGHcBdEmSJhzubRwifN2LBuF3o2e/zJqckxJqVFNzJKLhUnxNW6WP4HPrCgAct52jJlBBw595z+JwhPML6Be69RiWwRiPUZUoiz7kOrGfHjUCjXlOf/fxH2njuJRW27mmaLjOM+oL2z3vAKkFoVyO3xJQIaRZq93MfYjoeYz0CGSu4aeLayQ0XTxb4lwCHQGK9Md9P6Ue7VHDvZzYkf3Cd85GF8xQvBY8swKjd305wD/SAJpbqYEELTtCpzjTwOcaUK7CMBXGUYPiWST8b33H6jUCrG9v65nf+mLYQPeUFXI22VmnrOa2PPlVEr9nB6IZuFvdyDskCEHMXfkz1zJqr8Ko5Gjb0upFuK/JrOFw2uLuZjikzWFjJIoUnZ0MLDE0pdk3FAtNoPY1rJkE111Ygi0YkcY8ft6MNpWEUFGPQHbqlL7+kHnnvqgl59awbgVwWtJoD2kokUnpma7WEevffUA4NRbS0FgiSxjVCfmGhLtgWMIl8gpnqPIOV6GlTagzoUYeDc4bcc4Zw6ALa5NhjlkpuS9HEJHOG05zxZ3jMFJdKMJa098yHPdyU+EFhg0YfF6Txz9lVwMHMfeTYBUUzr9yF+NIY5b7Xx41AMReNL/uaQVeiGa41K+n2Bqy7hbY4O/gpGd6dUEN27P4WK/Wku4/2urxc1Nnd/L1LeVMU/3hiZ5aQw/VuMUmglxtczTBt69jtBlgudnBDg/gahbmOSqrJRN5J2I6xiVvGwPTsYqDUC89rVGSIPbjg2R2tF5kxcXwuUB+YfPq+ZiRTbdBtYSxfPP+AuMDq3HjpYsdqgmbMsYRLYC985OYfn2dNUDknz4jevbUxboj/hfpoiOv0Yc4pgOVuDRbArdJYl/YGhuIP3kvgwWQEEyGfpck3C+6bMJowm4qIrReA8BXaVTE5rrC5r8UXDokdthbkd2kPfD6SvBHI0nkB/hlfXCp3cazy6DJk6gVJ0Uzb9GsK83UPzhqfo2KX2xUIows+y2shrWHH8Mguxz195F2pArlDrAUHQC8xhBSExOXGUKIxFxB1ANBEWXLSqNshniCn2/Q3ViuKQL7URT+ARsSAOXOwG9y7BHhliOfr40ag4NEkUasvQVlQXHSVxW2c4RdAqNtUPXJLjyLMp7GmwKvc1tqurXFTz4IAA2Ijie8vLs+xEg0V/N05ZMlFHvB+fHKq/WpVq7TG3BMwL8sCFjFdHAxIOUKlzPVpph2egqRBzmqZgg/qlRzQZ7izo+Ydpu+th1wd66R7pDvrGyzo7228cME0HkIAM57KoFFatlauE9mU71pTZjogjPvdLiHmkEizc5fPR0wKvvjcAbtPVqHyYx5kxkCg5tgmQIw4CbuPcInw6+UqdVY+BL/7EUvzOpK1HZDZGs9EKabfTBPd+05gwbSfh8WSIOHw7roaqaFGSffk5tqpb4de97WFrqDGf6EdNyT4J7DkGRZxdemJm4P6+PScxBZpBZqzjktsrTHr4/dQ44Nw7x0d6bzdAhiIN1zNrSrkpeUVq0GJ8QihPaHtw/96cLsJlp/zionHiLLE90likYVbYWx9ca98AeSFcQxWjLpD5bFa7eCLoCcIPOuS20gZvLz54/q4cbkwDsGXlzAB0j/IQocH9yoAlRO6QCV6zRkCJhR5IFkJqKxghVWm0LNyrE5irneOHmi9VGEfwaoe9to6AX4HJF4jn2G4C7drjbBFpaomex0iSmifv4kdPQUEPwPMG2Awh+aMRlMFviOnOe7OgfzmEU0VhsXpxEpoQEZUvS4pro8bgYw1jmTPZubMTuMC2Rwtz4FS9wLWKH1dGXbw45+8+Qmbk8raJxF+ZQeT4/8R2lzd2lcLy350ztQAZLy9uk65bqsTg5zTDRmfmORhIxYZo5Aj0NXnVtk1ksA7jIAzdqbEkz65jxxIvumNF3q4c6DHiTU1f/prlZgPFbl3eRcuSH/Bbezr40aggFp8YX+O8dEuuWiM1syr3Eh0U9Awt1otqAYr+Pj0UsmdSM8jsGMuATWaseBVeNr+7m3GLewmMNu225GzRkixSo7xVpa0+wYoya2zFhXoCft7ShBeA2kW8FgAPnNcyXMgDwbo1ujhOeOc9mfa2t3A1cvqnJ7qV2+8rU/ef0ubf/ovde8PD4NMNwKFAS8XzycDJeBJHeqfBnxrmaBZAeoQpqH16xbwHzx/W2fNDkmPjL7+vEooYUJJUSPYu2wx61OVuq6Oga0pM1HsEyzVxIXPeQ3clyZBl2lk7m7CDshJhnTrzI0aNz4WgE8C9u48lWIHy3OvvqrDXE2Pf/Hf9eN/+69gNZck1auSZuJ+87PjRiDzrwmIZX9fehcIBLHj+apaV27DBdag89QG21i++eJtvffgsR4wRnzl9+4hLRTHzOKY3AQwFMg7rQcNlRFo6mYiRWCEhUa0dCfLSEMq37vbt1QHDDzd4LHQJ3gbzzkHTat0Q1PQqiTsG3BU3D5Rq/uJfvDn/4bS+zIwpxQz4I2DL2sToLg+/i+ByNpocu7kilV6NBZ7bO3a26NS5GkxINEkk+fz0B38/0t39mDIWZ08vtDP233t3t6GKq3QM+AchHEumqxk2NXVVxlB2yzq/LJFDF6x92/fuw0g0MEhx2UL9K/xDlu0N6LsRpmmTmKjRuy9EnznbWtvvP4TulIXwV137r2qbHFTlc1DvAhNPztuBPJHgSlDN+5/9AGbL7qqUX+8lS7q67t1YBSfJ0jbLGiVUXyOh9w53NAmBdo57nf+wVM9ZLuMKX4GZPJ2Gvesm222keGSZ412WMg+bnm4VaekIJZ4ugfOLjFc/ZotLHh+yUMsFEISZLGgJDztw7d/phL9t/0v/SOK0GOt7d5TDnfvNs9CD+93BIqA2tzhS/rZ9/8DdL0Tdkt1ecAvznr0EUo0GmG3PNxFmLuYHik6V5TXYRUsbmdWYduZe2pkfyzao2nSB3wKKGRMiVFFCE8a8q51WHRoabEKUyM36okYxi/EMIpK8W4Xjk2togIsHgbBVP7BW7/gPIpBmjbVck71rW3tHTyvan31Wp7Pyenp8ZH++t/962DqBKjGnQlM6TG54JcQ5H+8vx4Sn4fG5m0+PI0YAWPzFEISvIZy/kLoRdguFoN8U5I1pZ3GXBM7adsKCOFgHwAk3o/nOakHYSPOj1GG4zRBigi7tQqQVTYF7n/jj6h9Kmp8+EtdnB6reXas4ltvqra2oeGr3xX859mawhvQ2m3yMDNcaDuZf0npPIeEGijeOb7Q19hGWYPjjaHz7t0lFhGUyI7q1tVVjdIAIDy2NP3wnDXvBInmJxYGoa0MH26+e2JxyubaAiOWLC8TxAEDgJhkW8BiKRhFGmaSAMHScwAlott08HXGkyt67yf/hRYA9dtlQ43jR2w8fMJdvxLufUN9khRsbki4rxbggUW4f4xr0/ad6NcPn4amhzXsJoebH64UJzAB79Fp0+5ylWpu5762GxturLuhYErjPaMTmhtmHwPK8TNYRJgJwTiWPMTu1Sf/YC8luaeHBlwaknImizU/e131/d8n2W7p1e/88+CGVloJbhhaAkEcrnn2HuLC/a7gEizI/YIk8BtgHFL25mP2jkJHKrAD99+8T80cb0LdYvp/tXkJlkE+cTe1weakp7Rvm+SKNm7rqbY3bfQQ+hFjRPffzJa5MlS2PWa16FI1IL1KOWD24NmPLZygCl7P0YM4f1vl29+iPbChP/in3yVfMqK0Z+FJ18ffEYhrEYgY8ezUwY37LV0T81917zWdJe/Aurn4GUyGwMbt3ORwh6cKS6jS0ytSmbpb4/ZSH21beLeC2QzCpIEcR5/L4JEARb23zqnXFeo2vG6NNhejZmZ2PlAo4Tq7bOtwfUUXb/0YqM4pV3teUfGOvvnH39XOi99guzU3fnZYBeEIluHmfnfQR1AU/+5Xrrqrys5r+mjaYS/1peqFnjIj3IoHk+Qh6MQNwocDaPecKE1nxhTf3R7nCRdvbaw5R5gr13ZjEuXR+zMx3qFxuIYHkB1C5QsUXD3fLoxlpz3gm+S6bLMJpMcGXvoPU5D16//kT/TC11++ejb/fi4QPmuX9TZKawv3vKpNQLrn7v0hbkZtU9nTaS6mef43WIGHwzvNyZxz3D9IuxMEgqVp6czZE2rTGiQG8DIDgzfHLlxGUzYsfT7dG8frNn2GPayb5z4uWcAkTTmHOoS2NFMHXHQB086hnNb9X6p09zsB6UpsfmqyF7zT2hWlbRDqxuX8lzcU2XquFO1mHjyV63skuQ3KiAKukVBjWmGTK/8bAN6fqyAUO+INZu4CZXAhc708C3U31f1tVyN2kxmWGbhPACy7OenzoXLaRZhDj2EoU2xloji8PEjzlrMZ8ZNkj8S4fY4/RGqfnKj50f9QBm/JZlfUZXCQCmgb5PncQk6Y7gdY49cuuYBgbux8I1jOydT73UaTNPsFmLkCGiNirVhAGigL3o5FsQoajlCI4TdHZ7VJKbKwYN48QfCmiDXPjMzfijQ51lBAhlG9mYgts3AJz9rc0MRXw+79EuliCBGeM6l3SpmdP1YvfkgaoMdQ34fV/z/2KbheMVKlXXESsO6/pbN7lNF0gNAm+1hCP20Ck37C9uZVSgDPhPqgWGgkumy2Czrz4y5mAD1gveXEirvhuaGzanpVcIcVa5R5hm0yBrK92d35yT0Kl+Fm/66ZZuTGJK48pgi8YHOVO04J+CLSaNLy1muEvo5f/rqJIQOB8cYPDHt60NT65letMkoKJnl5bxfzrviRPmMjbVR36ct3WK1HEWeYj/Hx0PXhmglWc17x/dJYZ8oCbIEsFvIivJlwBoCY7kDH+QyD4DpW6lXndcHOeZoiKNObCJ/O2YHFlugF8ei4WwbqRYpo+f+neCVc739uBLJLedSeYqbjJmJh9QsIg3tQEQ6hQWlK7QXjiwXj/zO2Qm8X3MriFBbMm5YACbwZUGB9LN6Bn0FznkBMKCH8P3XYl9OYaoGL0RBCYFyRCyyTD6eB8MO7xybOTf4fRNpQos8mFazDM1F6aK6w1n7jITsu4ZBsErk+bnbWX3/w//v7/wFj2Zffh9UbxgAAAABJRU5ErkJggg==" alt="Trevor" style="width:72px;height:72px;border-radius:50%;object-fit:cover;display:block;margin:0 auto 10px;">
-      <div class="check">✅</div>
-      <strong>Thanks!</strong>
-      <p>Your feedback was sent to Trevor.</p>
+
+    <div id="results-area">
+      <div class="placeholder"><span class="icon">&#9757;</span>Choose a model, storage, and mount type above to see required accessories</div>
+    </div>
+  </div>
+
+  <div class="right-panel">
+    <div class="bom-panel">
+      <div class="bom-header">
+        <h3>Bill of Materials</h3>
+        <span class="bom-count" id="bom-count">0 items</span>
+      </div>
+      <div class="bom-body" id="bom-body">
+        <div class="bom-empty">Add devices and accessories to build your BOM</div>
+      </div>
+      <div class="bom-footer">
+        <div class="bom-actions">
+          <button class="btn-copy" onclick="copyBOM()">Copy</button>
+          <button class="btn-csv" onclick="exportCSV()">CSV</button>
+          <button class="btn-print" onclick="printBOM()">Print</button>
+          <button class="btn-clear" onclick="clearBOM()">Clear</button>
+        </div>
+      </div>
     </div>
   </div>
 </div>
 
 <script>
-function closeFeedback() {
-  document.getElementById('feedback-overlay').classList.remove('open');
-  setTimeout(() => {
-    document.getElementById('feedback-form-wrap').style.display = '';
-    document.getElementById('feedback-success').style.display = 'none';
-    document.getElementById('feedback-form').reset();
-    document.getElementById('feedback-submit').disabled = false;
-    document.getElementById('feedback-submit').textContent = 'Send Feedback';
-  }, 300);
+var DATA = {"cameras": [{"model": "R120", "mount": "Indoor Wall", "options": [{"accessory": "Junction Box: ACC-R100-JB2", "note": "The junction box is only needed indoors if mounting the camera to a wall is not available."}, {"accessory": "", "note": "Most Indoor installs will not need a accessory"}]}, {"model": "R120", "mount": "Outdoor Wall", "options": [{"accessory": "Junction Box: ACC-R100-JB2", "note": "The junction box is needed outdoors for proper water seal and also conduit connection (if applicable)"}, {"accessory": "Wall Arm Junction Box: ACC-ARM-JB + Arm: ACC-R2-ARM + R2A Pendant Cap: ACC-R2A-CAP", "note": "The wall arm option is needed of the camera needs be off the wall or if a better camera angle is needed"}, {"accessory": "", "note": "This camera can be mounted directly to an outdoor wall as long as proper water sealing is applied"}]}, {"model": "R120", "mount": "Indoor Ceiling", "options": [{"accessory": "Universal Drop Ceiling Mount: ACC-DCM1", "note": "The drop ceiling mount should only be used if the camera is being installed on drop celing tiles"}, {"accessory": "Junction Box: ACC-R100-JB2", "note": "The junction box is only needed indoors if mounting the camera to a ceiling is not available."}, {"accessory": "Ceiling Mount: ACC-R2-CM + Extension Rod: ACC-ROD-40CM (optional) + R2A Pendant Cap: ACC-R2A-CAP", "note": "This option is for a ceiling that is concreate, brink or metal. The rod is optional."}]}, {"model": "R120", "mount": "Outdoor Ceiling", "options": [{"accessory": "Junction Box: ACC-R100-JB2", "note": "The junction box is only needed outdoors if mounting the camera to a ceiling is not available."}, {"accessory": "Ceiling Mount: ACC-R2-CM + Extension Rod: ACC-ROD-40CM (optional) + R2A Pendant Cap: ACC-R2A-CAP", "note": "This option is for a ceiling that is concreate, brink or metal. The rod is optional."}, {"accessory": "", "note": "This camera can be mounted directly to an outdoor ceiling as long as proper water sealing is applied"}]}, {"model": "R120", "mount": "Corner Mount", "options": [{"accessory": "Corner Bracket: ACC-R2-CB + Wall Arm Junction Box: ACC-ARM-JB + Arm: ACC-R2-ARM + R2A Pendant Cap: ACC-R2A-CAP", "note": "These accessories are for a corner mounted application."}]}, {"model": "R120", "mount": "Pole Mount", "options": [{"accessory": "Pole Bracket: ACC-R2-PB + Wall Arm Junction Box: ACC-ARM-JB + Arm: ACC-R2-ARM + R2A Pendant Cap: ACC-R2A-CAP", "note": "These accessories are for a pole application."}]}, {"model": "R150", "mount": "Indoor Wall", "options": [{"accessory": "Not Applicable", "note": "No Accessory needed"}]}, {"model": "R150", "mount": "Outdoor Wall", "options": [{"accessory": "Not Applicable", "note": "No Accessory needed"}]}, {"model": "R150", "mount": "Indoor Ceiling", "options": [{"accessory": "Not Applicable", "note": "No Accessory needed"}]}, {"model": "R150", "mount": "Outdoor Ceiling", "options": [{"accessory": "Not Applicable", "note": "No Accessory needed"}]}, {"model": "R150", "mount": "Corner Mount", "options": [{"accessory": "Not Applicable", "note": "No Accessory needed"}]}, {"model": "R150", "mount": "Pole Mount", "options": [{"accessory": "Not Applicable", "note": "No Accessory needed"}]}, {"model": "R200", "mount": "Indoor Wall", "options": [{"accessory": "Junction Box: ACC-R100-JB2", "note": "The junction box is only needed indoors if mounting the camera to a wall is not available."}, {"accessory": "", "note": "This camera can be mounted directly to an indoor wall as long as proper water sealing is applied"}]}, {"model": "R200", "mount": "Outdoor Wall", "options": [{"accessory": "Junction Box: ACC-R100-JB2", "note": "The junction box is needed outdoors for proper water seal and also conduit connection (if applicable)"}, {"accessory": "Wall Arm Junction Box: ACC-ARM-JB + Arm: ACC-R2-ARM + R2A Pendant Cap: ACC-R2A-CAP", "note": "The wall arm option is needed of the camera needs be off the wall or if a better camera angle is needed"}, {"accessory": "", "note": "This camera can be mounted directly to an outdoor wall as long as proper water sealing is applied"}]}, {"model": "R200", "mount": "Indoor Ceiling", "options": [{"accessory": "Universal Drop Ceiling Mount: ACC-DCM1", "note": "The drop ceiling mount should only be used if the camera is being installed on drop celing tiles"}, {"accessory": "Junction Box: ACC-R100-JB2", "note": "The junction box is only needed indoors if mounting the camera to a ceiling is not available."}, {"accessory": "Ceiling Mount: ACC-R2-CM + Extension Rod: ACC-ROD-40CM (optional) + R2A Pendant Cap: ACC-R2A-CAP", "note": "This option is for a ceiling that is concreate, brink or metal. The rod is optional."}]}, {"model": "R200", "mount": "Outdoor Ceiling", "options": [{"accessory": "Junction Box: ACC-R100-JB2", "note": "The junction box is only needed outdoors if mounting the camera to a ceiling is not available."}, {"accessory": "Ceiling Mount: ACC-R2-CM + Extension Rod: ACC-ROD-40CM (optional) + R2A Pendant Cap: ACC-R2A-CAP", "note": "This option is for a ceiling that is concreate, brink or metal. The rod is optional."}, {"accessory": "", "note": "This camera can be mounted directly to an outdoor ceiling as long as proper water sealing is applied"}]}, {"model": "R200", "mount": "Corner Mount", "options": [{"accessory": "Corner Bracket: ACC-R2-CB + Wall Arm Junction Box: ACC-ARM-JB + Arm: ACC-R2-ARM + R2A Pendant Cap: ACC-R2A-CAP", "note": "These accessories are for a corner mounted application."}]}, {"model": "R200", "mount": "Pole Mount", "options": [{"accessory": "Pole Bracket: ACC-R2-PB + Wall Arm Junction Box: ACC-ARM-JB + Arm: ACC-R2-ARM + R2A Pendant Cap: ACC-R2A-CAP", "note": "These accessories are for a pole application."}]}, {"model": "R230", "mount": "Indoor Wall", "options": [{"accessory": "R230 Junction Box: ACC-R23-JB", "note": "The junction box is only needed indoors if mounting the camera to a wall is not available."}, {"accessory": "", "note": "Most Indoor installs will not need a accessory"}]}, {"model": "R230", "mount": "Outdoor Wall", "options": [{"accessory": "R230 Junction Box: ACC-R23-JB", "note": "The junction box is needed outdoors for proper water seal and also conduit connection (if applicable)"}, {"accessory": "Wall Arm Junction Box: ACC-ARM-JB + Arm: ACC-R2-ARM + R2A Pendant Cap: ACC-R2A-CAP", "note": "The wall arm option is needed of the camera needs be off the wall or if a better camera angle is needed"}, {"accessory": "", "note": "This camera can be mounted directly to an outdoor wall as long as proper water sealing is applied"}]}, {"model": "R230", "mount": "Indoor Ceiling", "options": [{"accessory": "Universal Drop Ceiling Mount: ACC-DCM1", "note": "The drop ceiling mount should only be used if the camera is being installed on drop celing tiles"}, {"accessory": "R230 Junction Box: ACC-R23-JB", "note": "The junction box is only needed indoors if mounting the camera to a ceiling is not available."}, {"accessory": "Ceiling Mount: ACC-R2-CM + Extension Rod: ACC-ROD-40CM (optional) + R2A Pendant Cap: ACC-R2A-CAP", "note": "This option is for a ceiling that is concreate, brink or metal. The rod is optional."}]}, {"model": "R230", "mount": "Outdoor Ceiling", "options": [{"accessory": "Junction Box: ACC-R100-JB2", "note": "The junction box is only needed outdoors if mounting the camera to a ceiling is not available and conduit run is needed"}, {"accessory": "Ceiling Mount: ACC-R2-CM + Extension Rod: ACC-ROD-40CM (optional) + R2A Pendant Cap: ACC-R2A-CAP", "note": "This option is for a ceiling that is concreate, brink or metal. The rod is optional."}, {"accessory": "", "note": "This camera can be mounted directly to an outdoor ceiling as long as proper water sealing is applied"}]}, {"model": "R230", "mount": "Corner Mount", "options": [{"accessory": "Corner Bracket: ACC-R2-CB + Wall Arm Junction Box: ACC-ARM-JB + Arm: ACC-R2-ARM + R2A Pendant Cap: ACC-R2A-CAP", "note": "These accessories are for a corner mounted application."}]}, {"model": "R230", "mount": "Pole Mount", "options": [{"accessory": "Pole Bracket: ACC-R2-PB + Wall Arm Junction Box: ACC-ARM-JB + Arm: ACC-R2-ARM + R2A Pendant Cap: ACC-R2A-CAP", "note": "These accessories are for a pole application."}]}, {"model": "R360S", "mount": "Indoor Wall", "options": [{"accessory": "R360S Wedge Mount: ACC-R3S-JBW", "note": "This mount is ideal for wall mounted applications that need to have a slight angle so the camera can see downward"}, {"accessory": "R360S Conduit Adapter: ACC-R3A-CND", "note": "This option is for when conduit is needed to connect to the camera for PoE"}, {"accessory": "", "note": "This camera can be mounted directly to an indoor wall as long as proper water sealing is applied"}]}, {"model": "R360S", "mount": "Outdoor Wall", "options": [{"accessory": "R360S Conduit Adapter: ACC-R3A-CND", "note": "This option is for when conduit is needed to connect to the camera for PoE"}, {"accessory": "Wall Arm Junction Box: ACC-ARM-JB + Arm: ACC-R2-ARM + R360S Pendant Cap: ACC-R3A-CAP", "note": "The wall arm option is needed of the camera needs be off the wall or if a better camera angle is needed"}, {"accessory": "R360S Wedge Mount: ACC-R3S-JBW", "note": "This mount is ideal for wall mounted applications that need to have a slight angle so the camera can see downward"}]}, {"model": "R360S", "mount": "Indoor Ceiling", "options": [{"accessory": "R360S Conduit Adapter: ACC-R3A-CND", "note": "This option is for when conduit is needed to connect to the camera for PoE"}, {"accessory": "Ceiling Mount: ACC-R2-CM + Extension Rod: ACC-ROD-40CM (optional) + R360S Pendant Cap: ACC-R3A-CAP", "note": "This option is for a ceiling that is concreate, brink or metal. The rod is optional."}, {"accessory": "", "note": "This camera can be mounted directly to an outdoor ceiling as long as proper water sealing is applied"}]}, {"model": "R360S", "mount": "Outdoor Ceiling", "options": [{"accessory": "Ceiling Mount: ACC-R2-CM + Extension Rod: ACC-ROD-40CM (optional) + R360S Pendant Cap: ACC-R3A-CAP", "note": "This option is for a ceiling that is concreate, brink or metal. The rod is optional."}, {"accessory": "R360S Conduit Adapter: ACC-R3A-CND", "note": "This option is for when conduit is needed to connect to the camera for PoE"}, {"accessory": "", "note": "This camera can be mounted directly to an outdoor wall as long as proper water sealing is applied"}]}, {"model": "R360S", "mount": "Corner Mount", "options": [{"accessory": "Corner Bracket: ACC-R2-CB + Wall Arm Junction Box: ACC-ARM-JB + Arm: ACC-R2-ARM + R360S Pendant Cap: ACC-R3A-CAP", "note": "These accessories are for a corner mounted application."}]}, {"model": "R360S", "mount": "Pole Mount", "options": [{"accessory": "Pole Bracket: ACC-R2-PB + Wall Arm Junction Box: ACC-ARM-JB + Arm: ACC-R2-ARM + R360S Pendant Cap: ACC-R3A-CAP", "note": "These accessories are for a pole application."}]}, {"model": "R410", "mount": "Indoor Wall", "options": [{"accessory": "R410 Conduit Adapter: ACC-R4A-CND", "note": "This option is for when conduit is needed to connect to the camera for PoE"}, {"accessory": "", "note": "This camera can be mounted directly to an indoor wall as long as proper water sealing is applied"}]}, {"model": "R410", "mount": "Outdoor Wall", "options": [{"accessory": "Wall Arm Junction Box: ACC-ARM-JB + Arm: ACC-R2-ARM + R410 Pendant Cap: ACC-R4A-CAP", "note": "The wall arm option is needed of the camera needs be off the wall or if a better camera angle is needed"}, {"accessory": "R410 Conduit Adapter: ACC-R4A-CND", "note": "This option is for when conduit is needed to connect to the camera for PoE"}, {"accessory": "", "note": "This camera can be mounted directly to an outdoor wall as long as proper water sealing is applied"}]}, {"model": "R410", "mount": "Indoor Ceiling", "options": [{"accessory": "Universal Drop Ceiling Mount: ACC-DCM1", "note": "The drop ceiling mount should only be used if the camera is being installed on drop celing tiles"}, {"accessory": "Ceiling Mount: ACC-R2-CM + Extension Rod: ACC-ROD-40CM (optional) + R410 Pendant Cap: ACC-R4A-CAP", "note": "This option is for a ceiling that is concreate, brink or metal. The rod is optional."}, {"accessory": "R410 Conduit Adapter: ACC-R4A-CND", "note": "This option is for when conduit is needed to connect to the camera for PoE"}]}, {"model": "R410", "mount": "Outdoor Ceiling", "options": [{"accessory": "Ceiling Mount: ACC-R2-CM + Extension Rod: ACC-ROD-40CM (optional) + R410 Pendant Cap: ACC-R4A-CAP", "note": "This option is for a ceiling that is concreate, brink or metal. The rod is optional."}, {"accessory": "R410 Conduit Adapter: ACC-R4A-CND", "note": "This option is for when conduit is needed to connect to the camera for PoE"}, {"accessory": "", "note": "This camera can be mounted directly to an outdoor wall as long as proper water sealing is applied"}]}, {"model": "R410", "mount": "Corner Mount", "options": [{"accessory": "Corner Bracket: ACC-R2-CB + Wall Arm Junction Box: ACC-ARM-JB + Arm: ACC-R2-ARM + R410 Pendant Cap: ACC-R4A-CAP", "note": "These accessories are for a corner mounted application."}]}, {"model": "R410", "mount": "Pole Mount", "options": [{"accessory": "Pole Bracket: ACC-R2-PB + Wall Arm Junction Box: ACC-ARM-JB + Arm: ACC-R2-ARM + R410 Pendant Cap: ACC-R4A-CAP", "note": "These accessories are for a pole application."}]}, {"model": "R540", "mount": "Indoor Wall", "options": [{"accessory": "R5 Junction Box: ACC-R5-JB", "note": "The junction box is only needed indoors if mounting the camera to a wall is not available."}, {"accessory": "", "note": "This camera can be mounted directly to an indoor wall as long as proper water sealing is applied"}]}, {"model": "R540", "mount": "Outdoor Wall", "options": [{"accessory": "R5 Junction Box: ACC-R5-JB", "note": "The junction box is needed outdoors for proper water seal and also conduit connection (if applicable)"}, {"accessory": "", "note": "This camera can be mounted directly to an outdoor wall as long as proper water sealing is applied"}]}, {"model": "R540", "mount": "Indoor Ceiling", "options": [{"accessory": "R5 Junction Box: ACC-R5-JB", "note": "The junction box is only needed indoors if mounting the camera to a wall is not available."}, {"accessory": "", "note": "This camera can be mounted directly to an indoor ceiling as long as proper water sealing is applied"}]}, {"model": "R540", "mount": "Outdoor Ceiling", "options": [{"accessory": "R5 Junction Box: ACC-R5-JB", "note": "The junction box is only needed indoors if mounting the camera to a wall is not available."}, {"accessory": "", "note": "This camera can be mounted directly to an outdoor ceiling as long as proper water sealing is applied"}]}, {"model": "R540", "mount": "Corner Mount", "options": [{"accessory": "Not Applicable", "note": ""}]}, {"model": "R540", "mount": "Pole Mount", "options": [{"accessory": "R5 Pole Bracket: ACC-R5-POLE", "note": "These accessories are for a pole application."}]}, {"model": "R545", "mount": "Indoor Wall", "options": [{"accessory": "R5 Junction Box: ACC-R5-JB", "note": "The junction box is only needed indoors if mounting the camera to a wall is not available."}, {"accessory": "", "note": "This camera can be mounted directly to an indoor wall as long as proper water sealing is applied"}]}, {"model": "R545", "mount": "Outdoor Wall", "options": [{"accessory": "R5 Junction Box: ACC-R5-JB", "note": "The junction box is needed outdoors for proper water seal and also conduit connection (if applicable)"}, {"accessory": "", "note": "This camera can be mounted directly to an outdoor wall as long as proper water sealing is applied"}]}, {"model": "R545", "mount": "Indoor Ceiling", "options": [{"accessory": "R5 Junction Box: ACC-R5-JB", "note": "The junction box is needed indoors for proper water seal and also conduit connection (if applicable)"}, {"accessory": "", "note": "This camera can be mounted directly to an indoor ceiling as long as proper water sealing is applied"}]}, {"model": "R545", "mount": "Outdoor Ceiling", "options": [{"accessory": "R5 Junction Box: ACC-R5-JB", "note": "The junction box is needed outdoors for proper water seal and also conduit connection (if applicable)"}, {"accessory": "", "note": "This camera can be mounted directly to an outdoor ceiling as long as proper water sealing is applied"}]}, {"model": "R545", "mount": "Corner Mount", "options": [{"accessory": "Not Applicable", "note": ""}]}, {"model": "R545", "mount": "Pole Mount", "options": [{"accessory": "R5 Pole Bracket: ACC-R5-POLE", "note": "These accessories are for a pole application."}]}, {"model": "R520", "mount": "Indoor Wall", "options": [{"accessory": "R520 Junction Box: ACC-R52-JB", "note": "The junction box is only needed indoors if mounting the camera to a wall is not available."}, {"accessory": "", "note": "This camera can be mounted directly to an indoor wall as long as proper water sealing is applied"}]}, {"model": "R520", "mount": "Outdoor Wall", "options": [{"accessory": "R520 Junction Box: ACC-R52-JB", "note": "The junction box is needed outdoors for proper water seal and also conduit connection (if applicable)"}, {"accessory": "", "note": "This camera can be mounted directly to an outdoor wall as long as proper water sealing is applied"}]}, {"model": "R520", "mount": "Indoor Ceiling", "options": [{"accessory": "R520 Junction Box: ACC-R52-JB", "note": "The junction box is needed indoors for proper water seal and also conduit connection (if applicable)"}, {"accessory": "", "note": "This camera can be mounted directly to an indoor ceiling as long as proper water sealing is applied"}]}, {"model": "R520", "mount": "Outdoor Ceiling", "options": [{"accessory": "R520 Junction Box: ACC-R52-JB", "note": "The junction box is needed outdoors for proper water seal and also conduit connection (if applicable)"}, {"accessory": "", "note": "This camera can be mounted directly to an outdoor ceiling as long as proper water sealing is applied"}]}, {"model": "R520", "mount": "Corner Mount", "options": [{"accessory": "Corner Bracket: ACC-R2-CB + R520 Junction Box: ACC-R52-JB", "note": "These accessories are for a corner mounted application."}]}, {"model": "R520", "mount": "Pole Mount", "options": [{"accessory": "Pole Bracket: ACC-R2-PB + R520 Junction Box: ACC-R52-JB", "note": "These accessories are for a pole application."}]}, {"model": "R600", "mount": "Indoor Wall", "options": [{"accessory": "Wall Arm Junction Box: ACC-ARM-JB + Arm: ACC-R2-ARM + R600 Pendant Cap: ACC-R600-CAP + TP-Link PoE++ Injector: ACC-POE-INJBT", "note": "This is the accessory list for the R600 for an indoor wall applications."}]}, {"model": "R600", "mount": "Outdoor Wall", "options": [{"accessory": "Wall Arm Junction Box: ACC-ARM-JB + Arm: ACC-R2-ARM + R600 Pendant Cap: ACC-R600-CAP + TP-Link PoE++ Injector: ACC-POE-INJBT", "note": "This is the accessory list for the R600 for an outdoor wall applications."}]}, {"model": "R600", "mount": "Indoor Ceiling", "options": [{"accessory": "Ceiling Mount: ACC-R2-CM + Extension Rod: ACC-ROD-40CM (optional) + R600 Pendant Cap: ACC-R600-CAP + TP-Link PoE++ Injector: ACC-POE-INJBT", "note": "This is the accessory list for the R600 for an indoor ceiling applications."}]}, {"model": "R600", "mount": "Outdoor Ceiling", "options": [{"accessory": "Ceiling Mount: ACC-R2-CM + Extension Rod: ACC-ROD-40CM (optional) + R600 Pendant Cap: ACC-R600-CAP + TP-Link PoE++ Injector: ACC-POE-INJBT", "note": "This is the accessory list for the R600 for an outdoor ceiling applications."}]}, {"model": "R600", "mount": "Corner Mount", "options": [{"accessory": "Corner Bracket: ACC-R2-CB + Wall Arm Junction Box: ACC-ARM-JB + Arm: ACC-R2-ARM + R600 Pendant Cap: ACC-R600-CAP + TP-Link PoE++ Injector: ACC-POE-INJBT", "note": "These accessories are for a corner mounted application."}]}, {"model": "R600", "mount": "Pole Mount", "options": [{"accessory": "Pole Bracket: ACC-R2-PB + Wall Arm Junction Box: ACC-ARM-JB + Arm: ACC-R2-ARM + R600 Pendant Cap: ACC-R600-CAP + TP-Link PoE++ Injector: ACC-POE-INJBT", "note": "These accessories are for a pole application."}]}, {"model": "R360", "mount": "Indoor Wall", "options": [{"accessory": "R360 Wedge Mount: ACC-R3-JBW", "note": "This mount is ideal for wall mounted applications that need to have a slight angle so the camera can see downward"}, {"accessory": "R230 Junction Box: ACC-R23-JB", "note": "The R360 uses the R230 junction box for conduit connection"}, {"accessory": "", "note": "This camera can be mounted directly to an indoor wall"}]}, {"model": "R360", "mount": "Outdoor Wall", "options": [{"accessory": "R230 Junction Box: ACC-R23-JB", "note": "The junction box is needed outdoors for proper water seal and conduit connection"}, {"accessory": "Wall Arm Junction Box: ACC-ARM-JB + Arm: ACC-R2-ARM + R360/R400 Pendant Cap: ACC-R3R4-CAP", "note": "The wall arm option is needed if the camera needs to be off the wall or if a better camera angle is needed"}, {"accessory": "R360 Wedge Mount: ACC-R3-JBW", "note": "This mount is ideal for wall mounted applications that need to have a slight angle"}]}, {"model": "R360", "mount": "Indoor Ceiling", "options": [{"accessory": "Universal Drop Ceiling Mount: ACC-DCM1", "note": "The drop ceiling mount should only be used if the camera is being installed on drop ceiling tiles"}, {"accessory": "Ceiling Mount: ACC-R2-CM + Extension Rod: ACC-ROD-40CM (optional) + R360/R400 Pendant Cap: ACC-R3R4-CAP", "note": "This option is for a ceiling that is concrete, brick or metal. The rod is optional."}, {"accessory": "", "note": "This camera can be mounted directly to an indoor ceiling"}]}, {"model": "R360", "mount": "Outdoor Ceiling", "options": [{"accessory": "Ceiling Mount: ACC-R2-CM + Extension Rod: ACC-ROD-40CM (optional) + R360/R400 Pendant Cap: ACC-R3R4-CAP", "note": "This option is for a ceiling that is concrete, brick or metal. The rod is optional."}, {"accessory": "R230 Junction Box: ACC-R23-JB", "note": "The junction box is needed outdoors for proper water seal and conduit connection"}, {"accessory": "", "note": "This camera can be mounted directly to an outdoor ceiling as long as proper water sealing is applied"}]}, {"model": "R360", "mount": "Corner Mount", "options": [{"accessory": "Corner Bracket: ACC-R2-CB + Wall Arm Junction Box: ACC-ARM-JB + Arm: ACC-R2-ARM + R360/R400 Pendant Cap: ACC-R3R4-CAP", "note": "These accessories are for a corner mounted application."}]}, {"model": "R360", "mount": "Pole Mount", "options": [{"accessory": "Pole Bracket: ACC-R2-PB + Wall Arm Junction Box: ACC-ARM-JB + Arm: ACC-R2-ARM + R360/R400 Pendant Cap: ACC-R3R4-CAP", "note": "These accessories are for a pole application."}]}, {"model": "R400", "mount": "Indoor Wall", "options": [{"accessory": "", "note": "This camera can be mounted directly to an indoor wall"}]}, {"model": "R400", "mount": "Outdoor Wall", "options": [{"accessory": "Wall Arm Junction Box: ACC-ARM-JB + Arm: ACC-R2-ARM + R360/R400 Pendant Cap: ACC-R3R4-CAP", "note": "The wall arm option is needed if the camera needs to be off the wall or if a better camera angle is needed"}, {"accessory": "", "note": "This camera can be mounted directly to an outdoor wall as long as proper water sealing is applied"}]}, {"model": "R400", "mount": "Indoor Ceiling", "options": [{"accessory": "Universal Drop Ceiling Mount: ACC-DCM1", "note": "The drop ceiling mount should only be used if the camera is being installed on drop ceiling tiles"}, {"accessory": "Ceiling Mount: ACC-R2-CM + Extension Rod: ACC-ROD-40CM (optional) + R360/R400 Pendant Cap: ACC-R3R4-CAP", "note": "This option is for a ceiling that is concrete, brick or metal. The rod is optional."}, {"accessory": "", "note": "This camera can be mounted directly to an indoor ceiling"}]}, {"model": "R400", "mount": "Outdoor Ceiling", "options": [{"accessory": "Ceiling Mount: ACC-R2-CM + Extension Rod: ACC-ROD-40CM (optional) + R360/R400 Pendant Cap: ACC-R3R4-CAP", "note": "This option is for a ceiling that is concrete, brick or metal. The rod is optional."}, {"accessory": "", "note": "This camera can be mounted directly to an outdoor ceiling as long as proper water sealing is applied"}]}, {"model": "R400", "mount": "Corner Mount", "options": [{"accessory": "Corner Bracket: ACC-R2-CB + Wall Arm Junction Box: ACC-ARM-JB + Arm: ACC-R2-ARM + R360/R400 Pendant Cap: ACC-R3R4-CAP", "note": "These accessories are for a corner mounted application."}]}, {"model": "R400", "mount": "Pole Mount", "options": [{"accessory": "Pole Bracket: ACC-R2-PB + Wall Arm Junction Box: ACC-ARM-JB + Arm: ACC-R2-ARM + R360/R400 Pendant Cap: ACC-R3R4-CAP", "note": "These accessories are for a pole application."}]}, {"model": "R500", "mount": "Indoor Wall", "options": [{"accessory": "R5 Junction Box: ACC-R5-JB", "note": "The junction box is only needed indoors if mounting the camera to a wall is not available."}, {"accessory": "", "note": "This camera can be mounted directly to an indoor wall as long as proper water sealing is applied"}]}, {"model": "R500", "mount": "Outdoor Wall", "options": [{"accessory": "R5 Junction Box: ACC-R5-JB", "note": "The junction box is needed outdoors for proper water seal and also conduit connection (if applicable)"}, {"accessory": "", "note": "This camera can be mounted directly to an outdoor wall as long as proper water sealing is applied"}]}, {"model": "R500", "mount": "Indoor Ceiling", "options": [{"accessory": "R5 Junction Box: ACC-R5-JB", "note": "The junction box is only needed indoors if mounting the camera to a ceiling is not available."}, {"accessory": "", "note": "This camera can be mounted directly to an indoor ceiling as long as proper water sealing is applied"}]}, {"model": "R500", "mount": "Outdoor Ceiling", "options": [{"accessory": "R5 Junction Box: ACC-R5-JB", "note": "The junction box is only needed outdoors if mounting the camera to a ceiling is not available."}, {"accessory": "", "note": "This camera can be mounted directly to an outdoor ceiling as long as proper water sealing is applied"}]}, {"model": "R500", "mount": "Corner Mount", "options": [{"accessory": "Not Applicable", "note": ""}]}, {"model": "R500", "mount": "Pole Mount", "options": [{"accessory": "R5 Pole Bracket: ACC-R5-POLE", "note": "These accessories are for a pole application."}]}, {"model": "R510", "mount": "Indoor Wall", "options": [{"accessory": "R5 Junction Box: ACC-R5-JB", "note": "The junction box is only needed indoors if mounting the camera to a wall is not available."}, {"accessory": "", "note": "This camera can be mounted directly to an indoor wall as long as proper water sealing is applied"}]}, {"model": "R510", "mount": "Outdoor Wall", "options": [{"accessory": "R5 Junction Box: ACC-R5-JB", "note": "The junction box is needed outdoors for proper water seal and also conduit connection (if applicable)"}, {"accessory": "", "note": "This camera can be mounted directly to an outdoor wall as long as proper water sealing is applied"}]}, {"model": "R510", "mount": "Indoor Ceiling", "options": [{"accessory": "R5 Junction Box: ACC-R5-JB", "note": "The junction box is only needed indoors if mounting the camera to a ceiling is not available."}, {"accessory": "", "note": "This camera can be mounted directly to an indoor ceiling as long as proper water sealing is applied"}]}, {"model": "R510", "mount": "Outdoor Ceiling", "options": [{"accessory": "R5 Junction Box: ACC-R5-JB", "note": "The junction box is only needed outdoors if mounting the camera to a ceiling is not available."}, {"accessory": "", "note": "This camera can be mounted directly to an outdoor ceiling as long as proper water sealing is applied"}]}, {"model": "R510", "mount": "Corner Mount", "options": [{"accessory": "Not Applicable", "note": ""}]}, {"model": "R510", "mount": "Pole Mount", "options": [{"accessory": "R5 Pole Bracket: ACC-R5-POLE", "note": "These accessories are for a pole application."}]}], "access": [{"model": "DR20", "mount": "Indoor Wall", "options": [{"accessory": "Wall Plate: ACC-DR20-WP", "note": "This wall plate is used to attach to a 1-gang box."}, {"accessory": "", "note": "Most Indoor installs will not need a accessory"}]}, {"model": "DR20", "mount": "Outdoor Wall", "options": [{"accessory": "Wall Plate: ACC-DR20-WP", "note": "This wall plate is used to attach to a 1-gang box."}, {"accessory": "", "note": "Some outdoor installs will not need a accessory"}]}, {"model": "DR40", "mount": "Indoor Wall", "options": [{"accessory": "DR40 Wall Plate: ACC-DR40-WP + DR40 Angle Wall Mount: ACC-DR40-AWM", "note": "This wall plate is used to attach to a 1-gang box the angle mount is needed to angle the DR40."}, {"accessory": "DR40 Wall Plate: ACC-DR40-WP", "note": "This wall plate is used to attach to a 1-gang box."}, {"accessory": "", "note": "Most Indoor installs will not need a accessory"}]}, {"model": "DR40", "mount": "Outdoor Wall", "options": [{"accessory": "DR40 Wall Plate: ACC-DR40-WP + DR40 Angle Wall Mount: ACC-DR40-AWM", "note": "The junction box is only needed indoors if mounting the camera to a wall is not available."}, {"accessory": "DR40 Wall Plate: ACC-DR40-WP", "note": "Most Indoor installs will not need a accessory"}, {"accessory": "", "note": "Some outdoor installs will not need a accessory"}]}, {"model": "DC20", "mount": "Indoor Wall", "options": [{"accessory": "", "note": "No Accessories Needed"}]}], "sensors": [{"model": "A100", "mount": "Indoor Wall", "options": [{"accessory": "Junction Box: ACC-R100-JB2", "note": "The junction box is only needed indoors if mounting the camera to a wall is not available."}, {"accessory": "", "note": "Most Indoor installs will not need a accessory"}]}, {"model": "A100", "mount": "Outdoor Wall", "options": [{"accessory": "Junction Box: ACC-R100-JB2", "note": "The junction box is needed outdoors for proper water seal and also conduit connection (if applicable)"}, {"accessory": "Wall Arm Junction Box: ACC-ARM-JB + Arm: ACC-R2-ARM + R2A Pendant Cap: ACC-R2A-CAP", "note": "The wall arm option is needed of the camera needs be off the wall or if a better camera angle is needed"}, {"accessory": "", "note": "This camera can be mounted directly to an outdoor wall as long as proper water sealing is applied"}]}, {"model": "A100", "mount": "Indoor Ceiling", "options": [{"accessory": "Universal Drop Ceiling Mount: ACC-DCM1", "note": "The drop ceiling mount should only be used if the camera is being installed on drop celing tiles"}, {"accessory": "Junction Box: ACC-R100-JB2", "note": "The junction box is only needed indoors if mounting the camera to a ceiling is not available."}, {"accessory": "Ceiling Mount: ACC-R2-CM + Extension Rod: ACC-ROD-40CM (optional) + R2A Pendant Cap: ACC-R2A-CAP", "note": "This option is for a ceiling that is concreate, brink or metal. The rod is optional."}]}, {"model": "A100", "mount": "Outdoor Ceiling", "options": [{"accessory": "Junction Box: ACC-R100-JB2", "note": "The junction box is only needed outdoors if mounting the camera to a ceiling is not available."}, {"accessory": "Ceiling Mount: ACC-R2-CM + Extension Rod: ACC-ROD-40CM (optional) + R2A Pendant Cap: ACC-R2A-CAP", "note": "This option is for a ceiling that is concreate, brink or metal. The rod is optional."}, {"accessory": "", "note": "This camera can be mounted directly to an outdoor ceiling as long as proper water sealing is applied"}]}, {"model": "A100", "mount": "Corner Mount", "options": [{"accessory": "Corner Bracket: ACC-R2-CB + Wall Arm Junction Box: ACC-ARM-JB + Arm: ACC-R2-ARM + R2A Pendant Cap: ACC-R2A-CAP", "note": "These accessories are for a corner mounted application."}]}, {"model": "A100", "mount": "Pole Mount", "options": [{"accessory": "Pole Bracket: ACC-R2-PB + Wall Arm Junction Box: ACC-ARM-JB + Arm: ACC-R2-ARM + R2A Pendant Cap: ACC-R2A-CAP", "note": "These accessories are for a pole application."}]}, {"model": "E50", "mount": "Indoor Wall", "options": [{"accessory": "Junction Box: ACC-R100-JB2", "note": "The junction box is only needed indoors if mounting the camera to a wall is not available."}, {"accessory": "", "note": "Most Indoor installs will not need a accessory"}]}, {"model": "E50", "mount": "Outdoor Wall", "options": [{"accessory": "Junction Box: ACC-R100-JB2", "note": "The junction box is needed outdoors for proper water seal and also conduit connection (if applicable)"}, {"accessory": "Wall Arm Junction Box: ACC-ARM-JB + Arm: ACC-R2-ARM + R2A Pendant Cap: ACC-R2A-CAP", "note": "The wall arm option is needed of the camera needs be off the wall or if a better camera angle is needed"}, {"accessory": "", "note": "This camera can be mounted directly to an outdoor wall as long as proper water sealing is applied"}]}, {"model": "E50", "mount": "Indoor Ceiling", "options": [{"accessory": "Universal Drop Ceiling Mount: ACC-DCM1", "note": "The drop ceiling mount should only be used if the camera is being installed on drop celing tiles"}, {"accessory": "Junction Box: ACC-R100-JB2", "note": "The junction box is only needed indoors if mounting the camera to a ceiling is not available."}, {"accessory": "Ceiling Mount: ACC-R2-CM + Extension Rod: ACC-ROD-40CM (optional) + R2A Pendant Cap: ACC-R2A-CAP", "note": "This option is for a ceiling that is concreate, brink or metal. The rod is optional."}]}, {"model": "E50", "mount": "Outdoor Ceiling", "options": [{"accessory": "Junction Box: ACC-R100-JB2", "note": "The junction box is only needed outdoors if mounting the camera to a ceiling is not available."}, {"accessory": "Ceiling Mount: ACC-R2-CM + Extension Rod: ACC-ROD-40CM (optional) + R2A Pendant Cap: ACC-R2A-CAP", "note": "This option is for a ceiling that is concreate, brink or metal. The rod is optional."}, {"accessory": "", "note": "This camera can be mounted directly to an outdoor ceiling as long as proper water sealing is applied"}]}, {"model": "E50", "mount": "Corner Mount", "options": [{"accessory": "Corner Bracket: ACC-R2-CB + Wall Arm Junction Box: ACC-ARM-JB + Arm: ACC-R2-ARM + R2A Pendant Cap: ACC-R2A-CAP", "note": "These accessories are for a corner mounted application."}]}, {"model": "E50", "mount": "Pole Mount", "options": [{"accessory": "Pole Bracket: ACC-R2-PB + Wall Arm Junction Box: ACC-ARM-JB + Arm: ACC-R2-ARM + R2A Pendant Cap: ACC-R2A-CAP", "note": "These accessories are for a pole application."}]}], "relay": [{"model": "N100", "mount": "Rack", "options": [{"accessory": "N100 Rack Mount: ACC-N2UA", "note": "The rack mount is only needed if the client will be mounting the N100 on a rack."}]}]};
+
+var IMAGES = {"ACC-R3-JBW": "https://www.rhombus.com/img/r360-wedge-mount.webp", "ACC-R3R4-CAP": "https://www.rhombus.com/img/r360S-pendant-cap.png", "ACC-DR20-WP": "https://www.rhombus.com/img/r230_jb_2023-feb-14_09-57-45pm-000_customizedview14341798277_png_alpha-1.webp", "ACC-DR40-AWM": "https://www.rhombus.com/img/acc-dr40-awm.webp", "ACC-DR40-WP": "https://www.rhombus.com/img/acc-dr40-wp.webp", "ACC-ENV-TEMP": "https://www.rhombus.com/img/acc-env-temp.webp", "ACC-ENV-LEAK": "https://www.rhombus.com/img/acc-env-leak.png", "ACC-ROD-40CM": "https://www.rhombus.com/img/extension_rod.webp", "ACC-R100-JB2": "https://www.rhombus.com/img/r120r200_junction_box.webp", "ACC-R23-CAP": "https://www.rhombus.com/img/r230-cap.webp", "ACC-R23-JB": "https://www.rhombus.com/img/r230-junction-box.webp", "ACC-R2A-CAP": "https://www.rhombus.com/img/r2a-cap-min.webp", "ACC-DCM1": "https://www.rhombus.com/img/universal-ceiling-mount.webp", "ACC-ARM-JB": "https://www.rhombus.com/img/wall-arm-junction-box.webp", "ACC-R3A-CAP": "https://www.rhombus.com/img/r360S-pendant-cap.png", "ACC-R2-ARM": "https://www.rhombus.com/img/arm_mount.webp", "ACC-R2-CM": "https://www.rhombus.com/img/ceiling-mount.webp", "ACC-R4A-CAP": "https://www.rhombus.com/img/acc-r4a-cap-min.webp", "ACC-R52-JB": "https://www.rhombus.com/img/r520-junction-box.webp", "ACC-R3A-CND": "https://www.rhombus.com/img/r360S-conduit-adapter.webp", "ACC-R4A-CND": "https://www.rhombus.com/img/acc-r4a-cnd-min.webp", "ACC-R2-CB": "https://www.rhombus.com/img/corner_bracket.webp", "ACC-R2-PB": "https://www.rhombus.com/img/pole-bracket.webp", "ACC-R5-JB": "https://www.rhombus.com/img/r500-junction-box.webp", "ACC-R5-POLE": "https://www.rhombus.com/img/r500-pole-bracket.webp", "ACC-R600-CAP": "https://www.rhombus.com/img/acc-dcm1-1.webp", "ACC-R3S-JBW": "https://www.rhombus.com/img/r360-wedge-mount.webp", "ACC-N2UA": "https://www.rhombus.com/img/n100-rack-mount.webp"};
+
+var STORAGE_OPTIONS = {
+  "R120": ["128GB"], "R150": ["128GB", "256GB", "512GB", "1TB"],
+  "R200": ["128GB", "256GB", "512GB", "1TB"], "R230": ["128GB", "256GB", "512GB", "1TB"],
+  "R360": ["128GB", "256GB", "512GB"], "R360S": ["512GB", "1TB", "2TB"],
+  "R400": ["128GB", "256GB", "512GB"], "R410": ["512GB", "1TB", "2TB"],
+  "R500": ["128GB", "256GB", "512GB"], "R510": ["128GB", "256GB", "512GB"],
+  "R540": ["512GB", "1TB", "2TB"], "R545": ["512GB", "1TB", "2TB"],
+  "R520": ["128GB", "256GB", "512GB", "1TB"], "R600": ["1TB", "2TB"],
+  "DR40": ["128GB", "256GB", "512GB"], "DR20": ["N/A"], "DC20": ["N/A"],
+  "A100": ["No Storage", "128GB"], "E50": ["N/A"], "N100": ["2TB", "4TB"]
+};
+
+var MODEL_TO_SKU_PREFIX = {
+  "R120": "R120", "R150": "R150", "R200": "R200", "R230": "R230",
+  "R360": "R360", "R360S": "R360S", "R400": "R400", "R410": "R410",
+  "R500": "R500", "R510": "R510", "R540": "R540", "R545": "R545",
+  "R520": "R520", "R600": "R600",
+  "DR40": "DR40", "DR20": "AC-DR20", "DC20": "DC20M",
+  "A100": "SEN-AUD-A100", "E50": "SEN-ENV-E50", "N100": "N100"
+};
+
+var POE_NOTES = {
+  "R360S": {standard: "802.3at", label: "PoE+ Power Required", text: "The R360S requires a PoE+ (802.3at) capable switch. If your switch does not provide sufficient power, Rhombus offers a PoE++ injector (ACC-POE-INJBT) as an accessory to ensure proper power delivery."},
+  "R410": {standard: "802.3at", label: "PoE+ Power Required", text: "The R410 requires a PoE+ (802.3at) capable switch. If your switch does not provide sufficient power, Rhombus offers a PoE++ injector (ACC-POE-INJBT) as an accessory to ensure proper power delivery."},
+  "R540": {standard: "802.3at", label: "PoE+ Power Required", text: "The R540 requires a PoE+ (802.3at) capable switch. If your switch does not provide sufficient power, Rhombus offers a PoE++ injector (ACC-POE-INJBT) as an accessory to ensure proper power delivery."},
+  "R545": {standard: "802.3at", label: "PoE+ Power Required", text: "The R545 requires a PoE+ (802.3at) capable switch. If your switch does not provide sufficient power, Rhombus offers a PoE++ injector (ACC-POE-INJBT) as an accessory to ensure proper power delivery."},
+  "R600": {standard: "802.3bt", label: "PoE++ Power Required", text: "The R600 requires a PoE++ (802.3bt) capable switch or the included TP-Link PoE++ Injector (ACC-POE-INJBT). Standard PoE and PoE+ switches will not provide sufficient power."}
+};
+
+function getDeviceSku(model, storage) {
+  if (storage === "N/A" || !storage) return MODEL_TO_SKU_PREFIX[model] || null;
+  if (model === "A100" && storage === "No Storage") return "SEN-AUD-A100";
+  if (model === "A100" && storage === "128GB") return "SEN-AUD-A100-128GB";
+  return (MODEL_TO_SKU_PREFIX[model] || model) + "-" + storage;
 }
 
-async function submitFeedback(e) {
-  e.preventDefault();
-  const btn = document.getElementById('feedback-submit');
-  btn.disabled = true;
-  btn.textContent = 'Sending…';
-  const form = e.target;
-  const data = { type: form.type.value, name: form.name.value, message: form.message.value };
+var cat = 'cameras';
+var bom = [];
+
+var TITLES = { cameras: 'Select Camera', access: 'Select Access Control Device', sensors: 'Select Sensor', relay: 'Select Relay' };
+
+function saveBOM() {
+  try { localStorage.setItem('rhombus-bom', JSON.stringify(bom)); } catch(e) {}
+}
+function loadBOM() {
   try {
-    const res = await fetch('https://formspree.io/f/xykaolaj', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-      body: JSON.stringify(data)
-    });
-    if (res.ok) {
-      document.getElementById('feedback-form-wrap').style.display = 'none';
-      document.getElementById('feedback-success').style.display = 'block';
+    var saved = localStorage.getItem('rhombus-bom');
+    if (saved) bom = JSON.parse(saved);
+  } catch(e) {}
+}
+
+function selectCat(c) {
+  cat = c;
+  document.querySelectorAll('.tab').forEach(function(t) { t.classList.toggle('active', t.dataset.cat === c); });
+  document.getElementById('sel-title').textContent = TITLES[c];
+  var models = [];
+  DATA[c].forEach(function(r) { if (models.indexOf(r.model) < 0) models.push(r.model); });
+  var ms = document.getElementById('sel-model');
+  ms.innerHTML = '<option value="">-- Choose model --</option>' + models.map(function(m) { return '<option>' + m + '</option>'; }).join('');
+  document.getElementById('sel-storage').innerHTML = '<option value="">-- Choose storage --</option>';
+  document.getElementById('sel-mount').innerHTML = '<option value="">-- Choose mount type --</option>';
+  document.getElementById('results-area').innerHTML = '<div class="placeholder"><span class="icon">&#9757;</span>Choose a model, storage, and mount type above to see required accessories</div>';
+}
+
+function onModelChange() {
+  var model = document.getElementById('sel-model').value;
+  var ss = document.getElementById('sel-storage');
+  var ms = document.getElementById('sel-mount');
+  if (!model) { ss.innerHTML = '<option value="">-- Choose storage --</option>'; ms.innerHTML = '<option value="">-- Choose mount type --</option>'; return; }
+  var storages = STORAGE_OPTIONS[model] || ["N/A"];
+  ss.innerHTML = '<option value="">-- Choose storage --</option>' + storages.map(function(s) { return '<option>' + s + '</option>'; }).join('');
+  if (storages.length === 1) ss.value = storages[0];
+  var mounts = [];
+  DATA[cat].forEach(function(r) { if (r.model === model && mounts.indexOf(r.mount) < 0) mounts.push(r.mount); });
+  ms.innerHTML = '<option value="">-- Choose mount type --</option>' + mounts.map(function(m) { return '<option>' + m + '</option>'; }).join('');
+  if (mounts.length === 1) { ms.value = mounts[0]; showResult(); }
+  else document.getElementById('results-area').innerHTML = '<div class="placeholder"><span class="icon">&#9757;</span>Now choose storage and mount type</div>';
+}
+
+function extractParts(acc) {
+  return acc.split(' + ').map(function(s) { return s.trim(); }).filter(Boolean).map(function(seg) {
+    var m = seg.match(/ACC-[A-Z0-9\-]+/);
+    var sku = m ? m[0] : null;
+    var label = seg.replace(/ACC-[A-Z0-9\-]+/, '').replace(/:\s*$/, '').replace(/^\s*:\s*/, '').trim();
+    return { sku: sku, label: label || seg, raw: seg };
+  });
+}
+
+function renderParts(acc) {
+  if (!acc) return '';
+  var parts = extractParts(acc);
+  if (!parts.length) return '<div class="na-text">No accessory required</div>';
+  var isNA = acc.toLowerCase().indexOf('not applicable') >= 0 || acc.toLowerCase().indexOf('no accessor') >= 0;
+  if (isNA) return '<div class="na-text">No accessory required for this configuration</div>';
+  var html = '<div class="acc-label">Required Accessories</div><div class="parts-grid">';
+  parts.forEach(function(p) {
+    var img = p.sku ? IMAGES[p.sku] : null;
+    if (img) {
+      html += '<div class="part-tile"><img src="' + img + '" alt="' + (p.label || p.sku) + '" loading="lazy" onerror="this.style.display=\'none\'"><div class="part-name">' + (p.label || '') + '</div><div class="part-sku">' + p.sku + '</div></div>';
     } else {
-      btn.disabled = false;
-      btn.textContent = 'Send Feedback';
-      alert('Something went wrong. Please try again.');
+      html += '<div class="part-tile no-img"><div class="part-name">' + (p.label || p.raw) + '</div>' + (p.sku ? '<div class="part-sku">' + p.sku + '</div>' : '') + '</div>';
     }
-  } catch {
-    btn.disabled = false;
-    btn.textContent = 'Send Feedback';
-    alert('Network error. Please try again.');
+  });
+  return html + '</div>';
+}
+
+function showResult() {
+  var model = document.getElementById('sel-model').value;
+  var storage = document.getElementById('sel-storage').value;
+  var mount = document.getElementById('sel-mount').value;
+  var area = document.getElementById('results-area');
+  if (!model || !mount) return;
+  var row = DATA[cat].find(function(r) { return r.model === model && r.mount === mount; });
+  if (!row) { area.innerHTML = '<div class="placeholder"><span class="icon">&#128270;</span>No data found</div>'; return; }
+  var deviceSku = storage ? getDeviceSku(model, storage) : null;
+  var hdrColors = ['#1F3864','#2E74B5','#4472C4'];
+  var html = '<div class="results-hdr"><h3>' + model + (storage && storage !== 'N/A' ? ' (' + storage + ')' : '') + ' -- ' + mount + '</h3><span class="badge">' + row.options.length + ' option' + (row.options.length !== 1 ? 's' : '') + '</span></div>';
+  if (deviceSku) {
+    html += '<div style="background:#e8f5e9;border-radius:8px;padding:10px 14px;margin-bottom:14px;border:1px solid #c8e6c9;font-size:.85rem;"><strong style="color:#1b5e20;">Device SKU: ' + deviceSku + '</strong></div>';
+  }
+  var poe = POE_NOTES[model];
+  if (poe) {
+    html += '<div class="poe-warning"><span class="poe-icon">&#9889;</span><strong>' + poe.label + '</strong><br>' + poe.text + '</div>';
+  }
+  row.options.forEach(function(opt, i) {
+    var acc = opt.accessory || '';
+    var note = opt.note || '';
+    var isNA = !acc || acc.toLowerCase().indexOf('not applicable') >= 0 || acc.toLowerCase().indexOf('no accessor') >= 0;
+    var noteIsNA = note.toLowerCase().indexOf('no accessor') >= 0 || note.toLowerCase().indexOf('not applicable') >= 0;
+    html += '<div class="opt-card"><div class="opt-hdr" style="background:' + (hdrColors[i] || hdrColors[2]) + '"><span class="opt-num">' + (i+1) + '</span>Option ' + (i+1) + (i===0 ? ' -- Most Common' : '') + '</div><div class="opt-body">' +
+      (isNA ? '<div class="na-text">No accessory required for this configuration</div>' : renderParts(acc)) +
+      (note && !noteIsNA ? '<div class="note-box">' + note + '</div>' : '') +
+      '<div class="add-row">' +
+        '<input type="number" class="qty-input" id="qty-' + i + '" value="1" min="1" max="999">' +
+        '<input type="text" class="loc-input" id="loc-' + i + '" placeholder="Location (e.g. Front entrance)" style="flex:1;min-width:140px;">' +
+        '<button class="add-bom-btn" onclick="addToBOM(' + i + ')">+ Add to BOM</button>' +
+      '</div></div></div>';
+  });
+  area.innerHTML = html;
+}
+
+function addToBOM(optionIndex) {
+  var model = document.getElementById('sel-model').value;
+  var storage = document.getElementById('sel-storage').value;
+  var mount = document.getElementById('sel-mount').value;
+  if (!model || !mount) return;
+  var row = DATA[cat].find(function(r) { return r.model === model && r.mount === mount; });
+  if (!row || !row.options[optionIndex]) return;
+
+  var qtyEl = document.getElementById('qty-' + optionIndex);
+  var locEl = document.getElementById('loc-' + optionIndex);
+  var qty = Math.max(1, parseInt(qtyEl.value) || 1);
+  var loc = locEl ? locEl.value.trim() : '';
+
+  var deviceSku = storage ? getDeviceSku(model, storage) : null;
+  var opt = row.options[optionIndex];
+  var acc = opt.accessory || '';
+
+  if (deviceSku) {
+    addBOMItem(deviceSku, model + (storage && storage !== 'N/A' ? ' ' + storage : ''), qty, loc);
+  }
+
+  var isNA = !acc || acc.toLowerCase().indexOf('not applicable') >= 0 || acc.toLowerCase().indexOf('no accessor') >= 0;
+  if (!isNA && acc) {
+    extractParts(acc).forEach(function(p) {
+      if (p.sku) addBOMItem(p.sku, p.label || p.sku, qty, loc);
+    });
+  }
+
+  renderBOM();
+  saveBOM();
+
+  var btn = document.querySelectorAll('.add-bom-btn')[optionIndex];
+  if (btn) { btn.textContent = 'Added!'; setTimeout(function() { btn.textContent = '+ Add to BOM'; }, 1200); }
+}
+
+function addBOMItem(sku, name, qty, location) {
+  var existing = bom.find(function(b) { return b.sku === sku && b.location === (location || ''); });
+  if (existing) {
+    existing.qty += qty;
+  } else {
+    bom.push({ sku: sku, name: name, qty: qty, location: location || '' });
   }
 }
+
+function updateQty(idx, delta) {
+  if (!bom[idx]) return;
+  bom[idx].qty += delta;
+  if (bom[idx].qty <= 0) bom.splice(idx, 1);
+  renderBOM(); saveBOM();
+}
+
+function removeItem(idx) {
+  bom.splice(idx, 1);
+  renderBOM(); saveBOM();
+}
+
+function editLocation(idx) {
+  var el = document.getElementById('loc-edit-' + idx);
+  if (el) {
+    el.style.display = el.style.display === 'none' ? 'block' : 'none';
+    if (el.style.display === 'block') el.focus();
+  }
+}
+
+function saveLocation(idx) {
+  var el = document.getElementById('loc-edit-' + idx);
+  if (el && bom[idx]) {
+    bom[idx].location = el.value.trim();
+    renderBOM(); saveBOM();
+  }
+}
+
+function renderBOM() {
+  var body = document.getElementById('bom-body');
+  var countEl = document.getElementById('bom-count');
+  if (!bom.length) {
+    body.innerHTML = '<div class="bom-empty">Add devices and accessories to build your BOM</div>';
+    countEl.textContent = '0 items';
+    return;
+  }
+  var totalQty = bom.reduce(function(s, b) { return s + b.qty; }, 0);
+  countEl.textContent = totalQty + ' item' + (totalQty !== 1 ? 's' : '');
+
+  var devices = [], accessories = [];
+  bom.forEach(function(item, idx) {
+    item._idx = idx;
+    if (item.sku.indexOf('ACC-') === 0) accessories.push(item);
+    else devices.push(item);
+  });
+
+  var html = '';
+  if (devices.length) {
+    html += '<div class="bom-group-hdr">&#128247; Devices (' + devices.reduce(function(s,d){return s+d.qty;},0) + ')</div>';
+    devices.forEach(function(item) { html += renderBOMItem(item); });
+  }
+  if (accessories.length) {
+    html += '<div class="bom-group-hdr">&#128295; Accessories (' + accessories.reduce(function(s,a){return s+a.qty;},0) + ')</div>';
+    accessories.forEach(function(item) { html += renderBOMItem(item); });
+  }
+  body.innerHTML = html;
+}
+
+function renderBOMItem(item) {
+  var idx = item._idx;
+  var locDisplay = item.location ? '<div class="bom-item-loc" onclick="editLocation(' + idx + ')">' + item.location + '</div>' : '<div class="bom-item-loc" onclick="editLocation(' + idx + ')" style="color:#bbb;">+ add location</div>';
+  return '<div class="bom-item">' +
+    '<div class="bom-item-info">' +
+      '<div class="bom-item-sku">' + item.sku + '</div>' +
+      '<div class="bom-item-name">' + item.name + '</div>' +
+      locDisplay +
+      '<input class="bom-item-loc-input" id="loc-edit-' + idx + '" style="display:none" value="' + (item.location || '').replace(/"/g, '&quot;') + '" placeholder="Enter location..." onblur="saveLocation(' + idx + ')" onkeydown="if(event.key===\'Enter\'){saveLocation(' + idx + ')}">' +
+    '</div>' +
+    '<div class="bom-item-qty">' +
+      '<button onclick="updateQty(' + idx + ', -1)">-</button>' +
+      '<span>' + item.qty + '</span>' +
+      '<button onclick="updateQty(' + idx + ', 1)">+</button>' +
+    '</div>' +
+    '<button class="bom-item-remove" onclick="removeItem(' + idx + ')" title="Remove">&#10005;</button>' +
+  '</div>';
+}
+
+function copyBOM() {
+  if (!bom.length) return;
+  var s = splitBOM();
+  var lines = ['Rhombus Bill of Materials', ''];
+  if (s.devices.length) {
+    lines.push('DEVICES');
+    lines.push('SKU\tName\tQty\tLocation');
+    s.devices.forEach(function(item) {
+      lines.push(item.sku + '\t' + item.name + '\t' + item.qty + '\t' + (item.location || ''));
+    });
+    lines.push('');
+  }
+  if (s.accessories.length) {
+    lines.push('ACCESSORIES');
+    lines.push('SKU\tName\tQty\tLocation');
+    s.accessories.forEach(function(item) {
+      lines.push(item.sku + '\t' + item.name + '\t' + item.qty + '\t' + (item.location || ''));
+    });
+    lines.push('');
+  }
+  lines.push('Total\t\t' + bom.reduce(function(t,b){return t+b.qty;},0));
+  navigator.clipboard.writeText(lines.join('\n')).then(function() {
+    var btn = document.querySelector('.btn-copy');
+    btn.textContent = 'Copied!';
+    setTimeout(function() { btn.textContent = 'Copy'; }, 1500);
+  });
+}
+
+function splitBOM() {
+  var devices = [], accessories = [];
+  bom.forEach(function(item) {
+    if (item.sku.indexOf('ACC-') === 0) accessories.push(item);
+    else devices.push(item);
+  });
+  return { devices: devices, accessories: accessories };
+}
+
+function exportCSV() {
+  if (!bom.length) return;
+  var d = new Date();
+  var dateStr = (d.getMonth()+1) + '/' + d.getDate() + '/' + d.getFullYear();
+  var s = splitBOM();
+  var totalQty = bom.reduce(function(t,b){return t+b.qty;},0);
+  var lines = [];
+  lines.push('Rhombus Bill of Materials');
+  lines.push('"Generated:","' + dateStr + '"');
+  lines.push('"Total Line Items:","' + bom.length + '"');
+  lines.push('"Total Quantity:","' + totalQty + '"');
+  lines.push('');
+  if (s.devices.length) {
+    lines.push('DEVICES');
+    lines.push('SKU,Name,Qty,Location');
+    s.devices.forEach(function(item) {
+      lines.push('"' + item.sku + '","' + item.name + '",' + item.qty + ',"' + (item.location || '').replace(/"/g, '""') + '"');
+    });
+    lines.push('"","Devices Subtotal",' + s.devices.reduce(function(t,d){return t+d.qty;},0) + ',""');
+    lines.push('');
+  }
+  if (s.accessories.length) {
+    lines.push('ACCESSORIES');
+    lines.push('SKU,Name,Qty,Location');
+    s.accessories.forEach(function(item) {
+      lines.push('"' + item.sku + '","' + item.name + '",' + item.qty + ',"' + (item.location || '').replace(/"/g, '""') + '"');
+    });
+    lines.push('"","Accessories Subtotal",' + s.accessories.reduce(function(t,a){return t+a.qty;},0) + ',""');
+    lines.push('');
+  }
+  lines.push('"","TOTAL",' + totalQty + ',""');
+  var blob = new Blob([lines.join('\n')], { type: 'text/csv' });
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  a.href = url; a.download = 'rhombus-bom.csv'; a.click();
+  URL.revokeObjectURL(url);
+}
+
+function printBOM() {
+  if (!bom.length) return;
+  var d = new Date();
+  var dateStr = (d.getMonth()+1) + '/' + d.getDate() + '/' + d.getFullYear();
+  var s = splitBOM();
+  var totalQty = bom.reduce(function(t,b){return t+b.qty;},0);
+
+  function tableRows(items) {
+    return items.map(function(item, i) {
+      return '<tr style="background:' + (i%2===0 ? '#fff' : '#f8fafc') + '">' +
+        '<td style="padding:8px 12px;border-bottom:1px solid #e2e8f0;font-family:Courier New,monospace;font-weight:700;color:#1F3864;font-size:13px;">' + item.sku + '</td>' +
+        '<td style="padding:8px 12px;border-bottom:1px solid #e2e8f0;font-size:13px;">' + item.name + '</td>' +
+        '<td style="padding:8px 12px;border-bottom:1px solid #e2e8f0;text-align:center;font-weight:700;font-size:13px;">' + item.qty + '</td>' +
+        '<td style="padding:8px 12px;border-bottom:1px solid #e2e8f0;font-size:12px;color:#64748b;font-style:italic;">' + (item.location || '—') + '</td>' +
+      '</tr>';
+    }).join('');
+  }
+
+  function subtotalRow(label, qty) {
+    return '<tr style="background:#f1f5f9;">' +
+      '<td colspan="2" style="padding:8px 12px;text-align:right;font-weight:700;font-size:12px;color:#475569;text-transform:uppercase;letter-spacing:.5px;">' + label + '</td>' +
+      '<td style="padding:8px 12px;text-align:center;font-weight:800;font-size:14px;color:#1F3864;">' + qty + '</td>' +
+      '<td></td></tr>';
+  }
+
+  var tableHead = '<thead><tr style="background:#1F3864;">' +
+    '<th style="padding:10px 12px;text-align:left;color:#fff;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;">SKU</th>' +
+    '<th style="padding:10px 12px;text-align:left;color:#fff;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;">Description</th>' +
+    '<th style="padding:10px 12px;text-align:center;color:#fff;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;width:60px;">Qty</th>' +
+    '<th style="padding:10px 12px;text-align:left;color:#fff;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;">Location</th>' +
+  '</tr></thead>';
+
+  var html = '<!DOCTYPE html><html><head><title>Rhombus BOM</title></head><body style="font-family:Segoe UI,Arial,sans-serif;color:#1a1a2e;margin:0;padding:40px;">' +
+
+    '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;padding-bottom:16px;border-bottom:3px solid #1F3864;">' +
+      '<div>' +
+        '<h1 style="margin:0;font-size:22px;color:#1F3864;letter-spacing:-.3px;">Rhombus Systems</h1>' +
+        '<p style="margin:4px 0 0;font-size:13px;color:#64748b;">Bill of Materials</p>' +
+      '</div>' +
+      '<div style="text-align:right;">' +
+        '<p style="margin:0;font-size:12px;color:#64748b;">Date: <strong style="color:#1a1a2e;">' + dateStr + '</strong></p>' +
+        '<p style="margin:4px 0 0;font-size:12px;color:#64748b;">Line Items: <strong style="color:#1a1a2e;">' + bom.length + '</strong> &nbsp;|&nbsp; Total Qty: <strong style="color:#1a1a2e;">' + totalQty + '</strong></p>' +
+      '</div>' +
+    '</div>';
+
+  if (s.devices.length) {
+    html += '<h2 style="font-size:13px;color:#1F3864;text-transform:uppercase;letter-spacing:1px;margin:24px 0 8px;padding-left:2px;">Devices</h2>' +
+      '<table style="width:100%;border-collapse:collapse;border:1px solid #e2e8f0;border-radius:6px;overflow:hidden;margin-bottom:4px;">' +
+      tableHead + '<tbody>' + tableRows(s.devices) +
+      subtotalRow('Devices Subtotal', s.devices.reduce(function(t,d){return t+d.qty;},0)) +
+      '</tbody></table>';
+  }
+
+  if (s.accessories.length) {
+    html += '<h2 style="font-size:13px;color:#1F3864;text-transform:uppercase;letter-spacing:1px;margin:24px 0 8px;padding-left:2px;">Accessories</h2>' +
+      '<table style="width:100%;border-collapse:collapse;border:1px solid #e2e8f0;border-radius:6px;overflow:hidden;margin-bottom:4px;">' +
+      tableHead + '<tbody>' + tableRows(s.accessories) +
+      subtotalRow('Accessories Subtotal', s.accessories.reduce(function(t,a){return t+a.qty;},0)) +
+      '</tbody></table>';
+  }
+
+  html += '<div style="margin-top:20px;padding:12px 16px;background:#1F3864;border-radius:6px;display:flex;justify-content:space-between;align-items:center;">' +
+    '<span style="color:#fff;font-size:14px;font-weight:700;text-transform:uppercase;letter-spacing:1px;">Grand Total</span>' +
+    '<span style="color:#fff;font-size:22px;font-weight:800;">' + totalQty + ' units</span>' +
+  '</div>';
+
+  html += '<div style="margin-top:32px;padding-top:16px;border-top:1px solid #e2e8f0;display:flex;justify-content:space-between;font-size:11px;color:#94a3b8;">' +
+    '<span>Generated by Rhombus Accessories & BOM Builder</span>' +
+    '<span>' + dateStr + '</span>' +
+  '</div>';
+
+  html += '</body></html>';
+
+  var w = window.open('', '_blank', 'width=800,height=900');
+  w.document.write(html);
+  w.document.close();
+  w.focus();
+  setTimeout(function() { w.print(); }, 400);
+}
+
+function clearBOM() {
+  if (bom.length && !confirm('Clear entire BOM?')) return;
+  bom = [];
+  renderBOM(); saveBOM();
+}
+
+loadBOM();
+selectCat('cameras');
+renderBOM();
 </script>
 </body>
 </html>
