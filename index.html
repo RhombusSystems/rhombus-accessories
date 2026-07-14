@@ -248,7 +248,19 @@
     .part-tile img { width: 68px; height: 68px; }
   }
 
-  @media print { body { display: none; } }
+  .feedback-fab {
+    position: fixed; bottom: 22px; right: 22px; z-index: 1000;
+    display: inline-flex; align-items: center; gap: 7px;
+    background: var(--navy); color: #fff;
+    font-size: .85rem; font-weight: 600;
+    padding: 12px 18px; border-radius: 999px;
+    text-decoration: none;
+    box-shadow: 0 4px 16px rgba(0,0,0,.3);
+    transition: background .16s, transform .16s, box-shadow .16s;
+  }
+  .feedback-fab:hover { background: var(--blue); transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,.35); }
+
+  @media print { body { display: none; } .feedback-fab { display: none; } }
 </style>
 </head>
 <body>
@@ -774,5 +786,7 @@ loadBOM();
 selectCat('cameras');
 renderBOM();
 </script>
+
+<a class="feedback-fab" href="https://terrain.rhmbs.app/feedback" target="_blank" rel="noopener">&#128172; Feedback</a>
 </body>
 </html>
