@@ -249,6 +249,13 @@
   }
   .poe-warning strong { color: #e65100; }
   .poe-warning .poe-icon { font-size: 1.1rem; margin-right: 6px; }
+  .outdoor-warning {
+    background: #fdecea; border: 1px solid #f5b7b1; border-left: 4px solid #e74c3c;
+    border-radius: 0 8px 8px 0; padding: 12px 16px; margin-bottom: 14px;
+    font-size: .85rem; line-height: 1.5; color: #7b241c;
+  }
+  .outdoor-warning strong { color: #c0392b; }
+  .outdoor-warning .ow-icon { font-size: 1.1rem; margin-right: 6px; }
 
   @media(max-width:900px) {
     .layout { flex-direction: column; }
@@ -396,6 +403,8 @@ var POE_NOTES = {
   "R600": {standard: "802.3bt", label: "PoE++ Power Required", text: "The R600 requires a PoE++ (802.3bt) capable switch or the included TP-Link PoE++ Injector (ACC-POE-INJBT). Standard PoE and PoE+ switches will not provide sufficient power."}
 };
 
+var NOT_OUTDOOR = ['R150', 'A100', 'E50'];
+
 function getDeviceSku(model, storage) {
   if (storage === "N/A" || !storage) return MODEL_TO_SKU_PREFIX[model] || null;
   if (model === "A100" && storage === "No Storage") return "SEN-AUD-A100";
@@ -486,6 +495,9 @@ function showResult() {
   var html = '<div class="results-hdr"><h3>' + model + (storage && storage !== 'N/A' ? ' (' + storage + ')' : '') + ' -- ' + mount + '</h3><span class="badge">' + row.options.length + ' option' + (row.options.length !== 1 ? 's' : '') + '</span></div>';
   if (deviceSku) {
     html += '<div style="background:#e8f5e9;border-radius:8px;padding:10px 14px;margin-bottom:14px;border:1px solid #c8e6c9;font-size:.85rem;"><strong style="color:#1b5e20;">Device SKU: ' + deviceSku + '</strong></div>';
+  }
+  if (NOT_OUTDOOR.indexOf(model) >= 0) {
+    html += '<div class="outdoor-warning"><span class="ow-icon">&#9888;&#65039;</span><strong>Indoor use only &mdash; not outdoor rated</strong><br>The ' + model + ' is not rated for outdoor or weather-exposed installations. Deploy in indoor or enclosed environments only.</div>';
   }
   var poe = POE_NOTES[model];
   if (poe) {
