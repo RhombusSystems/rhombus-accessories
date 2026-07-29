@@ -4,24 +4,33 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Rhombus Accessories & BOM Builder</title>
+<link rel="icon" href="https://assets.rhombussystems.com/favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root {
-    --navy:   #1F3864;
-    --blue:   #2E74B5;
-    --lblue:  #DEEAF1;
-    --xlblue: #EBF3FB;
-    --accent: #4472C4;
-    --white:  #fff;
-    --gray:   #f5f7fa;
-    --text:   #1a1a2e;
-    --muted:  #666;
-    --border: #d0d8e4;
-    --green:  #27ae60;
+    /* Rhombus brand palette (rhombus.com design tokens) */
+    --navy:   #17323b;   /* primary dark teal */
+    --blue:   #0057ff;   /* CTA blue */
+    --lblue:  #d6e7ee;
+    --xlblue: #e9f4f8;   /* secondary bg */
+    --accent: #00c1de;   /* teal / cyan accent */
+    --cyan:   #4bebff;
+    --white:  #fcfeff;
+    --gray:   #f4f7fa;
+    --text:   #17323b;
+    --muted:  #55585c;
+    --border: #dbe3ec;
+    --green:  #09a1b8;   /* teal (Print action) */
+    --hfont: 'Sora', 'Helvetica Neue', Arial, sans-serif;
+    --bfont: 'DM Sans', 'Helvetica Neue', Arial, sans-serif;
     --r: 10px;
-    --sh: 0 2px 12px rgba(31,56,100,.12);
+    --sh: 0 2px 12px rgba(23,50,59,.12);
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: 'Segoe UI', Arial, sans-serif; background: var(--gray); color: var(--text); min-height: 100vh; }
+  body { font-family: var(--bfont); background: var(--gray); color: var(--text); min-height: 100vh; }
+  h1, h2, h3, .results-hdr h3 { font-family: var(--hfont); }
 
   header {
     background: var(--navy);
@@ -29,19 +38,21 @@
     display: flex; align-items: center; gap: 14px;
     box-shadow: 0 2px 10px rgba(0,0,0,.3);
   }
-  header h1 { color: #fff; font-size: 1.2rem; font-weight: 700; }
-  header p  { color: rgba(255,255,255,.6); font-size: .78rem; margin-top: 2px; }
+  .brand-mark { width: 34px; height: 34px; flex-shrink: 0; }
+  .brand-word { display: block; font-family: var(--hfont); font-weight: 800; font-size: .72rem; letter-spacing: 3.5px; color: var(--cyan); }
+  header h1 { color: #fff; font-size: 1.18rem; font-weight: 700; letter-spacing: -.2px; }
+  header p  { color: rgba(255,255,255,.62); font-size: .78rem; margin-top: 2px; }
   .hub-btn {
     margin-left: auto;
     display: inline-flex; align-items: center; gap: 6px;
-    background: var(--accent); color: #fff;
+    background: var(--blue); color: #fff;
     font-size: .82rem; font-weight: 600;
     padding: 9px 16px; border-radius: var(--r);
     text-decoration: none; white-space: nowrap;
     box-shadow: 0 2px 8px rgba(0,0,0,.25);
     transition: background .16s, transform .16s;
   }
-  .hub-btn:hover { background: var(--blue); transform: translateY(-1px); }
+  .hub-btn:hover { background: #2265b5; transform: translateY(-1px); }
 
   .layout { display: flex; gap: 20px; max-width: 1400px; margin: 0 auto; padding: 22px 16px 60px; }
   .left-panel { flex: 1; min-width: 0; }
@@ -150,12 +161,12 @@
   .add-row { display: flex; align-items: center; gap: 8px; margin-top: 10px; flex-wrap: wrap; }
   .add-bom-btn {
     display: inline-flex; align-items: center; gap: 6px;
-    background: var(--green); color: #fff; border: none;
+    background: var(--blue); color: #fff; border: none;
     border-radius: 6px; padding: 8px 14px; font-size: .82rem;
     font-weight: 700; cursor: pointer;
     transition: background .14s, transform .1s;
   }
-  .add-bom-btn:hover { background: #219a52; transform: scale(1.03); }
+  .add-bom-btn:hover { background: #2265b5; transform: scale(1.03); }
   .add-bom-btn:active { transform: scale(.97); }
 
   /* BOM Panel */
@@ -223,16 +234,16 @@
     flex: 1; padding: 8px; border-radius: 6px; font-size: .78rem;
     font-weight: 700; cursor: pointer; transition: all .14s; border: none;
   }
-  .btn-copy { background: var(--accent); color: #fff; }
-  .btn-copy:hover { background: var(--blue); }
+  .btn-copy { background: var(--blue); color: #fff; }
+  .btn-copy:hover { background: #2265b5; }
   .btn-clear { background: #fff; color: #e74c3c; border: 1px solid #e74c3c !important; }
   .btn-clear:hover { background: #fdf0ef; }
   .btn-csv { background: var(--navy); color: #fff; }
-  .btn-csv:hover { background: #162b50; }
-  .btn-print { background: var(--green); color: #fff; }
-  .btn-print:hover { background: #219a52; }
-  .btn-share { background: #0f766e; color: #fff; }
-  .btn-share:hover { background: #115e56; }
+  .btn-csv:hover { background: #0b1f25; }
+  .btn-print { background: #2265b5; color: #fff; }
+  .btn-print:hover { background: #0e4180; }
+  .btn-share { background: var(--green); color: #fff; }
+  .btn-share:hover { background: #067080; }
   .btn-pdf { background: #c0392b; color: #fff; }
   .btn-pdf:hover { background: #a93226; }
   .bom-actions { flex-wrap: wrap; }
@@ -298,8 +309,10 @@
 <body>
 
 <header>
-  <div>
-    <h1>Rhombus Accessories & BOM Builder</h1>
+  <svg class="brand-mark" viewBox="0 0 1200 1200" role="img" aria-label="Rhombus" xmlns="http://www.w3.org/2000/svg"><path fill="#fcfeff" d="M1165.97,517.85L682.15,34.03c-45.37-45.37-118.94-45.37-164.31,0L34.03,517.85c-45.37,45.37-45.37,118.94,0,164.31l483.82,483.82c45.37,45.37,118.94,45.37,164.31,0l483.82-483.82c45.37-45.37,45.37-118.94,0-164.31Zm-560.2,258.44c-101.98,3.26-185.32-80.08-182.06-182.06,2.95-92.35,78.16-167.57,170.52-170.52,101.98-3.26,185.32,80.08,182.06,182.06-2.95,92.35-78.16,167.57-170.51,170.51Z"/></svg>
+  <div class="brand-text">
+    <span class="brand-word">RHOMBUS</span>
+    <h1>Accessories &amp; BOM Builder</h1>
     <p>Select a device and mount type, then add to your Bill of Materials</p>
   </div>
   <a class="hub-btn" href="https://terrain.rhmbs.app/tools" target="_blank" rel="noopener">Terrain: Tool Hub &#8599;</a>
@@ -491,7 +504,7 @@ function showResult() {
   var row = DATA[cat].find(function(r) { return r.model === model && r.mount === mount; });
   if (!row) { area.innerHTML = '<div class="placeholder"><span class="icon">&#128270;</span>No data found</div>'; return; }
   var deviceSku = storage ? getDeviceSku(model, storage) : null;
-  var hdrColors = ['#1F3864','#2E74B5','#4472C4'];
+  var hdrColors = ['#17323b','#2E74B5','#4472C4'];
   var html = '<div class="results-hdr"><h3>' + model + (storage && storage !== 'N/A' ? ' (' + storage + ')' : '') + ' -- ' + mount + '</h3><span class="badge">' + row.options.length + ' option' + (row.options.length !== 1 ? 's' : '') + '</span></div>';
   if (deviceSku) {
     html += '<div style="background:#e8f5e9;border-radius:8px;padding:10px 14px;margin-bottom:14px;border:1px solid #c8e6c9;font-size:.85rem;"><strong style="color:#1b5e20;">Device SKU: ' + deviceSku + '</strong></div>';
@@ -762,7 +775,7 @@ function printBOM() {
   function tableRows(items) {
     return items.map(function(item, i) {
       return '<tr style="background:' + (i%2===0 ? '#fff' : '#f8fafc') + '">' +
-        '<td style="padding:8px 12px;border-bottom:1px solid #e2e8f0;font-family:Courier New,monospace;font-weight:700;color:#1F3864;font-size:13px;">' + item.sku + '</td>' +
+        '<td style="padding:8px 12px;border-bottom:1px solid #e2e8f0;font-family:Courier New,monospace;font-weight:700;color:#17323b;font-size:13px;">' + item.sku + '</td>' +
         '<td style="padding:8px 12px;border-bottom:1px solid #e2e8f0;font-size:13px;">' + item.name + '</td>' +
         '<td style="padding:8px 12px;border-bottom:1px solid #e2e8f0;text-align:center;font-weight:700;font-size:13px;">' + item.qty + '</td>' +
         '<td style="padding:8px 12px;border-bottom:1px solid #e2e8f0;font-size:12px;color:#64748b;font-style:italic;">' + (item.location || '—') + '</td>' +
@@ -773,11 +786,11 @@ function printBOM() {
   function subtotalRow(label, qty) {
     return '<tr style="background:#f1f5f9;">' +
       '<td colspan="2" style="padding:8px 12px;text-align:right;font-weight:700;font-size:12px;color:#475569;text-transform:uppercase;letter-spacing:.5px;">' + label + '</td>' +
-      '<td style="padding:8px 12px;text-align:center;font-weight:800;font-size:14px;color:#1F3864;">' + qty + '</td>' +
+      '<td style="padding:8px 12px;text-align:center;font-weight:800;font-size:14px;color:#17323b;">' + qty + '</td>' +
       '<td></td></tr>';
   }
 
-  var tableHead = '<thead><tr style="background:#1F3864;">' +
+  var tableHead = '<thead><tr style="background:#17323b;">' +
     '<th style="padding:10px 12px;text-align:left;color:#fff;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;">SKU</th>' +
     '<th style="padding:10px 12px;text-align:left;color:#fff;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;">Description</th>' +
     '<th style="padding:10px 12px;text-align:center;color:#fff;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;width:60px;">Qty</th>' +
@@ -786,9 +799,9 @@ function printBOM() {
 
   var html = '<!DOCTYPE html><html><head><title>Rhombus BOM</title></head><body style="font-family:Segoe UI,Arial,sans-serif;color:#1a1a2e;margin:0;padding:40px;">' +
 
-    '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;padding-bottom:16px;border-bottom:3px solid #1F3864;">' +
+    '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;padding-bottom:16px;border-bottom:3px solid #17323b;">' +
       '<div>' +
-        '<h1 style="margin:0;font-size:22px;color:#1F3864;letter-spacing:-.3px;">Rhombus Systems</h1>' +
+        '<h1 style="margin:0;font-size:22px;color:#17323b;letter-spacing:-.3px;">Rhombus Systems</h1>' +
         '<p style="margin:4px 0 0;font-size:13px;color:#64748b;">Bill of Materials</p>' +
       '</div>' +
       '<div style="text-align:right;">' +
@@ -798,7 +811,7 @@ function printBOM() {
     '</div>';
 
   if (s.devices.length) {
-    html += '<h2 style="font-size:13px;color:#1F3864;text-transform:uppercase;letter-spacing:1px;margin:24px 0 8px;padding-left:2px;">Devices</h2>' +
+    html += '<h2 style="font-size:13px;color:#17323b;text-transform:uppercase;letter-spacing:1px;margin:24px 0 8px;padding-left:2px;">Devices</h2>' +
       '<table style="width:100%;border-collapse:collapse;border:1px solid #e2e8f0;border-radius:6px;overflow:hidden;margin-bottom:4px;">' +
       tableHead + '<tbody>' + tableRows(s.devices) +
       subtotalRow('Devices Subtotal', s.devices.reduce(function(t,d){return t+d.qty;},0)) +
@@ -806,14 +819,14 @@ function printBOM() {
   }
 
   if (s.accessories.length) {
-    html += '<h2 style="font-size:13px;color:#1F3864;text-transform:uppercase;letter-spacing:1px;margin:24px 0 8px;padding-left:2px;">Accessories</h2>' +
+    html += '<h2 style="font-size:13px;color:#17323b;text-transform:uppercase;letter-spacing:1px;margin:24px 0 8px;padding-left:2px;">Accessories</h2>' +
       '<table style="width:100%;border-collapse:collapse;border:1px solid #e2e8f0;border-radius:6px;overflow:hidden;margin-bottom:4px;">' +
       tableHead + '<tbody>' + tableRows(s.accessories) +
       subtotalRow('Accessories Subtotal', s.accessories.reduce(function(t,a){return t+a.qty;},0)) +
       '</tbody></table>';
   }
 
-  html += '<div style="margin-top:20px;padding:12px 16px;background:#1F3864;border-radius:6px;display:flex;justify-content:space-between;align-items:center;">' +
+  html += '<div style="margin-top:20px;padding:12px 16px;background:#17323b;border-radius:6px;display:flex;justify-content:space-between;align-items:center;">' +
     '<span style="color:#fff;font-size:14px;font-weight:700;text-transform:uppercase;letter-spacing:1px;">Grand Total</span>' +
     '<span style="color:#fff;font-size:22px;font-weight:800;">' + totalQty + ' units</span>' +
   '</div>';
@@ -874,7 +887,7 @@ function exportPDF() {
   var s = splitBOM();
   var totalQty = bom.reduce(function(t,b){ return t+b.qty; }, 0);
 
-  doc.setFillColor(31,56,100); doc.rect(0,0,612,64,'F');
+  doc.setFillColor(23,50,59); doc.rect(0,0,612,64,'F');
   doc.setTextColor(255,255,255);
   doc.setFontSize(18); doc.setFont(undefined,'bold'); doc.text('Rhombus Systems', 40, 30);
   doc.setFontSize(11); doc.setFont(undefined,'normal'); doc.text('Bill of Materials', 40, 48);
@@ -885,7 +898,7 @@ function exportPDF() {
   var y = 88;
   function section(title, items) {
     if (!items.length) return;
-    doc.setTextColor(31,56,100); doc.setFontSize(12); doc.setFont(undefined,'bold');
+    doc.setTextColor(23,50,59); doc.setFontSize(12); doc.setFont(undefined,'bold');
     doc.text(title, 40, y);
     doc.autoTable({
       startY: y + 6,
@@ -893,8 +906,8 @@ function exportPDF() {
       body: items.map(function(i){ return [i.sku, i.name, String(i.qty), i.location || '—']; }),
       foot: [[{ content: title + ' Subtotal', colSpan: 2, styles: { halign: 'right', fontStyle: 'bold' } }, String(items.reduce(function(t,i){return t+i.qty;},0)), '']],
       styles: { fontSize: 9, cellPadding: 5, overflow: 'linebreak' },
-      headStyles: { fillColor: [31,56,100], textColor: 255 },
-      footStyles: { fillColor: [241,245,249], textColor: [31,56,100] },
+      headStyles: { fillColor: [23,50,59], textColor: 255 },
+      footStyles: { fillColor: [241,245,249], textColor: [23,50,59] },
       columnStyles: { 0: { cellWidth: 110, font: 'courier' }, 2: { halign: 'center', cellWidth: 40 } },
       margin: { left: 40, right: 40 },
       theme: 'grid'
@@ -904,7 +917,7 @@ function exportPDF() {
   section('Devices', s.devices);
   section('Accessories', s.accessories);
 
-  doc.setFillColor(31,56,100); doc.rect(40, y, 532, 32, 'F');
+  doc.setFillColor(23,50,59); doc.rect(40, y, 532, 32, 'F');
   doc.setTextColor(255,255,255);
   doc.setFontSize(12); doc.setFont(undefined,'bold'); doc.text('GRAND TOTAL', 54, y + 21);
   doc.setFontSize(15); doc.text(totalQty + ' units', 558, y + 21, { align: 'right' });
@@ -953,7 +966,7 @@ function celebrate() {
 }
 
 /* ---- Celebration animation engine: 10 variants, random rotation ---- */
-var CELE_COLORS = ['#1F3864','#2E74B5','#4472C4','#27ae60','#f39c12','#e74c3c','#ffffff','#9b59b6'];
+var CELE_COLORS = ['#17323b','#0057ff','#00c1de','#4bebff','#2265b5','#09a1b8','#ffffff','#f39c12'];
 function _rand(a,b){ return a + Math.random()*(b-a); }
 function _pick(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
 function _dims(){
