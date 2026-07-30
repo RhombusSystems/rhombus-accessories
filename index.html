@@ -317,6 +317,16 @@
   </div>
   <a class="hub-btn" href="https://terrain.rhmbs.app/tools" target="_blank" rel="noopener">Terrain: Tool Hub &#8599;</a>
 </header>
+<script>
+  /* Hide the Terrain Tool Hub button on the Vercel-served copies (*.vercel.app
+     and *.rhmbs.app); keep it on the GitHub Pages deploy. */
+  (function () {
+    if (/(\.vercel\.app|\.rhmbs\.app)$/i.test(location.hostname)) {
+      var b = document.querySelector('.hub-btn');
+      if (b) b.remove();
+    }
+  })();
+</script>
 
 <div class="layout">
   <div class="left-panel">
