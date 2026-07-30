@@ -406,7 +406,7 @@ var STORAGE_OPTIONS = {
   "R540": ["512GB", "1TB", "2TB"], "R545": ["512GB", "1TB", "2TB"],
   "R520": ["128GB", "256GB", "512GB", "1TB"], "R600": ["1TB", "2TB"],
   "DR40": ["128GB", "256GB", "512GB"], "DR20": ["N/A"], "DC20": ["N/A"],
-  "A100": ["No Storage", "128GB"], "E50": ["N/A"], "N100": ["2TB", "4TB"]
+  "A100": ["64GB"], "E50": ["N/A"], "N100": ["2TB", "4TB"]
 };
 
 var MODEL_TO_SKU_PREFIX = {
@@ -430,8 +430,6 @@ var NOT_OUTDOOR = ['R150', 'A100', 'E50'];
 
 function getDeviceSku(model, storage) {
   if (storage === "N/A" || !storage) return MODEL_TO_SKU_PREFIX[model] || null;
-  if (model === "A100" && storage === "No Storage") return "SEN-AUD-A100";
-  if (model === "A100" && storage === "128GB") return "SEN-AUD-A100-128GB";
   return (MODEL_TO_SKU_PREFIX[model] || model) + "-" + storage;
 }
 
